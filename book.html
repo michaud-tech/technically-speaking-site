@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Book a call | Technically Speaking</title>
+<meta name="description" content="Book a short call with Michaud Garneau about Technically Speaking — a communication program for technical teams.">
+<link rel="canonical" href="https://www.technicallyspeakinghq.com/book">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#1D1D1B">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNjAiIGhlaWdodD0iMTYwIiB2aWV3Qm94PSIwIDAgMTYwIDE2MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsbGVkYnk9InRpdGxlIGRlc2MiPgogIDx0aXRsZSBpZD0idGl0bGUiPlRlY2huaWNhbGx5IFNwZWFraW5nIFQgbW9ub2dyYW08L3RpdGxlPgogIDxkZXNjIGlkPSJkZXNjIj5BIHNtYWxsIGNpcmN1bGFyIG1vbm9ncmFtIHdpdGggYSBzdHlsaXplZCBUIGluIHllbGxvdy48L2Rlc2M+CiAgPHJlY3Qgd2lkdGg9IjE2MCIgaGVpZ2h0PSIxNjAiIGZpbGw9Im5vbmUiLz4KICA8Y2lyY2xlIGN4PSI4MCIgY3k9IjgwIiByPSI1OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRjRDNDAwIiBzdHJva2Utd2lkdGg9IjYiLz4KICA8cmVjdCB4PSI1NyIgeT0iNDciIHdpZHRoPSI0NiIgaGVpZ2h0PSI1IiByeD0iMi41IiBmaWxsPSIjRjRDNDAwIi8+CiAgPHJlY3QgeD0iNTciIHk9IjYwIiB3aWR0aD0iNDYiIGhlaWdodD0iNSIgcng9IjIuNSIgZmlsbD0iI0Y0QzQwMCIvPgogIDxyZWN0IHg9Ijc3IiB5PSI2MCIgd2lkdGg9IjUiIGhlaWdodD0iNDIiIHJ4PSIyLjUiIGZpbGw9IiNGNEM0MDAiLz4KPC9zdmc+Cg==">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{--dark:#1D1D1B;--paper:#F4F2ED;--card:#E8E6E1;--yellow:#F4C400;--muted:#6B6B68;--white:#F4F2ED;--line:#DAD5CB;--darkline:#39352F}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--dark);font-family:'Archivo',system-ui,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.55;letter-spacing:-0.01em}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 40px}
+  .band.dark{background:var(--dark);color:var(--white)}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;padding:13px 20px;border:2px solid var(--yellow);background:var(--yellow);color:var(--dark);transition:.15s}
+  .btn:hover{background:transparent;color:var(--yellow)}
+  .btn.ghost.on-dark{background:transparent;color:var(--white);border-color:var(--white)}
+  .btn.ghost.on-dark:hover{background:var(--white);color:var(--dark)}
+  header{background:var(--dark);color:var(--white);border-bottom:1px solid var(--darkline)}
+  header .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:15px;padding-bottom:15px}
+  .brand svg{height:24px;width:120px;color:var(--white)}
+  nav{display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+  nav a.link{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#b8b2a8}
+  .label{font-size:12px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--yellow)}
+  h1{font-weight:800;letter-spacing:-.03em;line-height:1.03;font-size:clamp(34px,5vw,54px);margin-top:14px}
+  .hero{padding:56px 0 60px}
+  .hero .sub{font-size:18px;color:#c9c3b8;max-width:52ch;margin-top:20px;line-height:1.6}
+  .bookwrap{max-width:1080px;margin:-32px auto 0;padding:0 40px 80px}
+  .bookcard{background:#fff;border-top:5px solid var(--yellow);box-shadow:0 20px 50px rgba(0,0,0,.10);overflow:hidden}
+  .bookcard iframe{display:block;width:100%;border:0;min-height:760px}
+  .fallback{padding:56px 40px;text-align:center}
+  .fallback h2{font-weight:800;font-size:26px;letter-spacing:-.02em}
+  .fallback p{color:var(--muted);margin:12px auto 26px;max-width:44ch;font-size:16px}
+  .newtab{text-align:center;margin-top:18px;font-size:14px;color:var(--muted)}
+  .newtab a{border-bottom:2px solid var(--yellow);color:var(--dark);font-weight:700;padding-bottom:2px}
+  footer{border-top:1px solid var(--darkline);background:var(--dark);color:#b8b2a8}
+  footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:22px;padding-bottom:22px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+  @media(max-width:820px){.wrap,.bookwrap{padding-left:24px;padding-right:24px}nav a.link{display:none}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><symbol id="tsword" viewBox="0 0 1200 240"><rect width="1200" height="240" fill="none"/><g fill="currentColor" font-family="Arial Narrow, Helvetica Neue, Arial, sans-serif"><text x="40" y="102" font-size="84" font-weight="900">TECHNICALLY</text><text x="318" y="176" font-size="30" font-weight="700" letter-spacing="12" fill="#F4C400">SPEAKING</text></g><rect x="62" y="148" width="210" height="8" rx="2" fill="#F4C400"/></symbol></svg>
+
+<header>
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="Technically Speaking"><svg viewBox="0 0 1200 240"><use href="#tsword"/></svg></a>
+    <nav>
+      <a href="/program" class="link">Program &amp; pricing</a>
+      <a href="https://technically-speaking-assessment.vercel.app/" class="link">Try the assessment</a>
+    </nav>
+  </div>
+</header>
+
+<div class="band dark">
+  <div class="wrap hero">
+    <p class="label">Book a call</p>
+    <h1>Let's find a time.</h1>
+    <p class="sub">A short conversation about your team, what you're trying to move, and whether this is a fit. No pitch, no pressure.</p>
+  </div>
+</div>
+
+<div class="bookwrap">
+  <div class="bookcard" id="bookcard">
+    <!-- The scheduler is injected here. Fallback shows until BOOKING_EMBED_URL is set. -->
+    <div class="fallback" id="fallback">
+      <h2>Grab a time that works</h2>
+      <p>This opens Michaud's calendar so you can pick a slot directly.</p>
+      <a class="btn" href="https://calendar.app.google/NXmbASxfoGzQyMWh6" target="_blank" rel="noopener">Open the calendar</a>
+    </div>
+  </div>
+  <p class="newtab">Trouble seeing the calendar? <a href="https://calendar.app.google/NXmbASxfoGzQyMWh6" target="_blank" rel="noopener">Open it in a new tab &rarr;</a></p>
+</div>
+
+<footer>
+  <div class="wrap"><span>© Technically Speaking</span><span><a href="/">technicallyspeakinghq.com</a></span></div>
+</footer>
+
+<script>
+  // Google Appointment Schedule embed. ?gv=true renders the embeddable booking view.
+  // When set, it replaces the fallback button with the embedded, branded scheduler.
+  var BOOKING_EMBED_URL = "https://calendar.app.google/NXmbASxfoGzQyMWh6?gv=true";
+
+  if (BOOKING_EMBED_URL) {
+    var f = document.getElementById('fallback');
+    if (f) f.remove();
+    var frame = document.createElement('iframe');
+    frame.src = BOOKING_EMBED_URL;
+    frame.title = "Book a call with Michaud Garneau";
+    frame.loading = "lazy";
+    document.getElementById('bookcard').appendChild(frame);
+  }
+</script>
+</body>
+</html>
