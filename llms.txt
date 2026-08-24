@@ -1,0 +1,35 @@
+# Technically Speaking
+
+> A six-week communication program that teaches engineers and technical teams to make the business case — to win executive buy-in, align stakeholders, handle pushback, and move decisions forward without the CTO in the room. Built on the TECH Model, created by Michaud Garneau.
+
+Technically Speaking teaches technical people how to "speak business": to sit across from clients, product teams and executives and move decisions forward. It is a live, cohort-based program, not a one-off course. Every participant is measured against the TECH rubric at the start and end, so improvement is tracked, not assumed.
+
+## The TECH Model
+A shared way to think through any message, pitch or conversation before it happens:
+- **T — Target Audience:** Who am I talking to? What matters to them, and to the business?
+- **E — End Goal:** What decision am I trying to make happen, and am I asking for it clearly?
+- **C — Clarity:** What do they actually need to know, tied to why it matters to them?
+- **H — How You Say It:** Pace, tone, pauses — how you earn attention and land the point.
+
+## The program (facts)
+- Format: six weeks, once a week, 90-minute live sessions.
+- Cohort size: six participants.
+- Price: $18,000 per cohort ($3,000 per person).
+- Includes: pre-program discovery and customization, six live sessions with personalized feedback, baseline and endline assessments on the TECH rubric, the TECH AI Coach for practice between sessions, a final pitch to a real executive, and sponsor check-ins at three and six months.
+- Who it's for: engineers, engineering managers, and customer-facing technical people, brought in by CTOs, VPs and Directors.
+
+## Proof
+- Jungle Scout — Sam Johnson, CTO: after the program, an engineering manager handled a live incident with executives while Sam was away. "Proposals now hit the points I care about, so we can get to decisions a lot more quickly."
+- TextNow — Andrew Cotton, Head of Security, Compliance & IT: "I talk to my CFO and COO completely differently now. I learned to get to the real problem underneath what people say."
+- MLSE — Katee Carrasco, Director, Global Partnerships: a participant used what they learned on a client call the same afternoon as the first session.
+- Other clients: CTO Craft, SaaS North, TechTO.
+
+## Founder
+Michaud Garneau — creator of the TECH Model, founder of Technically Speaking. 10+ years teaching technical people to communicate, from startups to Fortune 500. TEDx speaker; LinkedIn Learning instructor.
+
+## Links
+- Home: https://www.technicallyspeakinghq.com/
+- Program & pricing: https://www.technicallyspeakinghq.com/program
+- Case study (Jungle Scout): https://www.technicallyspeakinghq.com/case-study
+- About: https://www.technicallyspeakinghq.com/about
+- Book a call: https://www.technicallyspeakinghq.com/book
