@@ -159,7 +159,6 @@ module.exports = async (req, res) => {
     const text = await callAnthropic({
       model: MODEL,
       max_tokens: 1400,
-      temperature: 0, // deterministic / low-variance scoring
       system: SCORE_SYSTEM,
       messages: [
         { role: 'user', content: userContent },
