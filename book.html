@@ -46,16 +46,16 @@
   @media(max-width:820px){.wrap,.bookwrap{padding-left:24px;padding-right:24px}nav a.link{display:none}}
 </style>
 <style>
-  .navtoggle{display:none;background:none;border:0;cursor:pointer;padding:6px;color:var(--white);line-height:0}
-  .btn.ghost.on-dark{color:var(--white);border-color:var(--white)}
-  .btn.ghost.on-dark:hover{background:var(--white);color:var(--dark)}
-  @media (max-width:820px){
-    .navtoggle{display:inline-flex;align-items:center}
-    nav{display:none!important;position:absolute;top:100%;left:0;right:0;background:var(--dark);border-top:1px solid var(--darkline);border-bottom:1px solid var(--darkline);flex-direction:column;align-items:stretch;gap:0;padding:10px 0;z-index:60}
-    header.nav-open nav{display:flex!important}
-    nav a.link{display:block!important;padding:12px 24px;color:#e9e5dd;text-align:left}
-    nav .btn{margin:10px 24px;justify-content:center}
-  }
+  .nav{display:flex;align-items:center;gap:14px}
+  .navmenu{position:relative}
+  .menu-btn{display:inline-flex;align-items:center;gap:8px;background:none;border:0;cursor:pointer;color:#cfcabf;font-family:inherit;font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:8px 4px;line-height:1}
+  .menu-btn:hover{color:var(--white)}
+  .menu-btn svg{display:block}
+  .menu-panel{position:absolute;top:calc(100% + 12px);right:0;min-width:220px;background:#262320;border:1px solid var(--darkline);box-shadow:0 14px 34px rgba(0,0,0,.4);padding:8px;display:none;flex-direction:column;z-index:70}
+  .navmenu.open .menu-panel{display:flex}
+  .menu-panel a{display:block;padding:11px 14px;font-size:13px;font-weight:600;letter-spacing:.01em;color:#e9e5dd;text-transform:none}
+  .menu-panel a:hover{background:var(--dark);color:var(--white)}
+  @media (max-width:480px){ .nav{gap:10px} .nav .btn.solid{padding:11px 13px;font-size:11px} .menu-btn span{display:none} .menu-btn{padding:8px} }
 </style>
 </head>
 <body>
@@ -64,13 +64,18 @@
 <header>
   <div class="wrap">
     <a class="brand" href="/" aria-label="Technically Speaking"><svg viewBox="0 0 1200 240"><use href="#tsword"/></svg></a>
-    <nav>
-      <a href="/program" class="link">Program &amp; pricing</a>
-      <a href="/about" class="link">About</a>
-      <a href="/assessment" class="btn ghost on-dark">Try the assessment</a>
-      <a href="/book" class="btn solid">Book a call</a>
+    <nav class="nav">
+      <a href="/assessment" class="btn solid">Try the assessment</a>
+      <div class="navmenu">
+        <button class="menu-btn" aria-haspopup="true" aria-expanded="false" onclick="event.stopPropagation();var m=this.closest('.navmenu');var o=m.classList.toggle('open');this.setAttribute('aria-expanded',o)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg><span>Menu</span></button>
+        <div class="menu-panel" role="menu">
+          <a href="/" role="menuitem">Home</a>
+          <a href="/program" role="menuitem">Program + pricing</a>
+          <a href="/about" role="menuitem">About</a>
+          <a href="/case-study" role="menuitem">Case study</a>
+        </div>
+      </div>
     </nav>
-    <button class="navtoggle" aria-label="Menu" aria-expanded="false" onclick="var h=this.closest('header');var o=h.classList.toggle('nav-open');this.setAttribute('aria-expanded',o)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
   </div>
 </header>
 
@@ -113,5 +118,6 @@
     document.getElementById('bookcard').appendChild(frame);
   }
 </script>
+<script>document.addEventListener('click',function(e){document.querySelectorAll('.navmenu.open').forEach(function(m){if(!m.contains(e.target)){m.classList.remove('open');var b=m.querySelector('.menu-btn');if(b)b.setAttribute('aria-expanded','false');}});});</script>
 </body>
 </html>
