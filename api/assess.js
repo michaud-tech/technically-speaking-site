@@ -185,6 +185,53 @@ function extractJson(text) {
   return null; // object never closed -> reply was truncated
 }
 
+// Canonical rubric skeleton. The server always emits EXACTLY this shape, so a
+// slightly-off model response can never crash the handler or misrender results.
+const RUBRIC = [
+  { key: 'T', name: 'Target Audience', lines: [['T1', 'Speaks to the macro'], ['T2', 'Speaks to the micro']] },
+  { key: 'E', name: 'End Goal', lines: [['E1', 'Clear goal'], ['E2', 'Clear ask + next step']] },
+  { key: 'C', name: 'Clarity', lines: [['C1', 'Opening frame'], ['C2', 'Key evidence tied to impact']] },
+];
+
+// Collect { score, note } by line code (T1..C2) from whatever shape the model
+// returned — pillars as an array, pillars as an object map, or a flat lines list.
+function collectLines(parsed) {
+  const map = {};
+  const take = (lines) => {
+    if (Array.isArray(lines)) lines.forEach((l) => { if (l && l.code) map[String(l.code).toUpperCase().trim()] = l; });
+  };
+  const pillars = parsed && parsed.pillars;
+  if (Array.isArray(pillars)) pillars.forEach((p) => take(p && p.lines));
+  else if (pillars && typeof pillars === 'object') Object.keys(pillars).forEach((k) => take(pillars[k] && pillars[k].lines));
+  if (parsed && Array.isArray(parsed.lines)) take(parsed.lines);
+  return map;
+}
+
+// Build a guaranteed-valid response from the model's line scores.
+function normalize(parsed) {
+  const clamp = (n) => Math.max(0, Math.min(2, parseInt(n, 10) || 0));
+  const map = collectLines(parsed);
+  let total = 0;
+  const pillars = RUBRIC.map((p) => {
+    let sub = 0;
+    const lines = p.lines.map(([code, label]) => {
+      const src = map[code] || {};
+      const score = clamp(src.score);
+      sub += score;
+      return { code, label, score, note: (src.note == null ? '' : String(src.note)) };
+    });
+    total += sub;
+    return { key: p.key, name: p.name, subtotal: sub, lines };
+  });
+  return {
+    total,
+    pillars,
+    whatWorked: parsed && parsed.whatWorked != null ? String(parsed.whatWorked) : '',
+    coachingFocus: parsed && parsed.coachingFocus != null ? String(parsed.coachingFocus) : '',
+    _found: Object.keys(map),
+  };
+}
+
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });
@@ -235,14 +282,26 @@ module.exports = async (req, res) => {
     const blocks = data.content || [];
     // Preferred path: the forced tool call returns already-parsed JSON.
     const tool = blocks.find((c) => c && c.type === 'tool_use' && c.input && typeof c.input === 'object');
-    if (tool) return tool.input;
-    // Fallback: if a text reply came back instead, salvage JSON from it.
-    const text = blocks.filter((c) => c && c.type === 'text' && typeof c.text === 'string').map((c) => c.text).join('').trim();
-    const obj = extractJson(text);
-    if (obj) return obj;
-    const e = new Error('no_json');
-    e.raw = 'stop_reason=' + data.stop_reason + ' blocks=' + blocks.map((b) => b.type).join(',') + ' text=' + text.slice(0, 300);
-    throw e;
+    let raw = tool ? tool.input : null;
+    if (!raw) {
+      // Fallback: if a text reply came back instead, salvage JSON from it.
+      const text = blocks.filter((c) => c && c.type === 'text' && typeof c.text === 'string').map((c) => c.text).join('').trim();
+      raw = extractJson(text);
+      if (!raw) {
+        const e = new Error('no_json');
+        e.raw = 'stop_reason=' + data.stop_reason + ' blocks=' + blocks.map((b) => b.type).join(',') + ' text=' + text.slice(0, 300);
+        throw e;
+      }
+    }
+    // Normalize into the canonical shape (handles pillars as array/object/flat).
+    const result = normalize(raw);
+    if (result._found.length < 6) {
+      const e = new Error('bad_shape');
+      e.raw = 'found=[' + result._found.join(',') + '] rawkeys=[' + Object.keys(raw || {}).join(',') + ']';
+      throw e;
+    }
+    delete result._found;
+    return result;
   }
 
   let parsed;
@@ -266,19 +325,7 @@ module.exports = async (req, res) => {
     return;
   }
 
-  // Trust only the six individual line scores from the model; compute every
-  // subtotal and the /12 total deterministically here in server code.
-  const clamp = (n) => Math.max(0, Math.min(2, parseInt(n, 10) || 0));
-  let total = 0;
-  (parsed.pillars || []).forEach((p) => {
-    let sub = 0;
-    (p.lines || []).forEach((l) => {
-      l.score = clamp(l.score);
-      sub += l.score;
-    });
-    p.subtotal = sub; // pillar total out of 4, computed server-side
-    total += sub;
-  });
-  parsed.total = total; // overall out of 12, computed server-side
+  // `parsed` is already the normalized, canonical result: six clamped line
+  // scores, per-pillar subtotals, and the /12 total, all computed server-side.
   res.status(200).json(parsed);
 };
