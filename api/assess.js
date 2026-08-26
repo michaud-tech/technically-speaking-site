@@ -98,8 +98,8 @@ HOW TO WRITE coachingFocus — keep it DIRECTION, never a script. One or two sen
 
 Decide between 2 and 3 honestly: give next-level coaching only when the improvement is real and material; otherwise give No notes. Do not manufacture criticism to fill the field, and do not withhold points because you found something to coach.
 
-Return ONLY valid JSON, no markdown, exactly this shape:
-{"pillars":[{"key":"T","name":"Target Audience","lines":[{"code":"T1","label":"Speaks to the macro","score":<0|1|2>,"note":"<one sentence>"},{"code":"T2","label":"Speaks to the micro","score":<0|1|2>,"note":"<one sentence>"}]},{"key":"E","name":"End Goal","lines":[{"code":"E1","label":"Clear goal","score":<0|1|2>,"note":"<one sentence>"},{"code":"E2","label":"Clear ask + next step","score":<0|1|2>,"note":"<one sentence>"}]},{"key":"C","name":"Clarity","lines":[{"code":"C1","label":"Opening frame","score":<0|1|2>,"note":"<one sentence>"},{"code":"C2","label":"Key evidence tied to impact","score":<0|1|2>,"note":"<one sentence>"}]}],"whatWorked":"<specific, evidence-based positive feedback>","coachingFocus":"<corrective or next-level coaching, OR exactly: No notes. This is what good looks like.>"}`;
+Call the submit_score tool with all six line scores and both feedback fields. The
+tool schema is the source of truth for the output shape.`;
 
 async function callAnthropic(body) {
   const res = await fetch('https://api.anthropic.com/v1/messages', {
@@ -127,37 +127,34 @@ async function callAnthropic(body) {
 const SCORE_TOOL = {
   name: 'submit_score',
   description: 'Return the six TECH line scores (T1,T2,E1,E2,C1,C2) and the two feedback fields.',
+  // Without strict mode, `required` is guidance rather than a guarantee: the
+  // model can legally emit `{ pillars: [] }`. Strict tool use constrains the
+  // generated input to this schema before it reaches the handler.
+  strict: true,
   input_schema: {
     type: 'object',
+    additionalProperties: false,
     properties: {
-      pillars: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            key: { type: 'string' },
-            name: { type: 'string' },
-            lines: {
-              type: 'array',
-              items: {
-                type: 'object',
-                properties: {
-                  code: { type: 'string' },
-                  label: { type: 'string' },
-                  score: { type: 'integer', minimum: 0, maximum: 2 },
-                  note: { type: 'string' },
-                },
-                required: ['code', 'label', 'score', 'note'],
-              },
+      scores: {
+        type: 'object',
+        additionalProperties: false,
+        properties: Object.fromEntries(
+          ['T1', 'T2', 'E1', 'E2', 'C1', 'C2'].map((code) => [code, {
+            type: 'object',
+            additionalProperties: false,
+            properties: {
+              score: { type: 'integer', minimum: 0, maximum: 2 },
+              note: { type: 'string' },
             },
-          },
-          required: ['key', 'name', 'lines'],
-        },
+            required: ['score', 'note'],
+          }])
+        ),
+        required: ['T1', 'T2', 'E1', 'E2', 'C1', 'C2'],
       },
       whatWorked: { type: 'string' },
       coachingFocus: { type: 'string' },
     },
-    required: ['pillars', 'whatWorked', 'coachingFocus'],
+    required: ['scores', 'whatWorked', 'coachingFocus'],
   },
 };
 
@@ -207,6 +204,14 @@ function collectLines(parsed) {
   if (Array.isArray(pillars)) pillars.forEach((p) => take(p && p.lines));
   else if (pillars && typeof pillars === 'object') Object.keys(pillars).forEach((k) => take(pillars[k] && pillars[k].lines));
   if (parsed && Array.isArray(parsed.lines)) take(parsed.lines);
+  // Current strict schema: line codes are object keys, so no model-generated
+  // code or label can be missing or misspelled.
+  if (parsed && parsed.scores && typeof parsed.scores === 'object') {
+    Object.keys(parsed.scores).forEach((code) => {
+      const line = parsed.scores[code];
+      if (line && typeof line === 'object') map[String(code).toUpperCase().trim()] = line;
+    });
+  }
   return map;
 }
 
@@ -269,7 +274,7 @@ module.exports = async (req, res) => {
     return;
   }
 
-  const userContent = `BRIEF:\n${scenario.brief}\n\nPITCH:\n${pitch}\n\nReturn ONLY the single JSON object described in the system prompt — begin your reply with "{" and end with "}", with no code fences and no text before or after.`;
+  const userContent = `BRIEF:\n${scenario.brief}\n\nPITCH:\n${pitch}\n\nScore the pitch and call submit_score with all six line scores and both feedback fields.`;
 
   async function runScore() {
     const data = await callAnthropic({
