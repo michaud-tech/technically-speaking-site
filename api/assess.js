@@ -115,9 +115,74 @@ async function callAnthropic(body) {
     err.status = res.status;
     throw err;
   }
-  const data = await res.json();
-  const parts = (data.content || []).filter((c) => c && c.type === 'text' && typeof c.text === 'string');
-  return parts.map((c) => c.text).join('').trim();
+  return res.json();
+}
+
+// Structured-output tool: forcing the model to call this returns the score as
+// already-parsed JSON (tool_use.input), which can't be broken by prose,
+// markdown fences, or a truncated text block the way free-text JSON can.
+const SCORE_TOOL = {
+  name: 'submit_score',
+  description: 'Return the six TECH line scores (T1,T2,E1,E2,C1,C2) and the two feedback fields.',
+  input_schema: {
+    type: 'object',
+    properties: {
+      pillars: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            key: { type: 'string' },
+            name: { type: 'string' },
+            lines: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  code: { type: 'string' },
+                  label: { type: 'string' },
+                  score: { type: 'integer', minimum: 0, maximum: 2 },
+                  note: { type: 'string' },
+                },
+                required: ['code', 'label', 'score', 'note'],
+              },
+            },
+          },
+          required: ['key', 'name', 'lines'],
+        },
+      },
+      whatWorked: { type: 'string' },
+      coachingFocus: { type: 'string' },
+    },
+    required: ['pillars', 'whatWorked', 'coachingFocus'],
+  },
+};
+
+// Pull the first COMPLETE, balanced JSON object out of the model's reply.
+// Robust to code fences, prose before/after, and (unlike a greedy regex) to a
+// second stray brace. Returns null if there's no object or it's truncated.
+function extractJson(text) {
+  if (!text) return null;
+  const start = text.indexOf('{');
+  if (start === -1) return null;
+  let depth = 0, inStr = false, esc = false;
+  for (let i = start; i < text.length; i++) {
+    const ch = text[i];
+    if (inStr) {
+      if (esc) esc = false;
+      else if (ch === '\\') esc = true;
+      else if (ch === '"') inStr = false;
+    } else if (ch === '"') inStr = true;
+    else if (ch === '{') depth++;
+    else if (ch === '}') {
+      depth--;
+      if (depth === 0) {
+        try { return JSON.parse(text.slice(start, i + 1)); }
+        catch (e) { return null; }
+      }
+    }
+  }
+  return null; // object never closed -> reply was truncated
 }
 
 module.exports = async (req, res) => {
@@ -154,46 +219,66 @@ module.exports = async (req, res) => {
     return;
   }
 
-  try {
-    const userContent = `BRIEF:\n${scenario.brief}\n\nPITCH:\n${pitch}\n\nReturn only the JSON object described above — no code fences, no text before or after.`;
-    const text = await callAnthropic({
+  const userContent = `BRIEF:\n${scenario.brief}\n\nPITCH:\n${pitch}\n\nReturn ONLY the single JSON object described in the system prompt — begin your reply with "{" and end with "}", with no code fences and no text before or after.`;
+
+  async function runScore() {
+    const data = await callAnthropic({
       model: MODEL,
-      max_tokens: 1400,
+      max_tokens: 2500,
       system: SCORE_SYSTEM,
+      tools: [SCORE_TOOL],
+      tool_choice: { type: 'tool', name: 'submit_score' },
       messages: [
         { role: 'user', content: userContent },
       ],
     });
-    // Grab the JSON object; this ignores any prose or code fences around it.
-    const match = text.match(/\{[\s\S]*\}/);
-    if (!match) {
-      console.error('No JSON in score reply:', text);
-      res.status(502).json({ error: 'Could not read the score. Please try again.' });
-      return;
+    const blocks = data.content || [];
+    // Preferred path: the forced tool call returns already-parsed JSON.
+    const tool = blocks.find((c) => c && c.type === 'tool_use' && c.input && typeof c.input === 'object');
+    if (tool) return tool.input;
+    // Fallback: if a text reply came back instead, salvage JSON from it.
+    const text = blocks.filter((c) => c && c.type === 'text' && typeof c.text === 'string').map((c) => c.text).join('').trim();
+    const obj = extractJson(text);
+    if (obj) return obj;
+    const e = new Error('no_json');
+    e.raw = 'stop_reason=' + data.stop_reason + ' blocks=' + blocks.map((b) => b.type).join(',') + ' text=' + text.slice(0, 300);
+    throw e;
+  }
+
+  let parsed;
+  try {
+    try {
+      parsed = await runScore();
+    } catch (e1) {
+      if (e1.message === 'anthropic_error') throw e1;
+      // Transient bad/truncated reply — try exactly once more before giving up.
+      console.error('score attempt 1 failed:', e1.message, '::', (e1.raw || '').slice(0, 400));
+      parsed = await runScore();
     }
-    const parsed = JSON.parse(match[0]);
-    // Trust only the six individual line scores from the model; compute every
-    // subtotal and the /12 total deterministically here in server code.
-    const clamp = (n) => Math.max(0, Math.min(2, parseInt(n, 10) || 0));
-    let total = 0;
-    (parsed.pillars || []).forEach((p) => {
-      let sub = 0;
-      (p.lines || []).forEach((l) => {
-        l.score = clamp(l.score);
-        sub += l.score;
-      });
-      p.subtotal = sub; // pillar total out of 4, computed server-side
-      total += sub;
-    });
-    parsed.total = total; // overall out of 12, computed server-side
-    res.status(200).json(parsed);
   } catch (err) {
     if (err.message === 'anthropic_error') {
       console.error('Anthropic error', err.status, err.detail);
       res.status(502).json({ error: 'The scorer is unavailable right now. Please try again in a moment.' });
       return;
     }
-    console.error(err);
-    res.status(500).json({ error: 'Something went wrong scoring your pitch. Please try again.' });
+    console.error('score failed after retry:', err.message, '::', (err.raw || '').slice(0, 400));
+    res.status(502).json({ error: 'Could not read the score. Please try again.' });
+    return;
   }
+
+  // Trust only the six individual line scores from the model; compute every
+  // subtotal and the /12 total deterministically here in server code.
+  const clamp = (n) => Math.max(0, Math.min(2, parseInt(n, 10) || 0));
+  let total = 0;
+  (parsed.pillars || []).forEach((p) => {
+    let sub = 0;
+    (p.lines || []).forEach((l) => {
+      l.score = clamp(l.score);
+      sub += l.score;
+    });
+    p.subtotal = sub; // pillar total out of 4, computed server-side
+    total += sub;
+  });
+  parsed.total = total; // overall out of 12, computed server-side
+  res.status(200).json(parsed);
 };
