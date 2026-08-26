@@ -3,10 +3,11 @@
 //   POST { scenarioId, pitch } -> scores the pitch on T / E / C (no H)
 //
 // The Anthropic API key stays server-side (set ANTHROPIC_API_KEY in Vercel env vars).
-// Each scenario is a neutral brief: the person's role and pressures, the other person's
-// role/history/pressures, a mix of technical and business facts, and the decision to move.
-// The brief never tells them to tailor, make an ask, or use the audience info — that is
-// exactly what the score measures.
+// Each brief gives the situation (the person's role and pressures, the other person's
+// role/history/pressures, and a mix of technical and business facts) and then names the
+// task: make the case for prioritizing this specific work. The brief assigns the END GOAL
+// (advocate for this), but never hands over the audience tailoring, the evidence
+// translation, the ask, or the next step — that is what the score measures.
 
 const MODEL = process.env.ANTHROPIC_MODEL || 'claude-sonnet-5';
 
@@ -22,7 +23,7 @@ The payments service has caused three incidents this quarter. Each one took chec
 
 Dana can support the project, but because it changes the roadmap, she'll need to take the recommendation to the product executive. You have five minutes with Dana in the roadmap review.
 
-Give the pitch you would actually make, using the words you'd say in the room.`,
+Make the case to Dana for prioritizing the payments-service replacement. Give the pitch you would actually make, using the words you'd say in the room.`,
   },
   pipeline: {
     brief: `You're a senior engineer who owns the data pipeline behind the company's customer-facing analytics dashboards. You believe the team needs about a month to move the pipeline onto a more reliable system before the next wave of enterprise customers onboards. It was built for a tenth of today's data volume, runs on nightly batch jobs, and now fails roughly once a week, each failure needing manual repair. Doing this would push back a reporting feature Sales has been asking for.
@@ -33,7 +34,7 @@ In the last two months, dashboard data has been wrong or delayed for customers f
 
 Priya can back the work, but the reporting feature was promised to Sales leadership, so she'd have to renegotiate that commitment with them. You have ten minutes with Priya before sprint planning.
 
-Give the pitch you would actually make, using the words you'd say in the room.`,
+Make the case to Priya for prioritizing the pipeline migration. Give the pitch you would actually make, using the words you'd say in the room.`,
   },
   auth: {
     brief: `You're a senior engineer responsible for the login and account system. You believe the team needs five weeks to rebuild how the service handles authentication before the company's enterprise launch. The current system stores sessions in a way that's now ten years old, relies on a library that's no longer maintained, and takes days of careful work to change without risking lockouts. Taking this on would delay a single sign-on feature already slotted for next quarter.
@@ -44,7 +45,7 @@ This quarter, two brief outages locked customers out of their accounts, and the 
 
 Marcus can approve the work, but because it moves the launch plan, he'll need to clear it with the head of the enterprise business. You have five minutes with Marcus in the planning review.
 
-Give the pitch you would actually make, using the words you'd say in the room.`,
+Make the case to Marcus for prioritizing the authentication rebuild. Give the pitch you would actually make, using the words you'd say in the room.`,
   },
 };
 
@@ -143,10 +144,7 @@ const SCORE_TOOL = {
             type: 'object',
             additionalProperties: false,
             properties: {
-              // Anthropic strict tool schemas support integer here, but not
-              // numeric minimum/maximum constraints. `normalize` clamps the
-              // value to the rubric's 0-2 range before returning it.
-              score: { type: 'integer' },
+              score: { type: 'integer', description: '0, 1, or 2' },
               note: { type: 'string' },
             },
             required: ['score', 'note'],
