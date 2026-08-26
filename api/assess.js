@@ -143,7 +143,10 @@ const SCORE_TOOL = {
             type: 'object',
             additionalProperties: false,
             properties: {
-              score: { type: 'integer', minimum: 0, maximum: 2 },
+              // Anthropic strict tool schemas support integer here, but not
+              // numeric minimum/maximum constraints. `normalize` clamps the
+              // value to the rubric's 0-2 range before returning it.
+              score: { type: 'integer' },
               note: { type: 'string' },
             },
             required: ['score', 'note'],
