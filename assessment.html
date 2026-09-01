@@ -357,7 +357,7 @@ async function emailResults(e){
     })});
     var data=await r.json();
     if(!r.ok) throw new Error(data.error||'Could not send the email.');
-    status.textContent='Sent — check your inbox.'; status.classList.add('ok');
+    status.textContent='Sent — check your inbox. Gmail users: it may be in Updates.'; status.classList.add('ok');
     el('resultEmail').disabled=true; btn.textContent='Email sent';
   }catch(err){
     status.textContent=err.message||'Could not send the email. Please try again.'; status.classList.add('bad');
