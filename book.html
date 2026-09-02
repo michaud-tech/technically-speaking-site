@@ -34,8 +34,9 @@
   .hero{padding:56px 0 60px}
   .hero .sub{font-size:18px;color:#c9c3b8;max-width:52ch;margin-top:20px;line-height:1.6}
   .bookwrap{max-width:1080px;margin:-32px auto 0;padding:0 40px 80px}
-  .bookcard{background:#fff;border-top:5px solid var(--yellow);box-shadow:0 20px 50px rgba(0,0,0,.10);overflow:hidden}
+  .bookcard{background:#fff;border-top:5px solid var(--yellow);box-shadow:0 20px 50px rgba(0,0,0,.10);overflow:hidden;min-height:760px}
   .bookcard iframe{display:block;width:100%;border:0;min-height:760px}
+  #cal-inline{width:100%;min-height:760px;overflow:hidden}
   .fallback{padding:56px 40px;text-align:center}
   .fallback h2{font-weight:800;font-size:26px;letter-spacing:-.02em}
   .fallback p{color:var(--muted);margin:12px auto 26px;max-width:44ch;font-size:16px}
@@ -89,34 +90,84 @@
 
 <div class="bookwrap">
   <div class="bookcard" id="bookcard">
-    <!-- The scheduler is injected here. Fallback shows until BOOKING_EMBED_URL is set. -->
+    <!-- Cal.com inline embed mounts here. Fallback shows until CAL_LINK is set. -->
+    <div id="cal-inline"></div>
     <div class="fallback" id="fallback">
       <h2>Grab a time that works</h2>
-      <p>This opens Michaud's calendar so you can pick a slot directly.</p>
-      <a class="btn" href="https://calendar.app.google/NXmbASxfoGzQyMWh6" target="_blank" rel="noopener">Open the calendar</a>
+      <p>Pick a slot directly on Michaud's calendar.</p>
+      <a class="btn" id="fallback-link" href="#" target="_blank" rel="noopener">Open the calendar</a>
     </div>
   </div>
-  <p class="newtab">Trouble seeing the calendar? <a href="https://calendar.app.google/NXmbASxfoGzQyMWh6" target="_blank" rel="noopener">Open it in a new tab &rarr;</a></p>
+  <p class="newtab">Trouble seeing the calendar? <a id="newtab-link" href="#" target="_blank" rel="noopener">Open it in a new tab &rarr;</a></p>
 </div>
 
 <footer>
-  <div class="wrap"><span>© Technically Speaking</span><span><a href="/">technicallyspeakinghq.com</a></span></div>
+  <div class="wrap"><span>© Technically Speaking</span><span>Questions? <a href="mailto:hello@technicallyspeakinghq.com" style="text-transform:none;border-bottom:2px solid #F4C400;padding-bottom:2px">hello@technicallyspeakinghq.com</a></span><span><a href="/">technicallyspeakinghq.com</a></span></div>
 </footer>
 
 <script>
-  // Google Appointment Schedule embed. ?gv=true renders the embeddable booking view.
-  // When set, it replaces the fallback button with the embedded, branded scheduler.
-  var BOOKING_EMBED_URL = "https://calendar.app.google/NXmbASxfoGzQyMWh6?gv=true";
+  /* =====================================================================
+     BOOKING SETUP — one line to change.
+     Paste your Cal.com event link below as "username/event-slug"
+     (e.g. "technicallyspeaking/30min"). Find it on your Cal.com event
+     type page: the public URL is cal.com/username/event-slug — drop
+     the "cal.com/". Leave the placeholder and the page shows a fallback.
+     ===================================================================== */
+  var CAL_LINK = "technicallyspeaking/30min";
 
-  if (BOOKING_EMBED_URL) {
+  (function () {
+    var ready = CAL_LINK && CAL_LINK.indexOf("PASTE_YOUR") === -1;
+    var publicUrl = ready ? "https://cal.com/" + CAL_LINK : "#";
+    document.getElementById('fallback-link').href = publicUrl;
+    document.getElementById('newtab-link').href = publicUrl;
+
+    if (!ready) return; // show fallback until the link is set
+
     var f = document.getElementById('fallback');
     if (f) f.remove();
-    var frame = document.createElement('iframe');
-    frame.src = BOOKING_EMBED_URL;
-    frame.title = "Book a call with Michaud Garneau";
-    frame.loading = "lazy";
-    document.getElementById('bookcard').appendChild(frame);
-  }
+
+    /* Cal.com embed loader (official snippet) */
+    (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if (typeof namespace === "string") { cal.ns[namespace] = cal.ns[namespace] || api; p(cal.ns[namespace], ar); p(cal, ["initNamespace", namespace]); } else p(cal, ar); return; } p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+
+    Cal("init", "ts", { origin: "https://app.cal.com" });
+
+    Cal.ns.ts("inline", {
+      elementOrSelector: "#cal-inline",
+      config: { layout: "month_view" },
+      calLink: CAL_LINK
+    });
+
+    /* Brand theming — Technically Speaking palette */
+    Cal.ns.ts("ui", {
+      theme: "light",
+      hideEventTypeDetails: false,
+      layout: "month_view",
+      cssVarsPerTheme: {
+        light: {
+          "cal-brand": "#1D1D1B",
+          "cal-brand-emphasis": "#000000",
+          "cal-brand-text": "#F4F2ED",
+          "cal-text": "#1D1D1B",
+          "cal-text-emphasis": "#1D1D1B",
+          "cal-text-subtle": "#6B6B68",
+          "cal-text-muted": "#8A8A86",
+          "cal-bg": "#ffffff",
+          "cal-bg-emphasis": "#E8E6E1",
+          "cal-bg-subtle": "#F4F2ED",
+          "cal-bg-muted": "#F4F2ED",
+          "cal-border": "#DAD5CB",
+          "cal-border-emphasis": "#1D1D1B",
+          "cal-border-subtle": "#E8E6E1",
+          "cal-border-booker": "#DAD5CB",
+          "radius": "2px"
+        },
+        dark: {
+          "cal-brand": "#F4C400",
+          "cal-brand-text": "#1D1D1B"
+        }
+      }
+    });
+  })();
 </script>
 <script>document.addEventListener('click',function(e){document.querySelectorAll('.navmenu.open').forEach(function(m){if(!m.contains(e.target)){m.classList.remove('open');var b=m.querySelector('.menu-btn');if(b)b.setAttribute('aria-expanded','false');}});});</script>
 </body>
