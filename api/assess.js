@@ -12,7 +12,7 @@
 const MODEL = process.env.ANTHROPIC_MODEL || 'claude-sonnet-5';
 
 // The three briefs are equivalent in structure and difficulty. Kept here (server-side)
-// as the source of truth for scoring; index.html shows the matching text to the visitor.
+// as the source of truth for scoring; assessment.html shows the matching text to the visitor.
 const SCENARIOS = {
   payments: {
     brief: `You're a senior engineer responsible for the payments service. You believe the team needs six weeks to replace part of the service before building more features on top of it. The current architecture is seven years old, has fourteen dependencies, and has become increasingly difficult for engineers to change safely. Your team has spent a lot of time responding to incidents, and the project would displace two items currently planned for Q3.
@@ -26,32 +26,32 @@ Dana can support the project, but because it changes the roadmap, she'll need to
 Make the case to Dana for prioritizing the payments-service replacement. Give the pitch you would actually make, using the words you'd say in the room.`,
   },
   pipeline: {
-    brief: `You're a senior engineer who owns the data pipeline behind the company's customer-facing analytics dashboards. You believe the team needs about a month to move the pipeline onto a more reliable system before the next wave of enterprise customers onboards. It was built for a tenth of today's data volume, runs on nightly batch jobs, and now fails roughly once a week, each failure needing manual repair. Doing this would push back a reporting feature Sales has been asking for.
+    brief: `You're a hydrogeologist advising a client on a site they want to develop. You recommend four more weeks of groundwater monitoring before they finalize the design. The first two rounds of samples show changing levels near the proposed building area. You can't yet tell whether the changes are seasonal or point to a larger problem. The extra work will cost $35,000 and could delay the design sign-off by a month.
 
-You're speaking to Priya, a Director of Product. Priya is measured on new-customer activation and has said before that she doesn't want engineering "gold-plating" systems that already work.
+You're speaking to Priya, the client's project director. She is accountable for the schedule and has pushed back before when technical teams asked for more data without explaining what decision it would change.
 
-In the last two months, dashboard data has been wrong or delayed for customers four times, and two enterprise accounts have opened support tickets about it.
+If the current design proceeds and the higher readings persist, the client may need to change the foundation plan after construction begins, at a much higher cost.
 
-Priya can back the work, but the reporting feature was promised to Sales leadership, so she'd have to renegotiate that commitment with them. You have ten minutes with Priya before sprint planning.
+Priya can support the monitoring, but she will need to take the cost and schedule change to the client sponsor. You have ten minutes with Priya before the design review.
 
-Make the case to Priya for prioritizing the pipeline migration. Give the pitch you would actually make, using the words you'd say in the room.`,
+Make the case to Priya for four more weeks of groundwater monitoring. Give the pitch you would actually make, using the words you'd say in the room.`,
   },
   auth: {
-    brief: `You're a senior engineer responsible for the login and account system. You believe the team needs five weeks to rebuild how the service handles authentication before the company's enterprise launch. The current system stores sessions in a way that's now ten years old, relies on a library that's no longer maintained, and takes days of careful work to change without risking lockouts. Taking this on would delay a single sign-on feature already slotted for next quarter.
+    brief: `You're a scientist leading a product safety study. You recommend extending the study by five weeks before the company commits to a launch date. Early results look promising, but one measure has varied widely across batches. The team needs another set of tests to learn whether the variation is a measurement issue or a real safety concern. The additional work will use $80,000 of the project budget and move the planned launch decision into the next quarter.
 
-You're speaking to Marcus, your Director of Engineering. Marcus is accountable for shipping the enterprise launch on schedule and has previously declined work framed as "paying down debt" with no clear payoff.
+You're speaking to Marcus, the program director. He is accountable for the launch plan and has previously asked the team to separate real risk from scientific caution.
 
-This quarter, two brief outages locked customers out of their accounts, and the security team has flagged the unmaintained library as a risk in the upcoming enterprise security review.
+If the variation is real, a launch based on the current results could lead to a recall. If it is a measurement issue, the new tests should let the team move ahead with more confidence.
 
-Marcus can approve the work, but because it moves the launch plan, he'll need to clear it with the head of the enterprise business. You have five minutes with Marcus in the planning review.
+Marcus can approve the work, but because it moves the launch plan, he will need to explain the change to the executive team. You have five minutes with Marcus in the planning review.
 
-Make the case to Marcus for prioritizing the authentication rebuild. Give the pitch you would actually make, using the words you'd say in the room.`,
+Make the case to Marcus for extending the safety study. Give the pitch you would actually make, using the words you'd say in the room.`,
   },
 };
 
 const SCORE_SYSTEM = `You are the scoring engine for the Technically Speaking assessment. You score a written pitch against the TECH Communication Rubric. TECH stands for Target Audience, End Goal, Clarity, How You Say It — but this is a WRITTEN exercise, so you score only T, E and C. Do NOT score H (delivery); it is out of scope here.
 
-You are given the BRIEF the person read and the PITCH they wrote. In every brief the person is a senior engineer recommending a block of remediation work to someone accountable for delivering a roadmap or launch, who has pushed back before on "cleanup" not tied to a business outcome, and who is not the final decision-maker — they must carry the recommendation onward to whatever party the brief names (sometimes an executive, sometimes another team such as sales).
+You are given the BRIEF the person read and the PITCH they wrote. The briefs span engineering, environmental consulting and science. In each, a technical expert recommends work with a cost or schedule tradeoff to someone who must carry the recommendation to another decision-maker. Judge the pitch against the specific brief, not against an assumed software scenario.
 
 HOW TO SCORE — this is the important part. Score each LINE below 0, 1 or 2 on whether the behavior is PRESENT, not on how "good" it was. This is what keeps scoring consistent.
   0 = didn't happen
@@ -61,7 +61,7 @@ SCORING AND COACHING ARE SEPARATE — this is the core principle. The SCORE answ
 A score of 2 means the observable behavior is CLEARLY DEMONSTRATED. It does NOT mean the communication is flawless, expert-level, impossible to improve, or that no coaching could be given. Do not withhold a 2 simply because coaching is possible or because you can imagine a sharper version. And the reverse also holds: the existence of a coaching observation does NOT automatically justify a 1 — if the behavior was clearly demonstrated, it scores 2 even when you also have something to coach. A response can earn 12/12 and still receive coaching; a response can also earn 12/12 with no coaching at all.
 Judge every line through two lenses: the business, and the specific listener. A message isn't good in the abstract; it's good for the business and the person it's aimed at.
 
-Read the pitch carefully first. Only judge against what THIS brief says. Do not invent parties the brief doesn't mention (don't expect an "executive" if the onward party is sales). Working in sprints is a normal planning unit — "next sprint" is a concrete commitment, not a contradiction of a multi-week timeline. Check the opening: the frame, the ask, the timeline and the tradeoff are often stated up front — credit them if they are there. Do NOT judge tone, warmth, greetings, informality, slang, typos, spelling or length — that is delivery (H), not scored here.
+Read the pitch carefully first. Only judge against what THIS brief says. Do not invent parties the brief doesn't mention (don't expect an "executive" if the onward party is sales). Check the opening: the frame, the ask, the timeline and the tradeoff are often stated up front — credit them if they are there. Do NOT judge tone, warmth, greetings, informality, slang, typos, spelling or length — that is delivery (H), not scored here.
 
 THE LINES:
 
@@ -79,10 +79,10 @@ C — Clarity
 
 For each line, also write a ONE-sentence coaching note: if the line is a 2, say briefly what worked; if it's a 0 or 1, say the specific thing to add to make it land. Reference their actual words where useful.
 
-WORKED EXAMPLE (pipeline / Priya brief) so you read at the right level:
-PITCH: "Hey Priya! I know Sales has been promised the reporting feature, but if we don't push it back by about a month we'll face much bigger client issues. We already have 2 support tickets from our enterprise clients and if we lose them, we're hooped. I can get into the weeds about what's up on our end, but I know you'll have to deliver the news to sales so wanted to help you frame it for them before doing that. [gives Priya the framing for sales]. If that sounds good to you, then I would like the next sprint to be focused on putting the pipeline on a more reliable system. What do you need from me to move that forward?"
-CORRECT SCORING: T1=2 (ties it to deals, closing speed, renewals), T2=2 (addresses Priya's world and hands her language for sales), E1=2 (one goal: start the migration), E2=2 (clear ask + "what do you need from me" next step), C1=2 (opens with why it matters to her), C2=2 (the evidence needed to support the case — the weekly failures and the enterprise tickets — is connected to business impact). Total 12/12.
-USEFUL COACHING that must NOT lower the score: saying the enterprise customers may be lost ("if we lose them, we're hooped") goes a step beyond the evidence in the brief — the brief has open support tickets, not stated churn. The pitch is already strong without escalating tickets into assumed churn risk, so this belongs in coachingFocus as a way to make it even sharper, never as a deduction. Every relevant TECH behavior is clearly demonstrated.
+WORKED EXAMPLE (groundwater / Priya brief):
+PITCH: "Priya, the readings near the building area are still changing. If we sign off the design now and the higher levels persist, we may have to change the foundation after construction starts. I recommend four more weeks of monitoring before sign-off. That costs $35,000 and moves the review by a month. Could you support that plan and take the cost and schedule change to the sponsor? I can give you a one-page summary of the risk and what the extra monitoring will tell us."
+CORRECT SCORING: T1=2 (connects the readings to construction cost), T2=2 (addresses Priya's schedule concern and gives her a way to explain the change), E1=2 (one recommendation), E2=2 (clear ask and next step), C1=2 (opens with the decision-relevant problem), C2=2 (uses the evidence and tradeoff in the brief). Total 12/12.
+The risk is conditional. Do not score a pitch down for stating uncertainty accurately.
 
 Return the six individual line scores only. Do NOT compute or return a total — the server calculates the pillar subtotals and the /12 total from your six scores.
 

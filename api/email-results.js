@@ -1,15 +1,39 @@
 const SCENARIOS = {
   payments: {
     title: 'Payments service rebuild',
-    brief: `You're a senior engineer responsible for the payments service. You believe the team needs six weeks to replace part of the service before building more features on top of it. The current architecture is seven years old, has fourteen dependencies, and has become increasingly difficult for engineers to change safely. Your team has spent a lot of time responding to incidents, and the project would displace two items currently planned for Q3.\n\nYou're speaking to Dana, your VP of Engineering. Dana is accountable for delivering the Q3 roadmap and has pushed back before on technical cleanup that wasn't connected to a customer outcome.\n\nThe payments service has caused three incidents this quarter. Each one took checkout down for customers, and the most recent took nearly four hours to resolve.\n\nDana can support the project, but because it changes the roadmap, she'll need to take the recommendation to the product executive. You have five minutes with Dana in the roadmap review.\n\nMake the case to Dana for prioritizing the payments-service replacement. Give the pitch you would actually make, using the words you'd say in the room.`,
+    brief: `You're a senior engineer responsible for the payments service. You believe the team needs six weeks to replace part of the service before building more features on top of it. The current architecture is seven years old, has fourteen dependencies, and has become increasingly difficult for engineers to change safely. Your team has spent a lot of time responding to incidents, and the project would displace two items currently planned for Q3.
+
+You're speaking to Dana, your VP of Engineering. Dana is accountable for delivering the Q3 roadmap and has pushed back before on technical cleanup that wasn't connected to a customer outcome.
+
+The payments service has caused three incidents this quarter. Each one took checkout down for customers, and the most recent took nearly four hours to resolve.
+
+Dana can support the project, but because it changes the roadmap, she'll need to take the recommendation to the product executive. You have five minutes with Dana in the roadmap review.
+
+Make the case to Dana for prioritizing the payments-service replacement. Give the pitch you would actually make, using the words you'd say in the room.`,
   },
   pipeline: {
-    title: 'Analytics pipeline migration',
-    brief: `You're a senior engineer who owns the data pipeline behind the company's customer-facing analytics dashboards. You believe the team needs about a month to move the pipeline onto a more reliable system before the next wave of enterprise customers onboards. It was built for a tenth of today's data volume, runs on nightly batch jobs, and now fails roughly once a week, each failure needing manual repair. Doing this would push back a reporting feature Sales has been asking for.\n\nYou're speaking to Priya, a Director of Product. Priya is measured on new-customer activation and has said before that she doesn't want engineering “gold-plating” systems that already work.\n\nIn the last two months, dashboard data has been wrong or delayed for customers four times, and two enterprise accounts have opened support tickets about it.\n\nPriya can back the work, but the reporting feature was promised to Sales leadership, so she'd have to renegotiate that commitment with them. You have ten minutes with Priya before sprint planning.\n\nMake the case to Priya for prioritizing the pipeline migration. Give the pitch you would actually make, using the words you'd say in the room.`,
+    title: 'Groundwater monitoring plan',
+    brief: `You're a hydrogeologist advising a client on a site they want to develop. You recommend four more weeks of groundwater monitoring before they finalize the design. The first two rounds of samples show changing levels near the proposed building area. You can't yet tell whether the changes are seasonal or point to a larger problem. The extra work will cost $35,000 and could delay the design sign-off by a month.
+
+You're speaking to Priya, the client's project director. She is accountable for the schedule and has pushed back before when technical teams asked for more data without explaining what decision it would change.
+
+If the current design proceeds and the higher readings persist, the client may need to change the foundation plan after construction begins, at a much higher cost.
+
+Priya can support the monitoring, but she will need to take the cost and schedule change to the client sponsor. You have ten minutes with Priya before the design review.
+
+Make the case to Priya for four more weeks of groundwater monitoring. Give the pitch you would actually make, using the words you'd say in the room.`,
   },
   auth: {
-    title: 'Authentication rebuild',
-    brief: `You're a senior engineer responsible for the login and account system. You believe the team needs five weeks to rebuild how the service handles authentication before the company's enterprise launch. The current system stores sessions in a way that's now ten years old, relies on a library that's no longer maintained, and takes days of careful work to change without risking lockouts. Taking this on would delay a single sign-on feature already slotted for next quarter.\n\nYou're speaking to Marcus, your Director of Engineering. Marcus is accountable for shipping the enterprise launch on schedule and has previously declined work framed as “paying down debt” with no clear payoff.\n\nThis quarter, two brief outages locked customers out of their accounts, and the security team has flagged the unmaintained library as a risk in the upcoming enterprise security review.\n\nMarcus can approve the work, but because it moves the launch plan, he'll need to clear it with the head of the enterprise business. You have five minutes with Marcus in the planning review.\n\nMake the case to Marcus for prioritizing the authentication rebuild. Give the pitch you would actually make, using the words you'd say in the room.`,
+    title: 'Study extension decision',
+    brief: `You're a scientist leading a product safety study. You recommend extending the study by five weeks before the company commits to a launch date. Early results look promising, but one measure has varied widely across batches. The team needs another set of tests to learn whether the variation is a measurement issue or a real safety concern. The additional work will use $80,000 of the project budget and move the planned launch decision into the next quarter.
+
+You're speaking to Marcus, the program director. He is accountable for the launch plan and has previously asked the team to separate real risk from scientific caution.
+
+If the variation is real, a launch based on the current results could lead to a recall. If it is a measurement issue, the new tests should let the team move ahead with more confidence.
+
+Marcus can approve the work, but because it moves the launch plan, he will need to explain the change to the executive team. You have five minutes with Marcus in the planning review.
+
+Make the case to Marcus for extending the safety study. Give the pitch you would actually make, using the words you'd say in the room.`,
   },
 };
 
