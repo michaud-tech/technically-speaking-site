@@ -177,12 +177,15 @@
   @media (max-width:820px){ .brand-t{height:26px} }
 </style><style>
   .home-hero{padding:48px 0 72px}
-  .home-hero h1{font-size:clamp(40px,6.2vw,78px);margin-top:14px;max-width:20ch}
+  @media (max-width:820px){.home-hero{padding:48px 24px 72px}}
+  .home-hero h1{font-size:clamp(40px,6.2vw,78px);margin-top:14px}
   .hl{color:var(--yellow)}
-  .rotating-role{display:block;min-height:1em;color:var(--yellow);transition:opacity .18s ease;white-space:nowrap}
-  @media (max-width:600px){.rotating-role{font-size:.76em;min-height:1.32em}}
+  .role-slot{display:inline-block;width:10ch}
+  .hero-suffix{display:block}
+  .rotating-role{color:var(--white);text-decoration:underline;text-decoration-color:var(--yellow);text-decoration-thickness:.075em;text-underline-offset:.12em;transition:opacity .18s ease}
   .rotating-role.is-changing{opacity:0}
   @media (prefers-reduced-motion:reduce){.rotating-role{transition:none}}
+  @media (max-width:820px){.hero-prefix,.role-slot{display:block}.role-slot{width:100%}}
   .home-hero .sub{margin-top:22px;font-size:19px;line-height:1.55;color:#c9c3b8;max-width:56ch}
   .hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px}
   .trust{margin-top:34px;padding-top:22px;border-top:1px solid var(--darkline)}
@@ -264,7 +267,7 @@
   <div class="wrap home-hero">
     <svg class="logo logo-hero" role="img" aria-label="Technically Speaking"><use href="#tsword"/></svg>
     <p class="label">What</p>
-    <h1>We teach <span class="rotating-role" id="rotating-role">engineers</span> how to <span class="hl">speak business</span>.</h1>
+    <h1><span class="hero-prefix">We teach </span><span class="role-slot"><span class="rotating-role" id="rotating-role">engineers</span></span><span class="hero-suffix">how to <span class="hl">speak business</span>.</span></h1>
     <p class="sub">So they can sit across from clients, executives and stakeholders, make the case for their ideas, and move decisions forward.</p>
     <div class="hero-cta">
       <a href="/book" class="btn solid">Book a call</a>
@@ -395,7 +398,7 @@
 <script>
 (function(){
   const role = document.getElementById('rotating-role');
-  const roles = ['engineers','technical consultants','scientists','analysts','researchers'];
+  const roles = ['engineers','scientists','researchers'];
   let index = 0;
   if (!role || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   window.setInterval(function(){
