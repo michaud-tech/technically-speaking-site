@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The 5-minute assessment | Technically Speaking</title>
   <link rel="canonical" href="https://technicallyspeakinghq.com/assessment">
-  <meta name="description" content="A free 5-minute communication assessment for engineers: pitch a real technical decision to a specific stakeholder and get scored on the TECH model — Target Audience, End Goal, and Clarity.">
+  <meta name="description" content="A free 5-minute assessment for technical experts: make the case for a recommendation to a specific stakeholder and get scored on the TECH model — Target Audience, End Goal, and Clarity.">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNjAiIGhlaWdodD0iMTYwIiB2aWV3Qm94PSIwIDAgMTYwIDE2MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsbGVkYnk9InRpdGxlIGRlc2MiPgogIDx0aXRsZSBpZD0idGl0bGUiPlRlY2huaWNhbGx5IFNwZWFraW5nIFQgbW9ub2dyYW08L3RpdGxlPgogIDxkZXNjIGlkPSJkZXNjIj5BIHNtYWxsIGNpcmN1bGFyIG1vbm9ncmFtIHdpdGggYSBzdHlsaXplZCBUIGluIHllbGxvdy48L2Rlc2M+CiAgPHJlY3Qgd2lkdGg9IjE2MCIgaGVpZ2h0PSIxNjAiIGZpbGw9Im5vbmUiLz4KICA8Y2lyY2xlIGN4PSI4MCIgY3k9IjgwIiByPSI1OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMUQxRDFCIiBzdHJva2Utd2lkdGg9IjYiLz4KICA8cmVjdCB4PSI1NyIgeT0iNDciIHdpZHRoPSI0NiIgaGVpZ2h0PSI1IiByeD0iMi41IiBmaWxsPSIjMUQxRDFCIi8+CiAgPHJlY3QgeD0iNTciIHk9IjYwIiB3aWR0aD0iNDYiIGhlaWdodD0iNSIgcng9IjIuNSIgZmlsbD0iIzFEMUQxQiIvPgogIDxyZWN0IHg9Ijc3IiB5PSI2MCIgd2lkdGg9IjUiIGhlaWdodD0iNDIiIHJ4PSIyLjUiIGZpbGw9IiMxRDFEMUIiLz4KPC9zdmc+Cg==">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -130,6 +130,11 @@
   .menu-panel a:hover{background:var(--dark);color:var(--white)}
   @media (max-width:480px){ .nav{gap:10px} .nav .btn.solid{padding:11px 13px;font-size:11px} .menu-btn span{display:none} .menu-btn{padding:8px} }
 </style>
+<meta property="og:image" content="https://www.technicallyspeakinghq.com/share-preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Technically Speaking monogram">
+<meta name="twitter:image" content="https://www.technicallyspeakinghq.com/share-preview.png">
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute"><symbol id="tsword" viewBox="0 0 1200 240"><rect width="1200" height="240" fill="none"/><g fill="currentColor" font-family="Arial Narrow, Helvetica Neue, Arial, sans-serif"><text x="40" y="102" font-size="84" font-weight="900">TECHNICALLY</text><text x="318" y="176" font-size="30" font-weight="700" letter-spacing="12" fill="#F4C400">SPEAKING</text></g><rect x="62" y="148" width="210" height="8" rx="2" fill="#F4C400"/></symbol></svg>
@@ -158,7 +163,7 @@
     <section class="step active" id="step-intro">
       <p class="label">The 5-minute assessment</p>
       <h1 style="margin-top:12px">Make the case. See how it lands.</h1>
-      <p class="lead">You'll get a short brief: your role and situation, the person across the table, the facts on hand, and a decision that needs to move.</p>
+      <p class="lead">You'll get a short brief based on engineering, consulting or science work: your role, the person across the table, the facts on hand, and a decision that needs to move.</p>
       <p class="lead">Then you write the pitch you'd actually make. We score it on the TECH Model — the same rubric we use with participants — and show you where it landed.</p>
       <div style="margin-top:30px"><button class="btn" onclick="start()">Start the assessment</button></div>
       <p class="note">Takes about five minutes. Nothing is saved.</p>
@@ -227,6 +232,7 @@
 // Each brief: [role & pressures], [the other person], [technical + business facts],
 // [the decision + setting], and finally the neutral instruction. Text mirrors api/assess.js.
 const SCENARIOS = [
+
   {id:'payments', paras:[
     "You're a senior engineer responsible for the payments service. You believe the team needs six weeks to replace part of the service before building more features on top of it.",
     "The current architecture is seven years old, has fourteen dependencies, and has become increasingly difficult for engineers to change safely.",
@@ -238,24 +244,24 @@ const SCENARIOS = [
   ], ask:"Make the case to Dana for prioritizing the payments-service replacement. Give the pitch you would actually make, using the words you'd say in the room."},
 
   {id:'pipeline', paras:[
-    "You're a senior engineer who owns the data pipeline behind the company's customer-facing analytics dashboards. You believe the team needs about a month to move the pipeline onto a more reliable system before the next wave of enterprise customers onboards.",
-    "It was built for a tenth of today's data volume, runs on nightly batch jobs, and now fails roughly once a week, each failure needing manual repair.",
-    "Doing this would push back a reporting feature Sales has been asking for.",
-    "You're speaking to Priya, a Director of Product. Priya is measured on new-customer activation and has said before that she doesn't want engineering “gold-plating” systems that already work.",
-    "In the last two months, dashboard data has been wrong or delayed for customers four times, and two enterprise accounts have opened support tickets about it.",
-    "Priya can back the work, but the reporting feature was promised to Sales leadership, so she'd have to renegotiate that commitment with them.",
-    "You have ten minutes with Priya before sprint planning."
-  ], ask:"Make the case to Priya for prioritizing the pipeline migration. Give the pitch you would actually make, using the words you'd say in the room."},
+    "You're a hydrogeologist advising a client on a site they want to develop. You recommend four more weeks of groundwater monitoring before they finalize the design.",
+    "The first two rounds of samples show changing levels near the proposed building area. You can't yet tell whether the changes are seasonal or point to a larger problem.",
+    "The extra work will cost $35,000 and could delay the design sign-off by a month.",
+    "You're speaking to Priya, the client's project director. She is accountable for the schedule and has pushed back before when technical teams asked for more data without explaining what decision it would change.",
+    "If the current design proceeds and the higher readings persist, the client may need to change the foundation plan after construction begins, at a much higher cost.",
+    "Priya can support the monitoring, but she will need to take the cost and schedule change to the client sponsor.",
+    "You have ten minutes with Priya before the design review."
+  ], ask:"Make the case to Priya for four more weeks of groundwater monitoring. Give the pitch you would actually make, using the words you'd say in the room."},
 
   {id:'auth', paras:[
-    "You're a senior engineer responsible for the login and account system. You believe the team needs five weeks to rebuild how the service handles authentication before the company's enterprise launch.",
-    "The current system stores sessions in a way that's now ten years old, relies on a library that's no longer maintained, and takes days of careful work to change without risking lockouts.",
-    "Taking this on would delay a single sign-on feature already slotted for next quarter.",
-    "You're speaking to Marcus, your Director of Engineering. Marcus is accountable for shipping the enterprise launch on schedule and has previously declined work framed as “paying down debt” with no clear payoff.",
-    "This quarter, two brief outages locked customers out of their accounts, and the security team has flagged the unmaintained library as a risk in the upcoming enterprise security review.",
-    "Marcus can approve the work, but because it moves the launch plan, he'll need to clear it with the head of the enterprise business.",
+    "You're a scientist leading a product safety study. You recommend extending the study by five weeks before the company commits to a launch date.",
+    "Early results look promising, but one measure has varied widely across batches. The team needs another set of tests to learn whether the variation is a measurement issue or a real safety concern.",
+    "The additional work will use $80,000 of the project budget and move the planned launch decision into the next quarter.",
+    "You're speaking to Marcus, the program director. He is accountable for the launch plan and has previously asked the team to separate real risk from scientific caution.",
+    "If the variation is real, a launch based on the current results could lead to a recall. If it is a measurement issue, the new tests should let the team move ahead with more confidence.",
+    "Marcus can approve the work, but because it moves the launch plan, he will need to explain the change to the executive team.",
     "You have five minutes with Marcus in the planning review."
-  ], ask:"Make the case to Marcus for prioritizing the authentication rebuild. Give the pitch you would actually make, using the words you'd say in the room."},
+  ], ask:"Make the case to Marcus for extending the safety study. Give the pitch you would actually make, using the words you'd say in the room."},
 ];
 
 const state = {scenario:null,pitch:'',result:null};
