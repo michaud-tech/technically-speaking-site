@@ -14,6 +14,17 @@ const MODEL = process.env.ANTHROPIC_MODEL || 'claude-sonnet-5';
 // The three briefs are equivalent in structure and difficulty. Kept here (server-side)
 // as the source of truth for scoring; assessment.html shows the matching text to the visitor.
 const SCENARIOS = {
+  'textnow-interns': {
+    brief: `You're a TextNow intern working with a small team on an innovation challenge. Your team has developed an idea for an in-app feature that helps people recognize suspicious messages before they respond. You recommend a four-week pilot with a limited group of users. The pilot would require support from one product designer and two engineers, which means delaying a planned onboarding experiment by one sprint.
+
+You're presenting to Avery, the executive sponsoring the challenge. Avery wants ideas that solve a real user problem and can be tested quickly, and has warned teams not to confuse an interesting prototype with evidence that people will use it.
+
+Your team interviewed 14 TextNow users. Nine said they were sometimes unsure whether an unexpected message was legitimate. In a prototype test, six of eight participants correctly identified the warning and chose a safer next step without help. The test was small and did not measure whether the feature reduces harmful interactions over time. The pilot would test usage, comprehension and false warnings before the company considers a wider release.
+
+Avery can sponsor the pilot, but the product and engineering leads need to agree to the people and sprint time. You have five minutes with Avery at the innovation challenge final.
+
+Make the case to Avery for sponsoring the four-week pilot. Give the pitch you would actually make, using the words you'd say in the room.`,
+  },
   'gsw-partnership': {
     brief: `You're on the Golden State Warriors Global Partnerships team. A national financial services brand is considering renewing its partnership for another three years. You recommend expanding the partnership beyond its current arena presence to include a co-branded content series and a community financial-literacy program. The expanded package would increase the partner's annual investment by 15%.
 
