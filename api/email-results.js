@@ -1,4 +1,16 @@
 const SCENARIOS = {
+  'gsw-partnership': {
+    title: 'Expanded partnership renewal',
+    brief: `You're on the Golden State Warriors Global Partnerships team. A national financial services brand is considering renewing its partnership for another three years. You recommend expanding the partnership beyond its current arena presence to include a co-branded content series and a community financial-literacy program. The expanded package would increase the partner's annual investment by 15%.
+
+You're speaking to Jordan, the brand's Chief Marketing Officer. Jordan is accountable for growth and brand relevance, and has said the renewal needs to do more than generate impressions.
+
+The current partnership's hospitality inventory was 82% utilized. Co-branded content performed 34% above the team's usual engagement benchmark, and last season's community event reached 12,000 Bay Area students and families. Direct lead attribution is incomplete, so you cannot claim the partnership caused new account growth. The strongest evidence is engagement, participation and access to Warriors fans.
+
+Jordan can support the direction, but the additional investment needs approval from the brand's finance lead. You have ten minutes with Jordan in the renewal meeting.
+
+Make the case to Jordan for the expanded three-year renewal. Give the pitch you would actually make, using the words you'd say in the room.`,
+  },
   payments: {
     title: 'Payments service rebuild',
     brief: `You're a senior engineer responsible for the payments service. You believe the team needs six weeks to replace part of the service before building more features on top of it. The current architecture is seven years old, has fourteen dependencies, and has become increasingly difficult for engineers to change safely. Your team has spent a lot of time responding to incidents, and the project would displace two items currently planned for Q3.
