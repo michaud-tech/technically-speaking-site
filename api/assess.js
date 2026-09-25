@@ -17,11 +17,9 @@ const SCENARIOS = {
   'textnow-interns': {
     brief: `You're a TextNow intern working with a small team on an innovation challenge. TextNow is prioritizing user trust and wants to reduce harmful interactions without creating unnecessary warnings for legitimate messages. Your team has developed an in-app feature that identifies signals commonly associated with suspicious messages, explains why a message may be risky and offers safer next steps before the user responds. You recommend a four-week pilot with a limited group of users. The pilot would require support from one product designer and two engineers, which means delaying a planned onboarding experiment by one sprint.
 
-You're presenting to Avery, the executive sponsoring the challenge. Avery is accountable for choosing challenge projects that produce credible learning and are realistic enough to earn support from product and engineering. Avery cares about user trust, speed to evidence and making good use of limited design and engineering time. Avery has warned teams not to confuse an interesting prototype with evidence that people will use it.
+You're presenting to Avery, the executive sponsoring the challenge. Avery is accountable for choosing challenge projects that produce credible learning and are realistic enough to earn support from product and engineering. Avery cares about user trust, speed to evidence and making good use of limited design and engineering time. Your team interviewed 14 TextNow users. Nine said they were sometimes unsure whether an unexpected message was legitimate. The other five did not report uncertainty; this does not establish that they felt comfortable or trusted the message. In a separate prototype test with different participants, six of eight correctly identified the warning and chose a safer next step without help. These results measure different things in different samples, so they are not a before-and-after comparison and cannot support a percentage-point improvement claim. Both samples were small. The test did not measure whether the feature reduces harmful interactions over time. The pilot would test usage, comprehension and false warnings before the company considers a wider release.
 
-Your team interviewed 14 TextNow users. Nine said they were sometimes unsure whether an unexpected message was legitimate. The other five did not report uncertainty; this does not establish that they felt comfortable or trusted the message. In a separate prototype test with different participants, six of eight correctly identified the warning and chose a safer next step without help. These results measure different things in different samples, so they are not a before-and-after comparison and cannot support a percentage-point improvement claim. Both samples were small. The test did not measure whether the feature reduces harmful interactions over time. The pilot would test usage, comprehension and false warnings before the company considers a wider release.
-
-Avery can sponsor the pilot, but the product and engineering leads need to agree to the people and sprint time. You have five minutes with Avery at the innovation challenge final.
+Avery can sponsor the pilot, but the product and engineering leads need to agree to the people and sprint time.
 
 Make the case to Avery for sponsoring the four-week pilot. Give the pitch you would actually make, using the words you'd say in the room.`,
   },
@@ -75,15 +73,15 @@ const SCORE_SYSTEM = `You are the scoring engine for the Technically Speaking as
 
 You are given the BRIEF the person read and the PITCH they wrote. The briefs span engineering, environmental consulting and science. In each, a technical expert recommends work with a cost or schedule tradeoff to someone who must carry the recommendation to another decision-maker. Judge the pitch against the specific brief, not against an assumed software scenario.
 
-HOW TO SCORE — this is the important part. Score each LINE below 0, 1 or 2 on whether the behavior is PRESENT, not on how "good" it was. This is what keeps scoring consistent.
+HOW TO SCORE — this is the important part. Score each LINE below 0, 1 or 2 on whether the behavior is both present and effective for this listener. A 2 requires a clear, specific, credible demonstration; a vague mention earns 1. This is what keeps scoring consistent.
   0 = didn't happen
   1 = attempted / partial
   2 = clearly there
 SCORING AND COACHING ARE SEPARATE — this is the core principle. The SCORE answers: "Did this person clearly demonstrate the observable TECH behavior?" COACHING answers: "Is there anything meaningful that would make this specific communication more effective?" Score the behavior FIRST, coach the communication SECOND.
-A score of 2 means the observable behavior is CLEARLY DEMONSTRATED. It does NOT mean the communication is flawless, expert-level, impossible to improve, or that no coaching could be given. Do not withhold a 2 simply because coaching is possible or because you can imagine a sharper version. And the reverse also holds: the existence of a coaching observation does NOT automatically justify a 1 — if the behavior was clearly demonstrated, it scores 2 even when you also have something to coach. A response can earn 12/12 and still receive coaching; a response can also earn 12/12 with no coaching at all.
+A score of 2 means the observable behavior is CLEARLY DEMONSTRATED. It does NOT mean the communication is flawless, expert-level, impossible to improve, or that no coaching could be given. Do not withhold a 2 simply because coaching is possible or because you can imagine a sharper version. And the reverse also holds: the existence of a coaching observation does NOT automatically justify a 1 — if the behavior was clearly demonstrated, it scores 2 even when you also have something to coach. A response can earn 12/12 and still receive coaching. Reserve 12/12 for a genuinely excellent pitch that is specific to Avery, makes one credible case, frames the decision clearly, and gives Avery an actionable ask. Do not award it to a merely complete or overly dense response.
 Judge every line through two lenses: the business, and the specific listener. A message isn't good in the abstract; it's good for the business and the person it's aimed at.
 
-Read the pitch carefully first. Only judge against what THIS brief says. Do not invent parties the brief doesn't mention (don't expect an "executive" if the onward party is sales). Check the opening: the frame, the ask, the timeline and the tradeoff are often stated up front — credit them if they are there. Do NOT judge tone, warmth, greetings, informality, slang, typos, spelling or length — that is delivery (H), not scored here.
+Read the pitch carefully first. Only judge against what THIS brief says. Do not invent parties the brief doesn't mention (don't expect an "executive" if the onward party is sales). Check the opening: the frame, the ask, the timeline and the tradeoff are often stated up front — credit them if they are there. Do not judge tone, warmth, greetings, informality, slang, typos, spelling, or word count by itself. Do judge whether density or organization makes the opening and evidence difficult to follow under Clarity.
 
 THE LINES:
 
@@ -110,16 +108,16 @@ Return the six individual line scores only. Do NOT compute or return a total —
 
 FEEDBACK — behave like a credible expert coach, not an AI required to find something wrong. Every result has two feedback fields:
 
-whatWorked — specific, evidence-based positive feedback about what the person actually did effectively, naming the behaviors or choices they should keep using. Reference their actual words. Never generic praise ("Great job") and never just a restatement of the score.
+whatWorked — specific, evidence-based positive feedback about what the person actually did effectively, naming the behaviors or choices they should keep using. Reference their actual words. Never generic praise ("Great job") and never just a restatement of the score. Reference only words and choices that actually appear in the pitch. Never import a critique from the brief when the pitch did not make that claim. Use they/them for Avery and do not mention facts that were not shown to the learner.
 
-coachingFocus — provide coaching ONLY when there is a meaningful opportunity to make THIS specific communication more effective. There are exactly three valid outcomes, and you must pick the one that fits:
+evidenceQuote — copy one exact, contiguous phrase from the learner's pitch that your feedback discusses. It must match the pitch verbatim. Never quote the brief, your own paraphrase, or wording you wish the learner had used.
+
+coachingFocus — always provide one useful thing to try next, grounded in the learner's actual pitch. Even a 12/12 should end with a worthwhile practice direction. Provide coaching when there is a meaningful opportunity to make THIS specific communication more effective. There are exactly three valid outcomes, and you must pick the one that fits:
   1. CORRECTIVE — a TECH behavior is missing or only partially demonstrated (a 0 or 1 somewhere): name the single most important behavior to change and why it matters — as a direction, not a script.
   2. NEXT-LEVEL — the relevant behaviors are all clearly demonstrated (could be a 12/12), and there is a GENUINELY MATERIAL way to make this communication more effective (something a good coach would really flag, not a marginal nitpick). This coaching must NOT reduce any score. (Example: Michaud's Priya pitch earns 12/12, yet it is genuinely useful to point out that saying the enterprise clients may be lost goes beyond the evidence in the brief — the argument is already strong without assuming churn risk.)
-  3. NO COACHING NEEDED — if the response is already excellent and any "improvement" you can think of is marginal, optional, or invented to fill the field, do NOT manufacture one. Return coachingFocus EXACTLY as: "No notes. This is what good looks like." This is a valid, desirable outcome and is the RIGHT call for a genuinely excellent pitch — choose it over a made-up next-level tweak.
+  HOW TO WRITE coachingFocus — keep it DIRECTION, never a script. One or two sentences, the single highest-impact move only (do not stack several fixes). Name the behavior gap and why it matters to this listener, but DO NOT write the pitch for them: no opening line to copy, no enumerated list of the exact facts, numbers, or evidence to cite, and no finished ask handed over word-for-word. Point at what is missing and let them do the thinking. (Good: "Lead with why the pipeline's reliability matters to Priya before any technical detail." Too explicit — never do this: "Open by saying the pipeline fails weekly, cite the four incidents and two tickets, then ask for a month starting next sprint.") If the submission is clearly not a real attempt (a test message, a note to self, no actual pitch), say so in one short sentence and invite them to write the pitch they would actually make — do NOT supply the answer.
 
-HOW TO WRITE coachingFocus — keep it DIRECTION, never a script. One or two sentences, the single highest-impact move only (do not stack several fixes). Name the behavior gap and why it matters to this listener, but DO NOT write the pitch for them: no opening line to copy, no enumerated list of the exact facts, numbers, or evidence to cite, and no finished ask handed over word-for-word. Point at what is missing and let them do the thinking. (Good: "Lead with why the pipeline's reliability matters to Priya before any technical detail." Too explicit — never do this: "Open by saying the pipeline fails weekly, cite the four incidents and two tickets, then ask for a month starting next sprint.") If the submission is clearly not a real attempt (a test message, a note to self, no actual pitch), say so in one short sentence and invite them to write the pitch they would actually make — do NOT supply the answer.
-
-Decide between 2 and 3 honestly: give next-level coaching only when the improvement is real and material; otherwise give No notes. Do not manufacture criticism to fill the field, and do not withhold points because you found something to coach.
+A 12/12 may still receive a practice suggestion. Do not lower a score merely because a useful next rep exists.
 
 Call the submit_score tool with all six line scores and both feedback fields. The
 tool schema is the source of truth for the output shape.`;
@@ -176,8 +174,9 @@ const SCORE_TOOL = {
       },
       whatWorked: { type: 'string' },
       coachingFocus: { type: 'string' },
+      evidenceQuote: { type: 'string', description: 'An exact contiguous quote from the pitch that the feedback discusses.' },
     },
-    required: ['scores', 'whatWorked', 'coachingFocus'],
+    required: ['scores', 'whatWorked', 'coachingFocus', 'evidenceQuote'],
   },
 };
 
@@ -259,6 +258,7 @@ function normalize(parsed) {
     pillars,
     whatWorked: parsed && parsed.whatWorked != null ? String(parsed.whatWorked) : '',
     coachingFocus: parsed && parsed.coachingFocus != null ? String(parsed.coachingFocus) : '',
+    evidenceQuote: parsed && parsed.evidenceQuote != null ? String(parsed.evidenceQuote).trim() : '',
     _found: Object.keys(map),
   };
 }
@@ -332,6 +332,7 @@ module.exports = async (req, res) => {
       throw e;
     }
     delete result._found;
+    if(!result.evidenceQuote || !pitch.includes(result.evidenceQuote)){const e=new Error('ungrounded_feedback');e.raw='quote='+result.evidenceQuote;e.result=result;throw e}
     return result;
   }
 
@@ -351,9 +352,12 @@ module.exports = async (req, res) => {
       res.status(502).json({ error: 'The scorer is unavailable right now. Please try again in a moment.' });
       return;
     }
+    if(err.message==='ungrounded_feedback'&&err.result){parsed=err.result;parsed.coachingFocus='For your next rep, choose one sentence and make its connection to Avery’s decision even more explicit.';parsed.evidenceQuote='';}
+    else {
     console.error('score failed after retry:', err.message, '::', (err.raw || '').slice(0, 400));
     res.status(502).json({ error: 'Could not read the score. Please try again.' });
     return;
+    }
   }
 
   // `parsed` is already the normalized, canonical result: six clamped line
