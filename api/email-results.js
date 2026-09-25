@@ -5,7 +5,7 @@ const SCENARIOS = {
 
 You're presenting to Avery, the executive sponsoring the challenge. Avery wants ideas that solve a real user problem and can be tested quickly, and has warned teams not to confuse an interesting prototype with evidence that people will use it.
 
-Your team interviewed 14 TextNow users. Nine said they were sometimes unsure whether an unexpected message was legitimate. In a prototype test, six of eight participants correctly identified the warning and chose a safer next step without help. The test was small and did not measure whether the feature reduces harmful interactions over time. The pilot would test usage, comprehension and false warnings before the company considers a wider release.
+Your team interviewed 14 TextNow users. Nine said they were sometimes unsure whether an unexpected message was legitimate. The other five did not report uncertainty; this does not establish that they felt comfortable or trusted the message. In a separate prototype test with different participants, six of eight correctly identified the warning and chose a safer next step without help. These results measure different things in different samples, so they are not a before-and-after comparison and cannot support a percentage-point improvement claim. Both samples were small. The test did not measure whether the feature reduces harmful interactions over time. The pilot would test usage, comprehension and false warnings before the company considers a wider release.
 
 Avery can sponsor the pilot, but the product and engineering leads need to agree to the people and sprint time. You have five minutes with Avery at the innovation challenge final.
 
