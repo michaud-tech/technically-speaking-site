@@ -13,7 +13,7 @@ async function anthropic(system, user, maxTokens = 500) {
   return (data.content||[]).filter(x=>x.type==='text').map(x=>x.text).join('').trim();
 }
 
-const coachRule = `You are a practice coach for the TECH communication model. Give brief developmental feedback, never a rewritten answer. Use exactly two headings: "What worked" and "Try next". Under each heading write no more than two sentences. Name one highest-impact next move. Explain the issue plainly, then leave the learner to solve it. Do not provide sample wording, scripts, an "e.g.", or a replacement line. Do not invent deadlines, facts, stakeholders, or requirements. Treat TECH tools as flexible choices, not a rigid checklist.`;
+const coachRule = `You are a practice coach for the TECH communication model. Give brief developmental feedback, never a rewritten answer. Use exactly two plain-text headings: "What worked" and "Try next". Do not use Markdown symbols. Under each heading write no more than two short sentences. Name one highest-impact next move. Explain the issue plainly, then leave the learner to solve it. Do not provide sample wording, scripts, an "e.g.", or a replacement line. Do not invent deadlines, facts, stakeholders, or requirements. Treat TECH tools as flexible choices, not a rigid checklist.`;
 const clean=v=>String(v||'').trim();
 const convo=v=>Array.isArray(v)?v.slice(-16):[];
 
@@ -29,11 +29,11 @@ module.exports=async(req,res)=>{
     }
     if(action==='coach-listening'){
       if(!convo(b.conversation).length||clean(b.reflection).length<15)return res.status(400).json({error:'Talk with Avery and write what you learned first.'});
-      const feedback=await anthropic(`${coachRule} Evaluate the conversation as a whole. Look for whether the learner followed Avery's language, checked assumptions, and learned something that could change the pitch. Do not reward question quantity.`, `BRIEF:\n${BRIEF}\n\nCONVERSATION:\n${JSON.stringify(convo(b.conversation))}\n\nREFLECTION:\n${clean(b.reflection)}`,350);return res.status(200).json({feedback});
+      const feedback=await anthropic(`${coachRule} Evaluate the conversation as a whole. Look for whether the learner followed Avery's language, checked assumptions, and learned something that could change the pitch. Do not reward question quantity.`, `BRIEF:\n${BRIEF}\n\nCONVERSATION:\n${JSON.stringify(convo(b.conversation))}\n\nREFLECTION:\n${clean(b.reflection)}`,500);return res.status(200).json({feedback});
     }
     if(action==='coach-ask'){
       if(clean(b.ask).length<10)return res.status(400).json({error:'Write the ask you would make to Avery.'});
-      const feedback=await anthropic(`${coachRule} Evaluate whether the primary goal is clear, the ask names a decision Avery can actually make, and the second-best outcome keeps useful movement without becoming a list. Avery can sponsor the concept but cannot assign product and engineering resources alone.`, `BRIEF:\n${BRIEF}\n\nPRIMARY GOAL:\n${clean(b.goal)}\n\nSECOND BEST:\n${clean(b.secondBest)}\n\nASK:\n${clean(b.ask)}`,350);return res.status(200).json({feedback});
+      const feedback=await anthropic(`${coachRule} Evaluate whether the primary goal is clear, the ask names a decision Avery can actually make, and the second-best outcome keeps useful movement without becoming a list. Avery can sponsor the concept but cannot assign product and engineering resources alone. Treat sponsorship plus championing the resource request as one coherent ask when championing resources is what sponsorship naturally requires. Do not force the learner to split them.`, `BRIEF:\n${BRIEF}\n\nPRIMARY GOAL:\n${clean(b.goal)}\n\nSECOND BEST:\n${clean(b.secondBest)}\n\nASK:\n${clean(b.ask)}`,500);return res.status(200).json({feedback});
     }
     if(action==='start-objection'){
       if(clean(b.ask).length<10)return res.status(400).json({error:'Build your ask before opening the conversation.'});
@@ -45,19 +45,19 @@ module.exports=async(req,res)=>{
     }
     if(action==='coach-objection'){
       if(convo(b.conversation).filter(x=>x.role==='you').length<1)return res.status(400).json({error:'Respond to Avery at least once first.'});
-      const feedback=await anthropic(`${coachRule} Evaluate the conversation as a whole. Look for genuine understanding, useful checking, and whether the learner responded through Avery's concern. A concise combined move may be excellent. Do not penalize the learner for omitting a step that the conversation did not need.`, `BRIEF:\n${BRIEF}\n\nCONVERSATION:\n${JSON.stringify(convo(b.conversation))}`,350);return res.status(200).json({feedback});
+      const feedback=await anthropic(`${coachRule} Evaluate the conversation as a whole. Look for genuine understanding, useful checking, and whether the learner responded through Avery's concern. A concise combined move may be excellent. Do not penalize the learner for omitting a step that the conversation did not need.`, `BRIEF:\n${BRIEF}\n\nCONVERSATION:\n${JSON.stringify(convo(b.conversation))}`,500);return res.status(200).json({feedback});
     }
     if(action==='coach-structure'){
       if([b.what,b.soWhat,b.nowWhat].some(x=>clean(x).length<5))return res.status(400).json({error:'Complete What, So What, and Now What first.'});
-      const feedback=await anthropic(`${coachRule} Evaluate the What / So What / Now What / When structure. Focus on whether So What connects to Avery and whether the next step matches Avery's authority. Timing may be omitted if it is genuinely unknown.`, `BRIEF:\n${BRIEF}\n\nWHAT: ${clean(b.what)}\nSO WHAT: ${clean(b.soWhat)}\nNOW WHAT: ${clean(b.nowWhat)}\nWHEN: ${clean(b.when)}`,350);return res.status(200).json({feedback});
+      const feedback=await anthropic(`${coachRule} Evaluate the What / So What / Now What / When structure. Focus on whether each part is clear and whether the next step matches Avery's authority. Timing always matters: it can name when action happens or when the learner will return to the decision. Distinguish existing evidence from a hypothesis and from what the proposed future pilot is designed to test. A statement that the pilot will test whether trust or safety improves is a valid purpose, not a claim that improvement is already proven. Call these four parts What / So What / Now What / When, never TECH components or generic structure.`, `BRIEF:\n${BRIEF}\n\nWHAT: ${clean(b.what)}\nSO WHAT: ${clean(b.soWhat)}\nNOW WHAT: ${clean(b.nowWhat)}\nWHEN: ${clean(b.when)}`,500);return res.status(200).json({feedback});
     }
     if(action==='coach-metaphor'){
       if(clean(b.draft).length<20)return res.status(400).json({error:'Build the metaphor first.'});
-      const feedback=await anthropic(`${coachRule} Evaluate whether the metaphor compares the idea's core function to something familiar and helps Avery understand impact or risk. Judge usefulness, not cleverness. Flag a misleading comparison without replacing it.`, `BRIEF:\n${BRIEF}\n\nCORE FUNCTION: ${clean(b.coreFunction)}\nFAMILIAR FUNCTION: ${clean(b.familiar)}\nMETAPHOR: ${clean(b.draft)}`,350);return res.status(200).json({feedback});
+      const feedback=await anthropic(`${coachRule} Evaluate whether the metaphor connects the outcome the idea creates for users to a familiar comparison and helps Avery understand impact or risk. Judge usefulness, not cleverness. Flag a misleading comparison without replacing it.`, `BRIEF:\n${BRIEF}\n\nAUDIENCE OUTCOME: ${clean(b.coreFunction)}\nFAMILIAR FUNCTION: ${clean(b.familiar)}\nMETAPHOR: ${clean(b.draft)}`,500);return res.status(200).json({feedback});
     }
     if(action==='coach-story'){
       if([b.today,b.everyDay,b.imagine,b.because,b.soThat,b.ask].some(x=>clean(x).length<4))return res.status(400).json({error:'Complete each part of the story first.'});
-      const feedback=await anthropic(`${coachRule} Evaluate the Pain to Promise story. Check that each link follows credibly, the promise stays within what a four-week pilot can establish, and the story lands on a decision Avery can make. Do not demand the labels appear in the final pitch.`, `BRIEF:\n${BRIEF}\n\nTODAY: ${clean(b.today)}\nEVERY DAY: ${clean(b.everyDay)}\nIMAGINE IF: ${clean(b.imagine)}\nBECAUSE OF THAT: ${clean(b.because)}\nSO THAT: ${clean(b.soThat)}\nASK: ${clean(b.ask)}`,350);return res.status(200).json({feedback});
+      const feedback=await anthropic(`${coachRule} Evaluate the Pain to Promise story. Check that each link follows credibly, the promise stays within what a four-week pilot can establish, and the story lands on a decision Avery can make. Do not demand the labels appear in the final pitch.`, `BRIEF:\n${BRIEF}\n\nTODAY: ${clean(b.today)}\nEVERY DAY: ${clean(b.everyDay)}\nIMAGINE IF: ${clean(b.imagine)}\nBECAUSE OF THAT: ${clean(b.because)}\nSO THAT: ${clean(b.soThat)}\nASK: ${clean(b.ask)}`,500);return res.status(200).json({feedback});
     }
     return res.status(400).json({error:'Unknown practice action.'});
   }catch(error){console.error('practice error',error);return res.status(502).json({error:'The coach is unavailable right now. Try again in a moment.'});}
