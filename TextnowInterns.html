@@ -3,15 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<title>5-Minute Communication Assessment | Technically Speaking</title>
-<meta name="twitter:description" content="Write a workplace pitch and see how it scores on the TECH rubric in five minutes.">
-<meta name="twitter:title" content="5-Minute Communication Assessment | Technically Speaking">
-<meta name="twitter:card" content="summary_large_image">
-<meta property="og:description" content="Write a workplace pitch and see how it scores on the TECH rubric in five minutes.">
-<meta property="og:title" content="5-Minute Communication Assessment | Technically Speaking">
-<meta property="og:type" content="website">
-  <link rel="canonical" href="https://www.technicallyspeakinghq.com/assessment">
-  <meta name="description" content="Write a workplace pitch and get scored on Target Audience, End Goal, and Clarity using the TECH rubric.">
+<title>TextNow Intern Innovation Challenge Assessment | Technically Speaking</title>
+  <link rel="canonical" href="https://www.technicallyspeakinghq.com/TextnowInterns">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="description" content="A private TECH communication assessment for TextNow interns working on an innovation challenge.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -139,7 +134,7 @@
 <meta property="og:image" content="https://www.technicallyspeakinghq.com/share-preview.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Technically Speaking — a communication system for teams">
+<meta property="og:image:alt" content="Technically Speaking monogram">
 <meta name="twitter:image" content="https://www.technicallyspeakinghq.com/share-preview.png">
 </head>
 <body>
@@ -167,12 +162,12 @@
 
     <!-- STEP 1: INTRO -->
     <section class="step active" id="step-intro">
-      <p class="label">The 5-minute assessment</p>
-      <h1 style="margin-top:12px">Write the message. See how it lands.</h1>
-      <p class="lead">You'll get a short workplace brief: your role, the person you need to reach, the facts on hand and a decision that needs to move.</p>
+      <p class="label">TextNow interns · Innovation challenge</p>
+      <h1 style="margin-top:12px">Pitch the idea. See how it lands.</h1>
+      <p class="lead">You'll get an innovation challenge brief: the idea, the person across the table, the evidence on hand, and a decision that needs to move.</p>
       <p class="lead">Then you write the pitch you'd actually make. We score it on the TECH Model — the same rubric we use with participants — and show you where it landed.</p>
       <div style="margin-top:30px"><button class="btn" onclick="start()">Start the assessment</button></div>
-      <p class="note">Takes about five minutes. Nothing is saved.</p>
+      <p class="note">Built for TextNow interns. Takes about five minutes. Nothing is saved.</p>
     </section>
 
     <!-- STEP 2: BRIEF + PITCH -->
@@ -226,7 +221,7 @@
       <div class="res-cta">
         <a class="btn" href="https://calendar.app.google/NXmbASxfoGzQyMWh6" target="_blank" rel="noopener">Book a call</a>
         <button class="btn ghost" id="shareBtn" onclick="shareTeam()">Share with your team</button>
-        <button class="btn ghost" onclick="another()">Try another brief</button>
+        
       </div>
       <p class="note">This is a quick diagnostic, not the full picture. In the program, everyone gets a baseline and endline score on the complete rubric, with live coaching in between.</p>
     </section>
@@ -238,36 +233,16 @@
 // Each brief: [role & pressures], [the other person], [technical + business facts],
 // [the decision + setting], and finally the neutral instruction. Text mirrors api/assess.js.
 const SCENARIOS = [
-
-  {id:'payments', paras:[
-    "You're a senior engineer responsible for the payments service. You believe the team needs six weeks to replace part of the service before building more features on top of it.",
-    "The current architecture is seven years old, has fourteen dependencies, and has become increasingly difficult for engineers to change safely.",
-    "Your team has spent a lot of time responding to incidents, and the project would displace two items currently planned for Q3.",
-    "You're speaking to Dana, your VP of Engineering. Dana is accountable for delivering the Q3 roadmap and has pushed back before on technical cleanup that wasn't connected to a customer outcome.",
-    "The payments service has caused three incidents this quarter. Each one took checkout down for customers, and the most recent took nearly four hours to resolve.",
-    "Dana can support the project, but because it changes the roadmap, she'll need to take the recommendation to the product executive.",
-    "You have five minutes with Dana in the roadmap review."
-  ], ask:"Ask Dana to prioritize the payments-service replacement. Give the pitch you would actually make, using the words you'd say in the room."},
-
-  {id:'pipeline', paras:[
-    "You're a hydrogeologist advising a client on a site they want to develop. You recommend four more weeks of groundwater monitoring before they finalize the design.",
-    "The first two rounds of samples show changing levels near the proposed building area. You can't yet tell whether the changes are seasonal or point to a larger problem.",
-    "The extra work will cost $35,000 and could delay the design sign-off by a month.",
-    "You're speaking to Priya, the client's project director. She is accountable for the schedule and has pushed back before when technical teams asked for more data without explaining what decision it would change.",
-    "If the current design proceeds and the higher readings persist, the client may need to change the foundation plan after construction begins, at a much higher cost.",
-    "Priya can support the monitoring, but she will need to take the cost and schedule change to the client sponsor.",
-    "You have ten minutes with Priya before the design review."
-  ], ask:"Ask Priya to approve four more weeks of groundwater monitoring. Give the pitch you would actually make, using the words you'd say in the room."},
-
-  {id:'auth', paras:[
-    "You're a scientist leading a product safety study. You recommend extending the study by five weeks before the company commits to a launch date.",
-    "Early results look promising, but one measure has varied widely across batches. The team needs another set of tests to learn whether the variation is a measurement issue or a real safety concern.",
-    "The additional work will use $80,000 of the project budget and move the planned launch decision into the next quarter.",
-    "You're speaking to Marcus, the program director. He is accountable for the launch plan and has previously asked the team to separate real risk from scientific caution.",
-    "If the variation is real, a launch based on the current results could lead to a recall. If it is a measurement issue, the new tests should let the team move ahead with more confidence.",
-    "Marcus can approve the work, but because it moves the launch plan, he will need to explain the change to the executive team.",
-    "You have five minutes with Marcus in the planning review."
-  ], ask:"Ask Marcus to extend the safety study. Give the pitch you would actually make, using the words you'd say in the room."},
+  {id:'textnow-interns', paras:[
+    "You're a TextNow intern working with a small team on an innovation challenge. TextNow is prioritizing user trust and wants to reduce harmful interactions without creating unnecessary warnings for legitimate messages.",
+    "Your team has developed an in-app feature that identifies signals commonly associated with suspicious messages, explains why a message may be risky and offers safer next steps before the user responds.",
+    "You recommend a four-week pilot with a limited group of users. The pilot would require support from one product designer and two engineers, which means delaying a planned onboarding experiment by one sprint.",
+    "You're presenting to Avery, the executive sponsoring the challenge. Avery is accountable for choosing challenge projects that produce credible learning and are realistic enough to earn support from product and engineering.",
+    "Avery cares about user trust, speed to evidence and making good use of limited design and engineering time. Avery has warned teams not to confuse an interesting prototype with evidence that people will use it.",
+    "Your team interviewed 14 TextNow users. Nine said they were sometimes unsure whether an unexpected message was legitimate. The other five did not report uncertainty; that does not necessarily mean they felt comfortable or trusted the message. In a separate prototype test with different participants, six of eight noticed the warning and chose a safer next step without help. The two results measure different things, so they are not a before-and-after comparison.",
+    "The test was small and did not measure whether the feature reduces harmful interactions over time. The pilot would test usage, comprehension and false warnings before the company considers a wider release.",
+    "Avery can sponsor the pilot, but the product and engineering leads need to agree to the people and sprint time. You have five minutes with Avery at the innovation challenge final."
+  ], ask:"Make the case to Avery for sponsoring the four-week pilot. Give the pitch you would actually make, using the words you'd say in the room."}
 ];
 
 const state = {scenario:null,pitch:'',result:null};
