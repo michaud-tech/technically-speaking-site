@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<title>A Communication System for Teams | Technically Speaking</title>
+<title>A communication system for teams | Technically Speaking</title>
 <meta name="twitter:description" content="A live six-week cohort with a shared rubric and coaching follow-through over six months.">
-<meta name="twitter:title" content="A Communication System for Teams | Technically Speaking">
+<meta name="twitter:title" content="A communication system for teams | Technically Speaking">
 
 <meta name="description" content="TECH helps teams get good work approved, funded, and acted on through a live six-week cohort with coaching follow-through over six months.">
 <link rel="canonical" href="https://www.technicallyspeakinghq.com/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="A Communication System for Teams | Technically Speaking">
+<meta property="og:title" content="A communication system for teams | Technically Speaking">
 <meta property="og:description" content="A live six-week cohort with a shared rubric and coaching follow-through over six months.">
 <meta property="og:url" content="https://www.technicallyspeakinghq.com/">
 <meta property="og:site_name" content="Technically Speaking">
@@ -259,16 +259,19 @@
   .home-wordmark .mid{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--dark);color:var(--white);padding:0 .45em;font-size:clamp(7px,.72vw,10px);font-weight:800;letter-spacing:.36em;white-space:nowrap}
   .audience-headline{max-width:1000px}
   .role-pair{display:flex;align-items:baseline;gap:.22em}
-  .role-slot{width:10.8ch;display:inline-flex;justify-content:center;align-items:baseline;flex:0 0 10.8ch}
-  .rotating-role{position:relative;display:inline-block;color:var(--white);text-decoration-line:underline;text-decoration-color:var(--yellow);text-decoration-thickness:.09em;text-underline-offset:.08em;transition:opacity .12s ease}
-  .rotating-role.changing{opacity:0}
+  .role-slot{width:16.8ch;display:inline-flex;justify-content:flex-start;align-items:baseline;flex:0 0 16.8ch}
+  .rotating-phrase{display:inline-flex;align-items:baseline;white-space:nowrap;transition:opacity .12s ease}
+  .rotating-phrase.changing{opacity:0}
+  .rotating-role{position:relative;display:inline-block;color:var(--white);text-decoration-line:underline;text-decoration-color:var(--yellow);text-decoration-thickness:.09em;text-underline-offset:.08em}
   @media (max-width:600px){
+    .home-hero h1{font-size:38px}
     .audience-headline .hero-line{display:block}
     .audience-headline .hero-line + .hero-line:before{content:none}
-    .role-pair{display:flex;gap:.15em}
-    .role-slot{width:10.1ch;flex-basis:10.1ch}
+    .role-pair{display:block}
+    .for-label{display:block}
+    .role-slot{width:100%;display:flex;justify-content:flex-start;flex-basis:auto}
   }
-  @media (prefers-reduced-motion:reduce){.rotating-role{transition:none}}
+  @media (prefers-reduced-motion:reduce){.rotating-phrase{transition:none}}
 </style>
 </head>
 <body>
@@ -306,8 +309,8 @@
   <div class="wrap home-hero">
     <img class="logo-hero" src="technically-speaking-logo-transparent.png" alt="Technically Speaking">
     <h1 class="audience-headline">
-      <span class="hero-line">A communication <span class="hl">system</span> for</span>
-      <span class="hero-line hero-nowrap role-pair"><span class="role-slot"><span class="rotating-role" id="rotatingRole">engineering</span></span><span class="teams-label">teams.</span></span>
+      <span class="hero-line">A communication <span class="hl">system</span></span>
+      <span class="hero-line hero-nowrap role-pair"><span class="for-label">for&nbsp;</span><span class="role-slot"><span class="rotating-phrase" id="rotatingPhrase"><span class="rotating-role" id="rotatingRole">engineering</span>&nbsp;<span class="teams-label">teams.</span></span></span></span>
     </h1>
     <p class="sub">Your team does good work.</p>
     <p class="sub">But someone else has to approve, fund, or act on it.</p>
@@ -371,7 +374,7 @@
       <p class="label grey">Who it's for</p>
       <h2 class="big">For teams whose work has to move through other people.</h2>
       <div class="rule"></div>
-      <p class="argp">Engineering teams getting investment approved. Product teams setting priorities across departments. Partnership teams getting internal support for partner opportunities. Sales teams getting product and delivery behind what was sold.</p>
+      <p class="argp">Engineering teams getting investment approved. Product teams setting priorities across departments. Partnership teams getting internal support for partner opportunities. Sales teams getting product and delivery behind what was sold. Technical experts making complex work clear to clients, and getting internal teams behind what comes next.</p>
     </section>
   </div>
 </div>
@@ -380,7 +383,7 @@
 <div class="band paper" style="border-top:1px solid var(--line)">
   <div class="wrap">
     <section class="blk">
-      <p class="label grey">How we do it</p>
+      <p class="label grey">The program</p>
       <h2 class="big">Work on real work.</h2>
       <div class="rule"></div>
       <p class="argp">Participants bring the conversations they're actually having: a partnership pitch, a client recommendation, a proposal, an executive update or a decision they need approved.</p>
@@ -454,14 +457,15 @@
 (() => {
   const roles = ['engineering', 'product', 'sales', 'partnerships', 'research', 'finance'];
   const word = document.getElementById('rotatingRole');
-  if (!word || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const phrase = document.getElementById('rotatingPhrase');
+  if (!word || !phrase || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   let i = 0;
   setInterval(() => {
-    word.classList.add('changing');
+    phrase.classList.add('changing');
     setTimeout(() => {
       i = (i + 1) % roles.length;
       word.textContent = roles[i];
-      word.classList.remove('changing');
+      phrase.classList.remove('changing');
     }, 120);
   }, 3000);
 })();
