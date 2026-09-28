@@ -211,6 +211,11 @@
   }
   .argp{font-size:19px;line-height:1.6;color:var(--muted);max-width:62ch;margin-top:24px}
   .argp + .argp{margin-top:16px}
+  .who-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px 34px;margin-top:28px;list-style:none}
+  .who-list li{position:relative;padding-left:20px;font-size:17px;line-height:1.5;color:var(--muted)}
+  .who-list li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:7px;background:var(--yellow)}
+  @media (max-width:820px){.who-list{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){.who-list{grid-template-columns:1fr;gap:16px}}
   .hsteps{display:grid;gap:22px;margin-top:36px}
   .hstep{display:grid;grid-template-columns:56px 1fr;gap:20px;align-items:start}
   .hstep .sn{font-weight:900;font-size:42px;line-height:.82;color:var(--yellow);letter-spacing:-.04em}
@@ -374,7 +379,14 @@
       <p class="label grey">Who it's for</p>
       <h2 class="big">For teams whose work has to move through other people.</h2>
       <div class="rule"></div>
-      <p class="argp">Engineering teams getting investment approved. Product teams setting priorities across departments. Partnership teams getting internal support for partner opportunities. Sales teams getting product and delivery behind what was sold. Technical experts making complex work clear to clients, and getting internal teams behind what comes next.</p>
+      <ul class="who-list">
+        <li>Engineering teams getting investment approved.</li>
+        <li>Product teams setting priorities across departments.</li>
+        <li>Partnership teams getting internal support for partner opportunities.</li>
+        <li>Sales teams getting product and delivery behind what was sold.</li>
+        <li>Technical experts making complex work clear to non-technical clients.</li>
+        <li>Your team, if its work depends on someone else understanding it, approving it, or acting on it.</li>
+      </ul>
     </section>
   </div>
 </div>
