@@ -4,7 +4,7 @@ const http=require('node:http'),fs=require('node:fs'),path=require('node:path');
 const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.mp3':'audio/mpeg','.txt':'text/plain; charset=utf-8'};
 http.createServer(async(req,res)=>{
   const pathname=new URL(req.url,'http://localhost').pathname;
-  if(['/api/assess','/api/practice'].includes(pathname)){
+  if(['/api/assess','/api/practice','/api/conversation'].includes(pathname)){
     let body='';for await(const chunk of req){body+=chunk;if(body.length>40000){res.writeHead(413);res.end('Request too large');return;}}
     req.body=body;res.status=n=>{res.statusCode=n;return res;};res.json=data=>{res.setHeader('Content-Type','application/json');res.end(JSON.stringify(data));};
     try{await require('.'+pathname+'.js')(req,res);}catch(_){res.status(500).json({error:'The preview could not complete this request.'});}return;
