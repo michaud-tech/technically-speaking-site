@@ -73,6 +73,7 @@ Make the case to Marcus for extending the safety study. Give the pitch you would
 
 const {buildEvaluationPrompt}=require('./evaluation-policy.js');
 
+const LISTENING_TOOL={name:'submit_listening_note',description:'One brief note on the learner’s listening across the conversation.',input_schema:{type:'object',additionalProperties:false,properties:{evidenceQuote:{type:'string'},note:{type:'string'}},required:['evidenceQuote','note']}};
 const PRACTICE_TOOL = {name:'submit_practice_notes',description:'Return notes for the requested TECH pillar without grades.',input_schema:{type:'object',additionalProperties:false,properties:{evidenceQuote:{type:'string'},notes:{type:'array',items:{type:'object',additionalProperties:false,properties:{code:{type:'string'},note:{type:'string'}},required:['code','note']}}},required:['evidenceQuote','notes']}};
 
 async function callAnthropic(body) {
@@ -231,7 +232,7 @@ module.exports = async (req, res) => {
   }
 
   const exercise = typeof body.practiceAction === 'string' && Object.hasOwn(COURSE.exercises, body.practiceAction) ? COURSE.exercises[body.practiceAction] : null;
-  if(body.conversation && (body.practiceAction!=='objection'||!require('./conversation.js').validHistory(body.conversation,false)))return res.status(400).json({error:'Invalid conversation.'});
+  if(body.conversation && (!['listen','objection'].includes(body.practiceAction)||!require('./conversation.js').validHistory(body.conversation,false)))return res.status(400).json({error:'Invalid conversation.'});
   const scenario = exercise ? {brief: exercise.context} : SCENARIOS[body.scenarioId];
   if (!scenario) {
     res.status(400).json({ error: 'Unknown scenario.' });
@@ -249,16 +250,17 @@ module.exports = async (req, res) => {
   }
 
   const relevant = exercise ? RUBRIC.find(p=>p.key===exercise.pillar) : null;
-  const outputTool = exercise ? PRACTICE_TOOL : SCORE_TOOL;
+  const listening=body.practiceAction==='listen';
+  const outputTool = listening ? LISTENING_TOOL : exercise ? PRACTICE_TOOL : SCORE_TOOL;
   const userContent = exercise
-    ? `ACTIVITY:\n${scenario.brief}${body.conversation ? "\n\nCONVERSATION (context only; evaluate the learner, not Priya):\n"+body.conversation.map(t=>(t.role==='user'?'Learner':'Priya')+': '+t.content).join('\n') : ""}\n\nREQUESTED ACTION:\n${exercise.task}\n\nRELEVANT TECH BEHAVIOURS:\n${relevant.lines.map(([code,label])=>code+' '+label).join('\n')}\n\nLEARNER RESPONSE:\n${pitch}\n\nOffer notes on this activity using submit_practice_notes.`
+    ? `ACTIVITY:\n${scenario.brief}${body.conversation ? "\n\nCONVERSATION (context only; evaluate the learner, not the roleplayed listener):\n"+body.conversation.map(t=>(t.role==='user'?'Learner':listening?'Dani':'Priya')+': '+t.content).join('\n') : ""}\n\nREQUESTED ACTION:\n${exercise.task}\n\nRELEVANT TECH behaviors:\n${listening?'Listening: use a taught tool to understand the listener and invite them to say more.':relevant.lines.map(([code,label])=>code+' '+label).join('\n')}\n\nLEARNER RESPONSE:\n${pitch}\n\n${listening?"Offer one brief activity-specific listening note using submit_listening_note, without rubric headings or discussion of unobserved macro/micro behavior.":"Offer notes on this activity using submit_practice_notes."}`
     : `BRIEF:\n${scenario.brief}\n\nPITCH:\n${pitch}\n\nScore the pitch and call submit_score with all six line scores and both feedback fields.`;
 
   async function runScore() {
     const data = await callAnthropic({
       model: MODEL,
       max_tokens: 2500,
-      system: buildEvaluationPrompt(exercise ? 'practice' : 'pitch'),
+      system: buildEvaluationPrompt(exercise ? 'practice' : 'pitch',listening?'listening':'behaviours'),
       tools: [outputTool],
       tool_choice: { type: 'tool', name: outputTool.name },
       messages: [
@@ -282,6 +284,11 @@ module.exports = async (req, res) => {
     }
     if(exercise){
       const complete = value => typeof value==='string' && value.trim().length>5 && /[.!?][”"')]*$/.test(value.trim());
+      if(listening){
+        if(!complete(raw.note))throw new Error('incomplete_feedback');
+        if(typeof raw.evidenceQuote!=='string'||!raw.evidenceQuote.trim()||!pitch.includes(raw.evidenceQuote))throw new Error('ungrounded_feedback');
+        return {grader:'assessment',purpose:'listening-note-v1',note:raw.note};
+      }
       if(!Array.isArray(raw.notes)||raw.notes.length!==relevant.lines.length||!relevant.lines.every(([code])=>raw.notes.filter(n=>n.code===code&&complete(n.note)).length===1))throw new Error('incomplete_feedback');
       if(typeof raw.evidenceQuote!=='string'||!raw.evidenceQuote.trim()||!pitch.includes(raw.evidenceQuote))throw new Error('ungrounded_feedback');
       return {grader:'assessment',purpose:'practice-notes-v4',behaviours:relevant.lines.map(([code,label])=>({code,label,note:raw.notes.find(n=>n.code===code).note}))};

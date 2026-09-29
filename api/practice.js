@@ -6,9 +6,9 @@ module.exports=async(req,res)=>{
  let body;try{body=typeof req.body==='string'?JSON.parse(req.body):req.body;}catch(_){return res.status(400).json({error:'Bad request.'});}
  if(!body||!Object.hasOwn(COURSE.exercises,body.action))return res.status(400).json({error:'Unknown practice activity.'});
  const exercise=COURSE.exercises[body.action];
- if(body.action==='objection'&&body.history){
+ if(['listen','objection'].includes(body.action)&&body.history){
   if(!require('./conversation.js').validHistory(body.history,false))return res.status(400).json({error:'Finish a conversation exchange before requesting notes.'});
-  return assess({method:'POST',body:{practiceAction:'objection',conversation:body.history,pitch:body.history.filter(t=>t.role==='user').map(t=>t.content).join('\n\n')}},res);
+  return assess({method:'POST',body:{practiceAction:body.action,conversation:body.history,pitch:body.history.filter(t=>t.role==='user').map(t=>t.content).join('\n\n')}},res);
  }
  if(exercise.fields.some(k=>typeof body.answers?.[k]!=='string'||!body.answers[k].trim()))return res.status(400).json({error:'Add a response to each prompt first.'});
  const pitch=exercise.fields.map(k=>exercise.fields.length>1?k+': '+body.answers[k].trim():body.answers[k].trim()).join('\n\n');
