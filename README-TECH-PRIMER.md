@@ -21,9 +21,9 @@ Before distribution, submit one baseline, one practice response and one final pi
 - Concrete Sam statement before the four listening demonstrations; a different Dani statement for practice.
 - Scoreboard explains winning or losing; Pain to Promise includes three rhythmic Because of that beats.
 - All eight highlighted emphasis variations are read in one continuous recording, followed by playback. There is one Record/Stop control and one saved audio file.
-- Pace, volume, tone and pauses followed by three editable versions of one sentence: apologising, calm recommendation and urgent. Continue requires all three markups and playback of at least two recordings.
+- Pace, volume, tone and pauses followed by three editable versions of one sentence: apologizing, calm recommendation and urgent. Continue requires all three markups and playback of at least two recordings.
 - No instructor audio, placeholder or recording dependency.
-- Archivo typography, current site paper/ink/yellow colours, square buttons, fine borders and restrained headings.
+- Archivo typography, current site paper/ink/yellow colors, square buttons, fine borders and restrained headings.
 - All practice evaluations run through api/assess.js using the same canonical TECH interpretation and model as the main assessment, with a practice-notes purpose for short activities. api/practice.js only assembles learner responses, supplies the activity context and returns the relevant pillar notes supplied by that evaluator. It contains no coaching prompt or evaluation logic. Shared display metadata lives in assessment-rubric.js. H has no AI evaluation.
 - Incomplete or ungrounded assessment output is rejected with retry guidance instead of being presented as valid feedback.
 
@@ -66,3 +66,5 @@ The second delivery activity now records all three intentions in one take. Plann
 Clarity practice instructions accept a concise ask followed by its reason, avoid requiring every fact in the brief, and treat What / So What / Now What / When as flexible. Metaphor feedback focuses on the useful and missing connections rather than requiring a pitch introduction or routine disclaimer.
 
 Run node tests/evaluator.test.cjs and node tests/conversation.test.cjs for controlled backend checks. Actual AI conversation/feedback quality still needs a live check on the configured host; local controlled checks are not evidence of live model quality.
+
+Listening practice now uses a conversation with Dani for up to three learner turns. There is no evaluation between turns. Finish returns one brief listening note from the shared evaluator, with no macro/micro rows or discussion of unobserved rubric behaviors. The conversation and note persist locally and appear in the written export. Older listening feedback is cleared while the learner draft remains. Controlled checks passed for role selection, reply routing, single-note rendering, retry preservation, the three-turn limit, reload persistence and export. Live model wording still requires verification on the configured host.

@@ -17,7 +17,7 @@
       "fields": [
         "listen"
       ],
-      "task": "Make one listening response using one of the taught tools: invite more, repeat words, paraphrase, or ask an open-ended question. This is one conversational turn."
+      "task": "Have up to three exchanges with Dani, using the listening tools to invite more and understand their concern. The final feedback is one brief note on the learner’s listening across the conversation, not a macro/micro evaluation or a pitch critique."
     },
     "ask": {
       "pillar": "E",
@@ -38,15 +38,15 @@
     },
     "structure": {
       "pillar": "C",
-      "context": "Jo coordinates app testing. Three bug reports this week were missing the phone model, so engineers had to ask for it before they could investigate. You want Jo to add a phone-model field to the bug-report form for next week’s testing. Use What / So What / Now What / When in four short lines.",
+      "context": "Jo coordinates app testing. Three bug reports this week were missing the phone model, so engineers had to ask for it before they could investigate. You want Jo to add a phone-model field to the bug-report form for next week’s testing. Cover What / So What / Now What / When in a short update. Any clear order works, including leading with the ask. Parts can be combined.",
       "fields": [
         "structure"
       ],
-      "task": "Use What / So What / Now What / When to give a short update in four lines."
+      "task": "Give a concise update covering what, why it matters, the next action and timing. The structure is flexible: leading with the ask is valid, and parts can be combined."
     },
     "metaphor": {
       "pillar": "C",
-      "context": "Nina works in customer support and is learning how app updates reach users. She likes cooking. A staged rollout gives an update to a small group of users first, so the team can check for problems before more people receive it. Explain it using a comparison from her world and connect it to the practical benefit. A staged rollout can help catch problems; it does not guarantee an update is bug-free.",
+      "context": "Nina works in customer support and is learning how app updates reach users. She likes cooking. A staged rollout gives an update to a small group of users first, so the team can check for problems before more people receive it. Explain it using a comparison from her world and connect it to the practical benefit.",
       "fields": [
         "metaphor"
       ],
