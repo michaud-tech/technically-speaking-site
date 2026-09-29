@@ -13,7 +13,9 @@ const MODEL = process.env.ANTHROPIC_MODEL || 'claude-sonnet-5';
 
 // The three briefs are equivalent in structure and difficulty. Kept here (server-side)
 // as the source of truth for scoring; assessment.html shows the matching text to the visitor.
+const COURSE = require('../course-data.js');
 const SCENARIOS = {
+  [COURSE.scenarioId]: { brief: COURSE.brief },
   'textnow-interns': {
     brief: `You're a TextNow intern working with a small team on an innovation challenge. TextNow is prioritizing user trust and wants to reduce harmful interactions without creating unnecessary warnings for legitimate messages. Your team has developed an in-app feature that identifies signals commonly associated with suspicious messages, explains why a message may be risky and offers safer next steps before the user responds. You recommend a four-week pilot with a limited group of users. The pilot would require support from one product designer and two engineers, which means delaying a planned onboarding experiment by one sprint.
 
@@ -209,11 +211,7 @@ function extractJson(text) {
 
 // Canonical rubric skeleton. The server always emits EXACTLY this shape, so a
 // slightly-off model response can never crash the handler or misrender results.
-const RUBRIC = [
-  { key: 'T', name: 'Target Audience', lines: [['T1', 'Speaks to the macro'], ['T2', 'Speaks to the micro']] },
-  { key: 'E', name: 'End Goal', lines: [['E1', 'Clear goal'], ['E2', 'Clear ask + next step']] },
-  { key: 'C', name: 'Clarity', lines: [['C1', 'Opening frame'], ['C2', 'Key evidence tied to impact']] },
-];
+const RUBRIC = require('../assessment-rubric.js');
 
 // Collect { score, note } by line code (T1..C2) from whatever shape the model
 // returned — pillars as an array, pillars as an object map, or a flat lines list.
@@ -281,14 +279,15 @@ module.exports = async (req, res) => {
     return;
   }
 
-  const scenario = SCENARIOS[body.scenarioId];
+  const exercise = typeof body.practiceAction === 'string' && Object.hasOwn(COURSE.exercises, body.practiceAction) ? COURSE.exercises[body.practiceAction] : null;
+  const scenario = exercise ? {brief: exercise.context} : SCENARIOS[body.scenarioId];
   if (!scenario) {
     res.status(400).json({ error: 'Unknown scenario.' });
     return;
   }
 
   const pitch = (body.pitch || '').toString().trim();
-  if (pitch.length < 15) {
+  if (pitch.length < (exercise ? 1 : 15)) {
     res.status(400).json({ error: 'Please write at least a couple of sentences.' });
     return;
   }
@@ -310,6 +309,7 @@ module.exports = async (req, res) => {
         { role: 'user', content: userContent },
       ],
     });
+    if (data.stop_reason === 'max_tokens') throw new Error('truncated_response');
     const blocks = data.content || [];
     // Preferred path: the forced tool call returns already-parsed JSON.
     const tool = blocks.find((c) => c && c.type === 'tool_use' && c.input && typeof c.input === 'object');
@@ -326,6 +326,9 @@ module.exports = async (req, res) => {
     }
     // Normalize into the canonical shape (handles pillars as array/object/flat).
     const result = normalize(raw);
+    const complete = s => typeof s === 'string' && s.trim().length > 5 && /[.!?][”"')]*$/.test(s.trim());
+    const sourceLines = collectLines(raw);
+    if (!['T1','T2','E1','E2','C1','C2'].every(code => [0,1,2].includes(sourceLines[code]?.score) && complete(sourceLines[code]?.note)) || !complete(result.whatWorked) || !complete(result.coachingFocus)) throw new Error('incomplete_feedback');
     if (result._found.length < 6) {
       const e = new Error('bad_shape');
       e.raw = 'found=[' + result._found.join(',') + '] rawkeys=[' + Object.keys(raw || {}).join(',') + ']';
@@ -352,8 +355,7 @@ module.exports = async (req, res) => {
       res.status(502).json({ error: 'The scorer is unavailable right now. Please try again in a moment.' });
       return;
     }
-    if(err.message==='ungrounded_feedback'&&err.result){parsed=err.result;parsed.coachingFocus='For your next rep, choose one sentence and make its connection to Avery’s decision even more explicit.';parsed.evidenceQuote='';}
-    else {
+    {
     console.error('score failed after retry:', err.message, '::', (err.raw || '').slice(0, 400));
     res.status(502).json({ error: 'Could not read the score. Please try again.' });
     return;
