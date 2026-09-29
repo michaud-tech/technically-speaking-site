@@ -1,23 +1,189 @@
 [
- {"action":"notice","kind":"strong","answers":{"notice":"It sounds like he's wondering if the trade-off is worth it. Seems like he could be worried about losing staff and what else could slip through the cracks."},"review":"Recognise tentative staff-retention and missed-work observations. Do not demand a pitch or dismiss business relevance."},
- {"action":"notice","kind":"partial","answers":{"notice":"Sam seems tired."},"review":"Acknowledge the personal observation; invite exploration of what caught their attention and possible team consequences without asking for a proposal."},
- {"action":"notice","kind":"off-track","answers":{"notice":"Sam should fire half the team immediately."},"review":"Identify the unsupported leap to a solution; redirect to noticing and checking what Sam meant."},
- {"action":"listen","kind":"strong","answers":{"listen":"Worried you're missing the people who gave up?"},"review":"Recognise a relevant echo that invites elaboration. No mandatory business case or second question."},
- {"action":"listen","kind":"partial","answers":{"listen":"Tell me more about the survey."},"review":"Recognise an invitation to continue. Any suggestion to follow the specific concern is optional refinement, not failure to make a pitch."},
- {"action":"listen","kind":"off-track","answers":{"listen":"Stop worrying. The survey is obviously fine."},"review":"Explain how dismissal closes the conversation; do not claim this demonstrates effective listening."},
- {"action":"ask","kind":"strong","answers":{"ask":"Hey Lee, can you give me ten minutes at Friday's team meeting to introduce the handoff checklist and get everyone onboarded?","secondBest":"A mention of it and a note that I'll follow up with an email."},"review":"Recognise the explicit ask and useful fallback without manufacturing a deficiency."},
- {"action":"ask","kind":"partial","answers":{"ask":"Can we talk about the checklist sometime?","secondBest":"I can email it."},"review":"Recognise the direction and fallback; a more specific meeting request is relevant to this task."},
- {"action":"ask","kind":"off-track","answers":{"ask":"This company has lots of meetings.","secondBest":"I like Fridays."},"review":"Note that the requested ask and useful alternative are not yet expressed; do not supply a full script."},
- {"action":"objection","kind":"strong","answers":{"objection":"Changing how people report bugs during a release feels like too much right now?"},"review":"Recognise a useful check of the concern. Do not require all four conversational moves or a resolved decision."},
- {"action":"objection","kind":"partial","answers":{"objection":"Could we do it later?"},"review":"Recognise a possible timing adjustment while noting the concern can be explored. No full-pitch requirements."},
- {"action":"objection","kind":"off-track","answers":{"objection":"That's a ridiculous excuse. Just make the team do it."},"review":"Discuss how dismissing the concern obstructs understanding and moving forward; do not grade personal style alone."},
- {"action":"structure","kind":"strong","answers":{"structure":"Three bug reports lacked the phone model this week.\nEngineers had to ask before investigating, delaying fixes.\nCould you add a phone-model field to the report form?\nFor next week's testing."},"review":"Recognise a clear update and relevant consequence; no demand for extra metrics or a metaphor."},
- {"action":"structure","kind":"partial","answers":{"structure":"Bug reports are missing phone models.\nCan we fix the form?"},"review":"Recognise the topic and proposed change; connecting the missing information to delayed investigation is a relevant direction."},
- {"action":"structure","kind":"off-track","answers":{"structure":"Phones are popular. Testing is a thing. Meetings happen. Friday."},"review":"Explain that the update does not yet make the supplied issue or impact understandable; avoid generic praise."},
- {"action":"metaphor","kind":"strong","answers":{"metaphor":"It's like serving a new recipe to a small table before cooking it for the whole restaurant. We can spot problems with the app update while fewer users are affected, though it won't catch everything."},"review":"Recognise a familiar, accurate comparison and practical benefit. No ask or quantified business case required."},
- {"action":"metaphor","kind":"partial","answers":{"metaphor":"It's like trying a new recipe."},"review":"Recognise the familiar starting point; connecting small-group testing to limiting impact would help explain the concept."},
- {"action":"metaphor","kind":"off-track","answers":{"metaphor":"It's a magic shield that guarantees no user will ever experience a bug."},"review":"Flag the inaccurate guarantee and help the learner revisit what the rollout actually does."},
- {"action":"story","kind":"strong","answers":{"story":"Today the same login issue gets passed between teams. Each time, users wait while support searches for an owner. Imagine a shared list of owners. Because of that, agents could find the right team. Because of that, reports could reach them sooner. Because of that, users could get help sooner. Could we try the list for a week?"},"review":"Recognise the problem, plausible consequences and trial request; do not demand evidence of results not yet measured."},
- {"action":"story","kind":"partial","answers":{"story":"We should make a shared list of issue owners. Could we try it for a week?"},"review":"Recognise the proposal and ask; explaining the current problem and possible user benefit is a relevant clarity direction."},
- {"action":"story","kind":"off-track","answers":{"story":"Our owner list has already eliminated every login problem and doubled revenue."},"review":"Distinguish unsupported results from the proposed trial. Do not reward invented impact."}
+  {
+    "action": "notice",
+    "kind": "strong",
+    "answers": {
+      "notice": "It sounds like he's wondering if the trade-off is worth it. Seems like he could be worried about losing staff and what else could slip through the cracks."
+    },
+    "review": "Recognize tentative staff-retention and missed-work observations. Do not demand a pitch or dismiss business relevance."
+  },
+  {
+    "action": "notice",
+    "kind": "partial",
+    "answers": {
+      "notice": "Sam seems tired."
+    },
+    "review": "Acknowledge the personal observation; invite exploration of what caught their attention and possible team consequences without asking for a proposal."
+  },
+  {
+    "action": "notice",
+    "kind": "off-track",
+    "answers": {
+      "notice": "Sam should fire half the team immediately."
+    },
+    "review": "Identify the unsupported leap to a solution; redirect to noticing and checking what Sam meant."
+  },
+  {
+    "action": "listen",
+    "kind": "strong",
+    "answers": {
+      "listen": "Worried you're missing the people who gave up?"
+    },
+    "review": "Recognize a relevant echo that invites elaboration. No mandatory business case or second question."
+  },
+  {
+    "action": "listen",
+    "kind": "partial",
+    "answers": {
+      "listen": "Tell me more about the survey."
+    },
+    "review": "Recognize an invitation to continue. Any suggestion to follow the specific concern is optional refinement, not failure to make a pitch."
+  },
+  {
+    "action": "listen",
+    "kind": "off-track",
+    "answers": {
+      "listen": "Stop worrying. The survey is obviously fine."
+    },
+    "review": "Explain how dismissal closes the conversation; do not claim this demonstrates effective listening."
+  },
+  {
+    "action": "ask",
+    "kind": "strong",
+    "answers": {
+      "ask": "Hey Lee, can you give me ten minutes at Friday's team meeting to introduce the handoff checklist and get everyone onboarded?",
+      "secondBest": "A mention of it and a note that I'll follow up with an email."
+    },
+    "review": "Recognize the explicit ask and useful fallback without manufacturing a deficiency."
+  },
+  {
+    "action": "ask",
+    "kind": "partial",
+    "answers": {
+      "ask": "Can we talk about the checklist sometime?",
+      "secondBest": "I can email it."
+    },
+    "review": "Recognize the direction and fallback; a more specific meeting request is relevant to this task."
+  },
+  {
+    "action": "ask",
+    "kind": "off-track",
+    "answers": {
+      "ask": "This company has lots of meetings.",
+      "secondBest": "I like Fridays."
+    },
+    "review": "Note that the requested ask and useful alternative are not yet expressed; do not supply a full script."
+  },
+  {
+    "action": "objection",
+    "kind": "strong",
+    "answers": {
+      "objection": "Changing how people report bugs during a release feels like too much right now?"
+    },
+    "review": "Recognize a useful check of the concern. Do not require all four conversational moves or a resolved decision."
+  },
+  {
+    "action": "objection",
+    "kind": "partial",
+    "answers": {
+      "objection": "Could we do it later?"
+    },
+    "review": "Recognize a possible timing adjustment while noting the concern can be explored. No full-pitch requirements."
+  },
+  {
+    "action": "objection",
+    "kind": "off-track",
+    "answers": {
+      "objection": "That's a ridiculous excuse. Just make the team do it."
+    },
+    "review": "Discuss how dismissing the concern obstructs understanding and moving forward; do not grade personal style alone."
+  },
+  {
+    "action": "structure",
+    "kind": "strong",
+    "answers": {
+      "structure": "Three bug reports lacked the phone model this week.\nEngineers had to ask before investigating, delaying fixes.\nCould you add a phone-model field to the report form?\nFor next week's testing."
+    },
+    "review": "Recognize a clear update and relevant consequence; no demand for extra metrics or a metaphor."
+  },
+  {
+    "action": "structure",
+    "kind": "partial",
+    "answers": {
+      "structure": "Bug reports are missing phone models.\nCan we fix the form?"
+    },
+    "review": "Recognize the topic and proposed change; connecting the missing information to delayed investigation is a relevant direction."
+  },
+  {
+    "action": "structure",
+    "kind": "off-track",
+    "answers": {
+      "structure": "Phones are popular. Testing is a thing. Meetings happen. Friday."
+    },
+    "review": "Explain that the update does not yet make the supplied issue or impact understandable; avoid generic praise."
+  },
+  {
+    "action": "metaphor",
+    "kind": "strong",
+    "answers": {
+      "metaphor": "It's like serving a new recipe to a small table before cooking it for the whole restaurant. We can spot problems with the app update while fewer users are affected, though it won't catch everything."
+    },
+    "review": "Recognize a familiar, accurate comparison and practical benefit. No ask or quantified business case required."
+  },
+  {
+    "action": "metaphor",
+    "kind": "partial",
+    "answers": {
+      "metaphor": "It's like trying a new recipe."
+    },
+    "review": "Recognize the familiar starting point; connecting small-group testing to limiting impact would help explain the concept."
+  },
+  {
+    "action": "metaphor",
+    "kind": "off-track",
+    "answers": {
+      "metaphor": "It's a magic shield that guarantees no user will ever experience a bug."
+    },
+    "review": "Flag the inaccurate guarantee and help the learner revisit what the rollout actually does."
+  },
+  {
+    "action": "story",
+    "kind": "strong",
+    "answers": {
+      "story": "Today the same login issue gets passed between teams. Each time, users wait while support searches for an owner. Imagine a shared list of owners. Because of that, agents could find the right team. Because of that, reports could reach them sooner. Because of that, users could get help sooner. Could we try the list for a week?"
+    },
+    "review": "Recognize the problem, plausible consequences and trial request; do not demand evidence of results not yet measured."
+  },
+  {
+    "action": "story",
+    "kind": "partial",
+    "answers": {
+      "story": "We should make a shared list of issue owners. Could we try it for a week?"
+    },
+    "review": "Recognize the proposal and ask; explaining the current problem and possible user benefit is a relevant clarity direction."
+  },
+  {
+    "action": "story",
+    "kind": "off-track",
+    "answers": {
+      "story": "Our owner list has already eliminated every login problem and doubled revenue."
+    },
+    "review": "Distinguish unsupported results from the proposed trial. Do not reward invented impact."
+  },
+  {
+    "action": "structure",
+    "kind": "strong-ask-first",
+    "answers": {
+      "structure": "Hey Jo, can we add a phone model field to the bug report form please? Three reports this week were missing that and engineers had to go back and forth before investigating. If you give me the okay I can work on it today and have it live for next week."
+    },
+    "review": "Recognize the specific ask, immediate reason, relevant impact and timing. Do not suggest a problem statement before the ask or reordering to match the template."
+  },
+  {
+    "action": "metaphor",
+    "kind": "strong-no-disclaimer",
+    "answers": {
+      "metaphor": "A staged rollout is like making a test meal before you host 40 people for Thanksgiving. It gives you a chance to try things out, see issues and work through them on a small scale before you ruin everyone’s favorite holiday."
+    },
+    "review": "Recognize the familiar comparison and small-scale testing benefit. Do not request a bug-free disclaimer: no guarantee was made."
+  }
 ]
