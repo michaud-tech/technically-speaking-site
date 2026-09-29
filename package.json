@@ -5,5 +5,8 @@
   "description": "The 5-minute TECH assessment — front end + secure scoring function.",
   "engines": {
     "node": ">=18"
+  },
+  "scripts": {
+    "start": "node preview.cjs"
   }
 }
