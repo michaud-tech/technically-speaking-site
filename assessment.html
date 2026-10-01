@@ -64,7 +64,11 @@
 
   .lead{font-size:17px;color:var(--muted);max-width:60ch;margin-top:16px;line-height:1.6}
   .lead + .lead{margin-top:14px}
-  .intro-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+  .scenario-picker{margin-top:28px;max-width:560px}
+  .scenario-picker label{display:block;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+  .scenario-picker select{width:100%;padding:14px 42px 14px 14px;border:2px solid var(--dark);background:#fff;color:var(--dark);font:600 16px 'Archivo',system-ui,sans-serif}
+  .scenario-picker select:focus{outline:3px solid var(--yellow);outline-offset:2px}
+  .intro-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
   .intro-program{margin-top:30px;padding:24px 26px;background:#fff;border:1px solid var(--line);border-top:4px solid var(--yellow)}
   .intro-program h2{font-size:21px}
   .intro-program p{font-size:14.5px;color:var(--muted);line-height:1.55;margin-top:8px}
@@ -184,6 +188,7 @@
       <h1 style="margin-top:12px">See what to change in your next conversation.</h1>
       <p class="lead">You'll get a short workplace brief, write the pitch you'd actually make, and receive a score across Target Audience, End Goal, and Clarity.</p>
       <p class="lead">You'll leave with one specific thing to try next.</p>
+      <div class="scenario-picker"><label for="scenarioSelect">Choose a conversation</label><select id="scenarioSelect"><option value="client-expansion">Client expansion pitch</option><option value="new-business-line">Executive pitch for a new business line</option><option value="cross-department">Cross-department project alignment</option><option value="project-update">Project update</option><option value="town-hall">Town hall address</option></select></div>
       <div class="intro-actions"><button class="btn" onclick="start()">Try a pitch</button><a class="btn ghost" href="/program">See the program</a></div>
       <p class="note">Takes about five minutes. Nothing is saved.</p>
       <aside class="intro-program"><h2>Trying a pitch shows you where to start.</h2><p>The live TECH program gives your team the practice, feedback, and ongoing support to make the change stick.</p></aside>
@@ -253,36 +258,70 @@
 // Each brief: [role & pressures], [the other person], [technical + business facts],
 // [the decision + setting], and finally the neutral instruction. Text mirrors api/assess.js.
 const SCENARIOS = [
+  {
+    "id": "client-expansion",
+    "label": "Client expansion pitch",
+    "paras": [
+      "You're an account director at a B2B software company. An existing client uses your core platform across two business units, and you recommend expanding it to a third unit with an analytics module and a structured enablement package.",
+      "The expansion would increase the client's annual investment by 18% and require six weeks of implementation support. The third unit currently builds similar reports manually, which takes its operations team about 45 hours each month.",
+      "You're speaking to Morgan, the client's VP of Operations. Morgan is accountable for adoption, cost control, and avoiding another tool that teams buy but do not use.",
+      "In the two existing units, weekly active use reached 74% after enablement, and reporting time fell by about 30 hours per month. Those results come from the existing deployment; they do not prove the third unit will adopt at the same rate.",
+      "Morgan can support the expansion, but finance must approve the added spend. You have ten minutes in the quarterly business review."
+    ],
+    "ask": "Pitch Morgan on approving the expansion and taking the investment to finance. Give the pitch you would actually make, using the words you'd say in the room."
+  },
 
-  {id:'payments', paras:[
-    "You're a senior engineer responsible for the payments service. You believe the team needs six weeks to replace part of the service before building more features on top of it.",
-    "The current architecture is seven years old, has fourteen dependencies, and has become increasingly difficult for engineers to change safely.",
-    "Your team has spent a lot of time responding to incidents, and the project would displace two items currently planned for Q3.",
-    "You're speaking to Dana, your VP of Engineering. Dana is accountable for delivering the Q3 roadmap and has pushed back before on technical cleanup that wasn't connected to a customer outcome.",
-    "The payments service has caused three incidents this quarter. Each one took checkout down for customers, and the most recent took nearly four hours to resolve.",
-    "Dana can support the project, but because it changes the roadmap, she'll need to take the recommendation to the product executive.",
-    "You have five minutes with Dana in the roadmap review."
-  ], ask:"Ask Dana to prioritize the payments-service replacement. Give the pitch you would actually make, using the words you'd say in the room."},
+  {
+    "id": "new-business-line",
+    "label": "Executive pitch for a new business line",
+    "paras": [
+      "You're a director at a professional services company. You recommend testing a new compliance analytics service for mid-market clients before building a full business line.",
+      "The proposed six-month pilot would require a $350,000 budget and four people drawn from consulting, data, sales, and operations. It would delay one planned internal reporting project.",
+      "You're speaking to Riley, the COO. Riley is accountable for profitable growth and has pushed back on new offerings that depend on unproven demand or pull strong people away from current clients.",
+      "In discovery interviews, 11 of 15 clients described compliance reporting as a growing problem, and four agreed to review a pilot proposal. No client has signed, so the interviews show interest rather than proven demand.",
+      "Riley can sponsor the pilot, but the executive team must approve the budget and staffing. You have eight minutes in the operating review."
+    ],
+    "ask": "Pitch Riley on sponsoring the six-month pilot and taking it to the executive team. Give the pitch you would actually make, using the words you'd say in the room."
+  },
 
-  {id:'pipeline', paras:[
-    "You're a hydrogeologist advising a client on a site they want to develop. You recommend four more weeks of groundwater monitoring before they finalize the design.",
-    "The first two rounds of samples show changing levels near the proposed building area. You can't yet tell whether the changes are seasonal or point to a larger problem.",
-    "The extra work will cost $35,000 and could delay the design sign-off by a month.",
-    "You're speaking to Priya, the client's project director. She is accountable for the schedule and has pushed back before when technical teams asked for more data without explaining what decision it would change.",
-    "If the current design proceeds and the higher readings persist, the client may need to change the foundation plan after construction begins, at a much higher cost.",
-    "Priya can support the monitoring, but she will need to take the cost and schedule change to the client sponsor.",
-    "You have ten minutes with Priya before the design review."
-  ], ask:"Ask Priya to approve four more weeks of groundwater monitoring. Give the pitch you would actually make, using the words you'd say in the room."},
+  {
+    "id": "cross-department",
+    "label": "Cross-department project alignment",
+    "paras": [
+      "You're a product manager preparing to launch a new onboarding flow. The launch depends on event tracking from the data platform team so your team can see where new users get stuck.",
+      "You need one data engineer for three weeks. The data platform team is already committed to a reliability project, so taking this on would move part of that work into the next sprint.",
+      "You're speaking to Alex, a fellow director who leads the data platform team. Alex is accountable for platform reliability and has asked product teams to stop treating tracking work as a late-stage emergency.",
+      "In the current onboarding flow, 38% of new users leave before completing setup. Interviews suggest confusion at two steps, but without event tracking you cannot tell how often each issue occurs or whether the new flow fixes it.",
+      "Alex can reserve the engineer, but needs a clear reason to change the team's sprint plan. You have fifteen minutes in the cross-functional planning meeting."
+    ],
+    "ask": "Pitch Alex on assigning a data engineer for three weeks and agreeing on the project handoff. Give the pitch you would actually make, using the words you'd say in the room."
+  },
 
-  {id:'auth', paras:[
-    "You're a scientist leading a product safety study. You recommend extending the study by five weeks before the company commits to a launch date.",
-    "Early results look promising, but one measure has varied widely across batches. The team needs another set of tests to learn whether the variation is a measurement issue or a real safety concern.",
-    "The additional work will use $80,000 of the project budget and move the planned launch decision into the next quarter.",
-    "You're speaking to Marcus, the program director. He is accountable for the launch plan and has previously asked the team to separate real risk from scientific caution.",
-    "If the variation is real, a launch based on the current results could lead to a recall. If it is a measurement issue, the new tests should let the team move ahead with more confidence.",
-    "Marcus can approve the work, but because it moves the launch plan, he will need to explain the change to the executive team.",
-    "You have five minutes with Marcus in the planning review."
-  ], ask:"Ask Marcus to extend the safety study. Give the pitch you would actually make, using the words you'd say in the room."},
+  {
+    "id": "project-update",
+    "label": "Project update",
+    "paras": [
+      "You're an engineering lead giving an update on a payments migration. The project is two weeks behind because testing uncovered a dependency that was missing from the original plan.",
+      "The team can still meet the original launch date by reducing the first release to the three highest-volume payment methods. Supporting all seven methods would move the launch by four weeks.",
+      "You're speaking to Dana, the executive sponsor. Dana is accountable for the launch commitment and wants problems surfaced early with a clear recommendation rather than a list of technical details.",
+      "The three highest-volume methods cover 86% of transactions. The remaining four are important to a smaller group of customers and could stay on the current system temporarily. The team has not finished testing the temporary connection, so that option still carries delivery risk.",
+      "Dana can approve the reduced first release or move the date. You have five minutes in the weekly steering meeting."
+    ],
+    "ask": "Update Dana, recommend one path, and ask for the decision you need. Give the pitch you would actually make, using the words you'd say in the room."
+  },
+
+  {
+    "id": "town-hall",
+    "label": "Town hall address",
+    "paras": [
+      "You're the head of customer operations addressing a 120-person department. The company is reorganizing support into industry-focused teams and introducing a shared escalation process next month.",
+      "No roles are being eliminated, but about one third of employees will change managers. The current structure has produced inconsistent handoffs and repeated work on complex customer issues.",
+      "Your audience includes experienced employees who value their current team relationships, newer employees who want clearer paths for help, and managers who will be responsible for making the transition work.",
+      "In the last quarter, 22% of complex tickets moved between teams at least twice, adding an average of 1.8 days to resolution. The new structure is intended to improve ownership, but it has not been tested at this scale and you cannot promise an immediate improvement.",
+      "You need employees to understand why the change is happening, use the new escalation process, and bring concerns to the scheduled team sessions. You have seven minutes at the town hall before live questions."
+    ],
+    "ask": "Give the town hall address you would actually deliver. Make the change, its impact, and what employees should do next clear."
+  }
 ];
 
 const state = {scenario:null,pitch:'',result:null};
@@ -292,13 +331,8 @@ function showStep(id, dotIdx){
   document.querySelectorAll('.step').forEach(s=>s.classList.toggle('active', s.id===id));
   window.scrollTo(0,0);
 }
-function pickRandom(){
-  // avoid handing out the same brief twice in a row when possible
-  var pool = SCENARIOS.filter(function(s){ return !state.scenario || s.id!==state.scenario.id; });
-  return pool[Math.floor(Math.random()*pool.length)] || SCENARIOS[0];
-}
-function loadBrief(){
-  state.scenario = pickRandom();
+function loadBrief(scenarioId){
+  state.scenario = SCENARIOS.find(function(s){ return s.id===scenarioId; }) || SCENARIOS[0];
   var b=el('brief'); b.innerHTML='';
   state.scenario.paras.forEach(function(p){ var el2=document.createElement('p'); el2.textContent=p; b.appendChild(el2); });
   var ask=document.createElement('div'); ask.className='ask'; ask.textContent=state.scenario.ask; b.appendChild(ask);
@@ -307,8 +341,8 @@ function loadBrief(){
   el('emailForm').reset(); el('emailStatus').textContent=''; el('emailStatus').className='email-status';
   showStep('step-pitch',1);
 }
-function start(){ loadBrief(); }
-function another(){ loadBrief(); }
+function start(){ loadBrief(el('scenarioSelect').value); }
+function another(){ goIntro(); }
 function goIntro(){ showStep('step-intro',0); }
 
 var SCORING_MSGS=[
