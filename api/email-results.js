@@ -1,64 +1,74 @@
 const SCENARIOS = {
-  'textnow-interns': {
-    title: 'TextNow innovation challenge pilot',
-    brief: `You're a TextNow intern working with a small team on an innovation challenge. Your team has developed an idea for an in-app feature that helps people recognize suspicious messages before they respond. You recommend a four-week pilot with a limited group of users. The pilot would require support from one product designer and two engineers, which means delaying a planned onboarding experiment by one sprint.
+  "client-expansion": {
+    title: "Client expansion pitch",
+    brief: `You're an account director at a B2B software company. An existing client uses your core platform across two business units, and you recommend expanding it to a third unit with an analytics module and a structured enablement package.
 
-You're presenting to Avery, the executive sponsoring the challenge. Avery wants ideas that solve a real user problem and can be tested quickly, and has warned teams not to confuse an interesting prototype with evidence that people will use it.
+The expansion would increase the client's annual investment by 18% and require six weeks of implementation support. The third unit currently builds similar reports manually, which takes its operations team about 45 hours each month.
 
-Your team interviewed 14 TextNow users. Nine said they were sometimes unsure whether an unexpected message was legitimate. The other five did not report uncertainty; this does not establish that they felt comfortable or trusted the message. In a separate prototype test with different participants, six of eight correctly identified the warning and chose a safer next step without help. These results measure different things in different samples, so they are not a before-and-after comparison and cannot support a percentage-point improvement claim. Both samples were small. The test did not measure whether the feature reduces harmful interactions over time. The pilot would test usage, comprehension and false warnings before the company considers a wider release.
+You're speaking to Morgan, the client's VP of Operations. Morgan is accountable for adoption, cost control, and avoiding another tool that teams buy but do not use.
 
-Avery can sponsor the pilot, but the product and engineering leads need to agree to the people and sprint time. You have five minutes with Avery at the innovation challenge final.
+In the two existing units, weekly active use reached 74% after enablement, and reporting time fell by about 30 hours per month. Those results come from the existing deployment; they do not prove the third unit will adopt at the same rate.
 
-Pitch Avery on sponsoring the four-week pilot. Give the pitch you would actually make, using the words you'd say in the room.`,
+Morgan can support the expansion, but finance must approve the added spend. You have ten minutes in the quarterly business review.
+
+Pitch Morgan on approving the expansion and taking the investment to finance. Give the pitch you would actually make, using the words you'd say in the room.`,
   },
-  'gsw-partnership': {
-    title: 'Expanded partnership renewal',
-    brief: `You're on the Golden State Warriors Global Partnerships team. A national financial services brand is considering renewing its partnership for another three years. You recommend expanding the partnership beyond its current arena presence to include a co-branded content series and a community financial-literacy program. The expanded package would increase the partner's annual investment by 15%.
+  "new-business-line": {
+    title: "Executive pitch for a new business line",
+    brief: `You're a director at a professional services company. You recommend testing a new compliance analytics service for mid-market clients before building a full business line.
 
-You're speaking to Jordan, the brand's Chief Marketing Officer. Jordan is accountable for growth and brand relevance, and has said the renewal needs to do more than generate impressions.
+The proposed six-month pilot would require a $350,000 budget and four people drawn from consulting, data, sales, and operations. It would delay one planned internal reporting project.
 
-The current partnership's hospitality inventory was 82% utilized. Co-branded content performed 34% above the team's usual engagement benchmark, and last season's community event reached 12,000 Bay Area students and families. Direct lead attribution is incomplete, so you cannot claim the partnership caused new account growth. The strongest evidence is engagement, participation and access to Warriors fans.
+You're speaking to Riley, the COO. Riley is accountable for profitable growth and has pushed back on new offerings that depend on unproven demand or pull strong people away from current clients.
 
-Jordan can support the direction, but the additional investment needs approval from the brand's finance lead. You have ten minutes with Jordan in the renewal meeting.
+In discovery interviews, 11 of 15 clients described compliance reporting as a growing problem, and four agreed to review a pilot proposal. No client has signed, so the interviews show interest rather than proven demand.
 
-Pitch Jordan on the expanded three-year renewal. Give the pitch you would actually make, using the words you'd say in the room.`,
+Riley can sponsor the pilot, but the executive team must approve the budget and staffing. You have eight minutes in the operating review.
+
+Pitch Riley on sponsoring the six-month pilot and taking it to the executive team. Give the pitch you would actually make, using the words you'd say in the room.`,
   },
-  payments: {
-    title: 'Payments service rebuild',
-    brief: `You're a senior engineer responsible for the payments service. You believe the team needs six weeks to replace part of the service before building more features on top of it. The current architecture is seven years old, has fourteen dependencies, and has become increasingly difficult for engineers to change safely. Your team has spent a lot of time responding to incidents, and the project would displace two items currently planned for Q3.
+  "cross-department": {
+    title: "Cross-department project alignment",
+    brief: `You're a product manager preparing to launch a new onboarding flow. The launch depends on event tracking from the data platform team so your team can see where new users get stuck.
 
-You're speaking to Dana, your VP of Engineering. Dana is accountable for delivering the Q3 roadmap and has pushed back before on technical cleanup that wasn't connected to a customer outcome.
+You need one data engineer for three weeks. The data platform team is already committed to a reliability project, so taking this on would move part of that work into the next sprint.
 
-The payments service has caused three incidents this quarter. Each one took checkout down for customers, and the most recent took nearly four hours to resolve.
+You're speaking to Alex, a fellow director who leads the data platform team. Alex is accountable for platform reliability and has asked product teams to stop treating tracking work as a late-stage emergency.
 
-Dana can support the project, but because it changes the roadmap, she'll need to take the recommendation to the product executive. You have five minutes with Dana in the roadmap review.
+In the current onboarding flow, 38% of new users leave before completing setup. Interviews suggest confusion at two steps, but without event tracking you cannot tell how often each issue occurs or whether the new flow fixes it.
 
-Pitch Dana on prioritizing the payments-service replacement. Give the pitch you would actually make, using the words you'd say in the room.`,
+Alex can reserve the engineer, but needs a clear reason to change the team's sprint plan. You have fifteen minutes in the cross-functional planning meeting.
+
+Pitch Alex on assigning a data engineer for three weeks and agreeing on the project handoff. Give the pitch you would actually make, using the words you'd say in the room.`,
   },
-  pipeline: {
-    title: 'Groundwater monitoring plan',
-    brief: `You're a hydrogeologist advising a client on a site they want to develop. You recommend four more weeks of groundwater monitoring before they finalize the design. The first two rounds of samples show changing levels near the proposed building area. You can't yet tell whether the changes are seasonal or point to a larger problem. The extra work will cost $35,000 and could delay the design sign-off by a month.
+  "project-update": {
+    title: "Project update",
+    brief: `You're an engineering lead giving an update on a payments migration. The project is two weeks behind because testing uncovered a dependency that was missing from the original plan.
 
-You're speaking to Priya, the client's project director. She is accountable for the schedule and has pushed back before when technical teams asked for more data without explaining what decision it would change.
+The team can still meet the original launch date by reducing the first release to the three highest-volume payment methods. Supporting all seven methods would move the launch by four weeks.
 
-If the current design proceeds and the higher readings persist, the client may need to change the foundation plan after construction begins, at a much higher cost.
+You're speaking to Dana, the executive sponsor. Dana is accountable for the launch commitment and wants problems surfaced early with a clear recommendation rather than a list of technical details.
 
-Priya can support the monitoring, but she will need to take the cost and schedule change to the client sponsor. You have ten minutes with Priya before the design review.
+The three highest-volume methods cover 86% of transactions. The remaining four are important to a smaller group of customers and could stay on the current system temporarily. The team has not finished testing the temporary connection, so that option still carries delivery risk.
 
-Pitch Priya on four more weeks of groundwater monitoring. Give the pitch you would actually make, using the words you'd say in the room.`,
+Dana can approve the reduced first release or move the date. You have five minutes in the weekly steering meeting.
+
+Update Dana, recommend one path, and ask for the decision you need. Give the pitch you would actually make, using the words you'd say in the room.`,
   },
-  auth: {
-    title: 'Study extension decision',
-    brief: `You're a scientist leading a product safety study. You recommend extending the study by five weeks before the company commits to a launch date. Early results look promising, but one measure has varied widely across batches. The team needs another set of tests to learn whether the variation is a measurement issue or a real safety concern. The additional work will use $80,000 of the project budget and move the planned launch decision into the next quarter.
+  "town-hall": {
+    title: "Town hall address",
+    brief: `You're the head of customer operations addressing a 120-person department. The company is reorganizing support into industry-focused teams and introducing a shared escalation process next month.
 
-You're speaking to Marcus, the program director. He is accountable for the launch plan and has previously asked the team to separate real risk from scientific caution.
+No roles are being eliminated, but about one third of employees will change managers. The current structure has produced inconsistent handoffs and repeated work on complex customer issues.
 
-If the variation is real, a launch based on the current results could lead to a recall. If it is a measurement issue, the new tests should let the team move ahead with more confidence.
+Your audience includes experienced employees who value their current team relationships, newer employees who want clearer paths for help, and managers who will be responsible for making the transition work.
 
-Marcus can approve the work, but because it moves the launch plan, he will need to explain the change to the executive team. You have five minutes with Marcus in the planning review.
+In the last quarter, 22% of complex tickets moved between teams at least twice, adding an average of 1.8 days to resolution. The new structure is intended to improve ownership, but it has not been tested at this scale and you cannot promise an immediate improvement.
 
-Pitch Marcus on extending the safety study. Give the pitch you would actually make, using the words you'd say in the room.`,
-  },
+You need employees to understand why the change is happening, use the new escalation process, and bring concerns to the scheduled team sessions. You have seven minutes at the town hall before live questions.
+
+Give the town hall address you would actually deliver. Make the change, its impact, and what employees should do next clear.`,
+  }
 };
 
 const RUBRIC = [
