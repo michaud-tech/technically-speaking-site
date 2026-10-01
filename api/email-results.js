@@ -71,9 +71,6 @@ Give the town hall address you would actually deliver. Make the change, its impa
   }
 };
 
-// Personalized lead briefs (/for/<slug> pages).
-Object.assign(SCENARIOS, require("./_lead-scenarios").scenarios);
-
 const RUBRIC = [
   ['T', 'Target Audience'],
   ['E', 'End Goal'],
@@ -139,6 +136,30 @@ module.exports = async (req, res) => {
   if (body.website) return res.status(200).json({ ok: true });
   const email = String(body.email || '').trim().toLowerCase();
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254) return res.status(400).json({ error: 'Enter a valid email address.' });
+  if (body.purpose === 'hr-course-registration') {
+    const eventNames = {
+      'people-people': 'The People People Conference',
+      'disrupt-hr-kw': 'DisruptHR KW',
+      'other': 'Other'
+    };
+    const eventName = eventNames[String(body.event || '')] || eventNames.other;
+    const leadResponse = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'content-type': 'application/json' },
+      body: JSON.stringify({
+        from: process.env.RESULTS_FROM_EMAIL,
+        to: [process.env.RESULTS_LEAD_EMAIL],
+        reply_to: email,
+        subject: `New HR course registration · ${eventName}`,
+        text: `New registration for Sell the Impact of HR\n\nEmail: ${email}\nSource: ${eventName}\nRegistered: ${new Date().toISOString()}`,
+      }),
+    });
+    if (!leadResponse.ok) {
+      console.error('Resend HR registration error', leadResponse.status, await leadResponse.text());
+      return res.status(502).json({ error: 'We could not save your registration. Please try again.' });
+    }
+    return res.status(200).json({ ok: true });
+  }
   const scenario = SCENARIOS[body.scenarioId];
   const pitch = String(body.pitch || '').trim();
   const result = cleanResult(body.result);
