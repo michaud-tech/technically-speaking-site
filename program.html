@@ -123,6 +123,7 @@
 
   /* hero */
   .hero{padding:52px 0 68px;display:grid;grid-template-columns:1.35fr 1fr;column-gap:56px}
+  @media (min-width:821px){.program-hero-band{height:calc(100svh - 75px);display:flex}.program-hero-band>.wrap{display:flex;width:100%}.program-hero-band .hero{width:100%;align-content:center}}
   .hero-intro{display:contents}
   .hero .logo-hero,.hero .tagline{grid-column:1/-1}
   .hero .tagline{margin-top:20px;font-size:14px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#b8b2a8}
@@ -335,7 +336,7 @@
 </header>
 
 <!-- HERO -->
-<div class="band dark">
+<div class="band dark program-hero-band">
   <div class="wrap hero">
     <div class="hero-intro">
       <svg class="logo logo-hero" role="img" aria-label="Technically Speaking"><use href="#tsword"/></svg>
@@ -388,7 +389,7 @@
 <div class="band paper" style="border-top:1px solid var(--line)">
   <div class="wrap"><section class="blk">
     <p class="label grey">The six weeks</p>
-    <h2 class="big">One skill at a time. Then put it all together.</h2>
+    <h2 class="big">Learn one skill at a time. Then put it all together.</h2>
     <div class="rule"></div>
     <div class="week-grid">
       <article class="week"><p class="wn">Week 1</p><h3>Target Audience</h3><p>Connect the pitch to what matters to the audience and the business.</p></article>
