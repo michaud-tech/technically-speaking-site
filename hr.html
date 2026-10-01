@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Sell the impact of HR | Technically Speaking</title>
+<link rel="icon" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0}body{min-height:100vh;background:#1d1d1b;color:#f4f2ed;font-family:Archivo,system-ui,sans-serif;display:grid;place-items:center;padding:28px}.shell{width:min(1040px,100%);display:grid;grid-template-columns:1.05fr .95fr;gap:80px;align-items:center}.shell>section:first-child{transform:translateY(-69px)}.logo{width:min(390px,80%);margin-bottom:54px}.eyebrow{color:#f4c400;font-size:12px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;margin-bottom:18px}h1{font-size:clamp(44px,6vw,76px);line-height:.98;letter-spacing:-.05em}p{color:#c9c3b8;font-size:18px;line-height:1.6;margin-top:24px;max-width:54ch}.card{background:#f4f2ed;color:#1d1d1b;padding:36px;border-top:6px solid #f4c400;transform:translateY(72px)}.card h2{font-size:28px;line-height:1.1}.card p{color:#6b6b68;font-size:15px;margin-top:12px}.field{margin-top:18px}label{display:block;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px}input,select{width:100%;border:1px solid #bfb9ae;background:white;color:#1d1d1b;font:inherit;padding:13px 14px;border-radius:0}button{width:100%;margin-top:22px;border:2px solid #1d1d1b;background:#f4c400;color:#1d1d1b;padding:14px;font:800 13px Archivo,sans-serif;letter-spacing:.09em;text-transform:uppercase;cursor:pointer}.fine{font-size:12px!important;line-height:1.45!important}.status{min-height:22px;font-size:14px!important;color:#1d1d1b!important}@media(max-width:780px){body{display:block;padding:22px}.shell{display:block}.logo{width:250px;margin:18px 0 42px}h1{font-size:46px}.shell>section:first-child{transform:none}.card{margin-top:42px;padding:26px;transform:none}}
+</style>
+</head>
+<body>
+<main class="shell">
+  <section>
+    <img class="logo" src="technically-speaking-logo-transparent.png" alt="Technically Speaking">
+    <p class="eyebrow" id="eventLabel">A free course for HR professionals</p>
+    <h1>Sell the impact of HR.</h1>
+    <p>Your HR idea can be good for people and good for the business. Learn a practical model for helping decision-makers understand both.</p>
+  </section>
+  <section class="card">
+    <h2>Get the free course.</h2>
+    <p>Try an executive pitch, get feedback, learn the TECH model and try the same pitch again. About 35–40 minutes.</p>
+    <form id="registration">
+      <div class="field"><label for="email">Work email</label><input id="email" name="email" type="email" autocomplete="email" required maxlength="254"></div>
+      <button type="submit">Start the course</button>
+      <p class="status" id="status" role="status"></p>
+      <p class="fine">We’ll use this information to provide the course and you might get an email from Michaud saying hi and asking how the course went. Unsubscribe anytime.</p>
+    </form>
+  </section>
+</main>
+<script>
+const labels={"people-people":"Created for The People People Conference","disrupt-hr-kw":"Created for DisruptHR KW","other":"A free course for HR professionals"};
+const params=new URLSearchParams(location.search),source=labels[params.get("event")]?params.get("event"):"other";
+eventLabel.textContent=labels[source];
+registration.addEventListener("submit",async e=>{
+  e.preventDefault();const button=e.submitter;button.disabled=true;status.textContent="Saving your spot…";
+  const body={email:email.value,event:source};
+  try{const r=await fetch("/api/hr-register",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}),d=await r.json();if(!r.ok)throw Error(d.error||"Registration failed.");localStorage.setItem("tech-hr-registration",JSON.stringify({...body,registeredAt:new Date().toISOString()}));location.href="/hr-course?event="+encodeURIComponent(body.event)}
+  catch(err){status.textContent=err.message;button.disabled=false}
+});
+</script>
+</body>
+</html>
