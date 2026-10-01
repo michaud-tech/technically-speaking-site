@@ -34,13 +34,17 @@
 </main>
 <script>
 const labels={"people-people":"Created for The People People Conference","disrupt-hr-kw":"Created for DisruptHR KW","other":"A free course for HR professionals"};
+const registrationForm=document.getElementById("registration");
+const emailField=document.getElementById("email");
+const eventLabelElement=document.getElementById("eventLabel");
+const statusElement=document.getElementById("status");
 const params=new URLSearchParams(location.search),source=labels[params.get("event")]?params.get("event"):"other";
-eventLabel.textContent=labels[source];
-registration.addEventListener("submit",async e=>{
-  e.preventDefault();const button=e.submitter;button.disabled=true;status.textContent="Saving your spot…";
-  const body={email:email.value,event:source};
+eventLabelElement.textContent=labels[source];
+registrationForm.addEventListener("submit",async e=>{
+  e.preventDefault();const button=e.submitter;button.disabled=true;statusElement.textContent="Saving your spot…";
+  const body={email:emailField.value,event:source};
   try{const r=await fetch("/api/hr-register",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}),d=await r.json();if(!r.ok)throw Error(d.error||"Registration failed.");localStorage.setItem("tech-hr-registration",JSON.stringify({...body,registeredAt:new Date().toISOString()}));location.href="/hr-course?event="+encodeURIComponent(body.event)}
-  catch(err){status.textContent=err.message;button.disabled=false}
+  catch(err){statusElement.textContent=err.message;button.disabled=false}
 });
 </script>
 </body>
