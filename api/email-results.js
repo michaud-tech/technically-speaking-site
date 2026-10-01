@@ -9,7 +9,7 @@ Your team interviewed 14 TextNow users. Nine said they were sometimes unsure whe
 
 Avery can sponsor the pilot, but the product and engineering leads need to agree to the people and sprint time. You have five minutes with Avery at the innovation challenge final.
 
-Make the case to Avery for sponsoring the four-week pilot. Give the pitch you would actually make, using the words you'd say in the room.`,
+Pitch Avery on sponsoring the four-week pilot. Give the pitch you would actually make, using the words you'd say in the room.`,
   },
   'gsw-partnership': {
     title: 'Expanded partnership renewal',
@@ -21,7 +21,7 @@ The current partnership's hospitality inventory was 82% utilized. Co-branded con
 
 Jordan can support the direction, but the additional investment needs approval from the brand's finance lead. You have ten minutes with Jordan in the renewal meeting.
 
-Make the case to Jordan for the expanded three-year renewal. Give the pitch you would actually make, using the words you'd say in the room.`,
+Pitch Jordan on the expanded three-year renewal. Give the pitch you would actually make, using the words you'd say in the room.`,
   },
   payments: {
     title: 'Payments service rebuild',
@@ -33,7 +33,7 @@ The payments service has caused three incidents this quarter. Each one took chec
 
 Dana can support the project, but because it changes the roadmap, she'll need to take the recommendation to the product executive. You have five minutes with Dana in the roadmap review.
 
-Make the case to Dana for prioritizing the payments-service replacement. Give the pitch you would actually make, using the words you'd say in the room.`,
+Pitch Dana on prioritizing the payments-service replacement. Give the pitch you would actually make, using the words you'd say in the room.`,
   },
   pipeline: {
     title: 'Groundwater monitoring plan',
@@ -45,7 +45,7 @@ If the current design proceeds and the higher readings persist, the client may n
 
 Priya can support the monitoring, but she will need to take the cost and schedule change to the client sponsor. You have ten minutes with Priya before the design review.
 
-Make the case to Priya for four more weeks of groundwater monitoring. Give the pitch you would actually make, using the words you'd say in the room.`,
+Pitch Priya on four more weeks of groundwater monitoring. Give the pitch you would actually make, using the words you'd say in the room.`,
   },
   auth: {
     title: 'Study extension decision',
@@ -57,7 +57,7 @@ If the variation is real, a launch based on the current results could lead to a 
 
 Marcus can approve the work, but because it moves the launch plan, he will need to explain the change to the executive team. You have five minutes with Marcus in the planning review.
 
-Make the case to Marcus for extending the safety study. Give the pitch you would actually make, using the words you'd say in the room.`,
+Pitch Marcus on extending the safety study. Give the pitch you would actually make, using the words you'd say in the room.`,
   },
 };
 

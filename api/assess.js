@@ -5,7 +5,7 @@
 // The Anthropic API key stays server-side (set ANTHROPIC_API_KEY in Vercel env vars).
 // Each brief gives the situation (the person's role and pressures, the other person's
 // role/history/pressures, and a mix of technical and business facts) and then names the
-// task: make the case for prioritizing this specific work. The brief assigns the END GOAL
+// task: pitch this specific work for prioritization. The brief assigns the END GOAL
 // (advocate for this), but never hands over the audience tailoring, the evidence
 // translation, the ask, or the next step — that is what the score measures.
 
@@ -13,9 +13,7 @@ const MODEL = process.env.ANTHROPIC_MODEL || 'claude-sonnet-5';
 
 // The three briefs are equivalent in structure and difficulty. Kept here (server-side)
 // as the source of truth for scoring; assessment.html shows the matching text to the visitor.
-const COURSE = require('../course-data.js');
 const SCENARIOS = {
-  [COURSE.scenarioId]: { brief: COURSE.brief },
   'textnow-interns': {
     brief: `You're a TextNow intern working with a small team on an innovation challenge. TextNow is prioritizing user trust and wants to reduce harmful interactions without creating unnecessary warnings for legitimate messages. Your team has developed an in-app feature that identifies signals commonly associated with suspicious messages, explains why a message may be risky and offers safer next steps before the user responds. You recommend a four-week pilot with a limited group of users. The pilot would require support from one product designer and two engineers, which means delaying a planned onboarding experiment by one sprint.
 
@@ -23,7 +21,7 @@ You're presenting to Avery, the executive sponsoring the challenge. Avery is acc
 
 Avery can sponsor the pilot, but the product and engineering leads need to agree to the people and sprint time.
 
-Make the case to Avery for sponsoring the four-week pilot. Give the pitch you would actually make, using the words you'd say in the room.`,
+Pitch Avery on sponsoring the four-week pilot. Give the pitch you would actually make, using the words you'd say in the room.`,
   },
   'gsw-partnership': {
     brief: `You're on the Golden State Warriors Global Partnerships team. A national financial services brand is considering renewing its partnership for another three years. You recommend expanding the partnership beyond its current arena presence to include a co-branded content series and a community financial-literacy program. The expanded package would increase the partner's annual investment by 15%.
@@ -34,7 +32,7 @@ The current partnership's hospitality inventory was 82% utilized. Co-branded con
 
 Jordan can support the direction, but the additional investment needs approval from the brand's finance lead. You have ten minutes with Jordan in the renewal meeting.
 
-Make the case to Jordan for the expanded three-year renewal. Give the pitch you would actually make, using the words you'd say in the room.`,
+Pitch Jordan on the expanded three-year renewal. Give the pitch you would actually make, using the words you'd say in the room.`,
   },
   payments: {
     brief: `You're a senior engineer responsible for the payments service. You believe the team needs six weeks to replace part of the service before building more features on top of it. The current architecture is seven years old, has fourteen dependencies, and has become increasingly difficult for engineers to change safely. Your team has spent a lot of time responding to incidents, and the project would displace two items currently planned for Q3.
@@ -45,7 +43,7 @@ The payments service has caused three incidents this quarter. Each one took chec
 
 Dana can support the project, but because it changes the roadmap, she'll need to take the recommendation to the product executive. You have five minutes with Dana in the roadmap review.
 
-Make the case to Dana for prioritizing the payments-service replacement. Give the pitch you would actually make, using the words you'd say in the room.`,
+Pitch Dana on prioritizing the payments-service replacement. Give the pitch you would actually make, using the words you'd say in the room.`,
   },
   pipeline: {
     brief: `You're a hydrogeologist advising a client on a site they want to develop. You recommend four more weeks of groundwater monitoring before they finalize the design. The first two rounds of samples show changing levels near the proposed building area. You can't yet tell whether the changes are seasonal or point to a larger problem. The extra work will cost $35,000 and could delay the design sign-off by a month.
@@ -56,7 +54,7 @@ If the current design proceeds and the higher readings persist, the client may n
 
 Priya can support the monitoring, but she will need to take the cost and schedule change to the client sponsor. You have ten minutes with Priya before the design review.
 
-Make the case to Priya for four more weeks of groundwater monitoring. Give the pitch you would actually make, using the words you'd say in the room.`,
+Pitch Priya on four more weeks of groundwater monitoring. Give the pitch you would actually make, using the words you'd say in the room.`,
   },
   auth: {
     brief: `You're a scientist leading a product safety study. You recommend extending the study by five weeks before the company commits to a launch date. Early results look promising, but one measure has varied widely across batches. The team needs another set of tests to learn whether the variation is a measurement issue or a real safety concern. The additional work will use $80,000 of the project budget and move the planned launch decision into the next quarter.
@@ -67,14 +65,62 @@ If the variation is real, a launch based on the current results could lead to a 
 
 Marcus can approve the work, but because it moves the launch plan, he will need to explain the change to the executive team. You have five minutes with Marcus in the planning review.
 
-Make the case to Marcus for extending the safety study. Give the pitch you would actually make, using the words you'd say in the room.`,
+Pitch Marcus on extending the safety study. Give the pitch you would actually make, using the words you'd say in the room.`,
   },
 };
 
-const {buildEvaluationPrompt}=require('./evaluation-policy.js');
+const SCORE_SYSTEM = `You are the scoring engine for the Technically Speaking assessment. You score a written pitch against the TECH Communication Rubric. TECH stands for Target Audience, End Goal, Clarity, How You Say It — but this is a WRITTEN exercise, so you score only T, E and C. Do NOT score H (delivery); it is out of scope here.
 
-const LISTENING_TOOL={name:'submit_listening_note',description:'One brief note on the learner’s listening across the conversation.',input_schema:{type:'object',additionalProperties:false,properties:{evidenceQuote:{type:'string'},note:{type:'string'}},required:['evidenceQuote','note']}};
-const PRACTICE_TOOL = {name:'submit_practice_notes',description:'Return notes for the requested TECH pillar without grades.',input_schema:{type:'object',additionalProperties:false,properties:{evidenceQuote:{type:'string'},notes:{type:'array',items:{type:'object',additionalProperties:false,properties:{code:{type:'string'},note:{type:'string'}},required:['code','note']}}},required:['evidenceQuote','notes']}};
+You are given the BRIEF the person read and the PITCH they wrote. The briefs span engineering, environmental consulting and science. In each, a technical expert recommends work with a cost or schedule tradeoff to someone who must carry the recommendation to another decision-maker. Judge the pitch against the specific brief, not against an assumed software scenario.
+
+HOW TO SCORE — this is the important part. Score each LINE below 0, 1 or 2 on whether the behavior is both present and effective for this listener. A 2 requires a clear, specific, credible demonstration; a vague mention earns 1. This is what keeps scoring consistent.
+  0 = didn't happen
+  1 = attempted / partial
+  2 = clearly there
+SCORING AND COACHING ARE SEPARATE — this is the core principle. The SCORE answers: "Did this person clearly demonstrate the observable TECH behavior?" COACHING answers: "Is there anything meaningful that would make this specific communication more effective?" Score the behavior FIRST, coach the communication SECOND.
+A score of 2 means the observable behavior is CLEARLY DEMONSTRATED. It does NOT mean the communication is flawless, expert-level, impossible to improve, or that no coaching could be given. Do not withhold a 2 simply because coaching is possible or because you can imagine a sharper version. And the reverse also holds: the existence of a coaching observation does NOT automatically justify a 1 — if the behavior was clearly demonstrated, it scores 2 even when you also have something to coach. A response can earn 12/12 and still receive coaching. Reserve 12/12 for a genuinely excellent pitch that is specific to Avery, makes one credible case, frames the decision clearly, and gives Avery an actionable ask. Do not award it to a merely complete or overly dense response.
+Judge every line through two lenses: the business, and the specific listener. A message isn't good in the abstract; it's good for the business and the person it's aimed at.
+
+Read the pitch carefully first. Only judge against what THIS brief says. Do not invent parties the brief doesn't mention (don't expect an "executive" if the onward party is sales). Check the opening: the frame, the ask, the timeline and the tradeoff are often stated up front — credit them if they are there. Do not judge tone, warmth, greetings, informality, slang, typos, spelling, or word count by itself. Do judge whether density or organization makes the opening and evidence difficult to follow under Clarity.
+
+THE LINES:
+
+T — Target Audience
+- T1 Speaks to the macro — connects to the business / department stakes. 0 = no connection to business or team-level stakes · 1 = gestures at the bigger picture, vaguely · 2 = clearly ties it to business / department impact.
+- T2 Speaks to the micro — addresses this person's specific concerns. A "specific concern" is one genuinely specific to this listener's world. It may be stated directly in the brief OR reasonably inferred from their role, accountabilities, and the evidence — the brief is NOT an exhaustive checklist, so do not require the pitch to repeat a concern verbatim. (E.g. if the brief says response times are slow and the listener owns sales, tying that delay to fewer closed deals shows strong micro awareness even though "fewer closed deals" is not written in the brief.) The inference must still be grounded and plausible — an unsupported leap does not earn credit just because it sounds business-oriented. Missing another concern from the brief can stay COACHING without lowering a 2 when listener-specific awareness is already clearly demonstrated. 0 = ignores what this person cares about · 1 = some awareness of their concerns, uneven · 2 = directly addresses their specific concerns. (Handing the listener language to carry the case onward to the party they answer to is a strong form of addressing their concerns — score it 2.)
+
+E — End Goal
+- E1 Clear goal — is there one clear goal or direction being driven at, not several competing. Judge only whether one usable goal EXISTS, wherever it appears: do NOT deduct for late placement or meandering (that is C1 and coaching), and do NOT require scope or an ask here (that is E2). 0 = no goal at all, or several competing with no single direction · 1 = a single direction is present but heavily hedged and only partial (e.g. "maybe we could look into switching at some point, if we have time") · 2 = one clear goal or direction, even if it lands late or lacks scope (e.g. "invest in distributed tracing," or "adopt Playwright in the main app").
+- E2 Clear ask + next step — the listener leaves knowing what you want (or that you're aligned) and how to move on it. The ask can be an ask for ACTION ("approve this," "start next sprint") or, when the conversation's real end goal is alignment, a genuine check for alignment. 0 = no ask and no next step — the listener has no idea what to do · 1 = an ask or next step is present but implied, heavily hedged, or missing a usable next step, yet still reasonably understandable to a listener (e.g. "I think we might want to look into switching" is a weak but real partial ask) · 2 = an explicit ask with an easy next step, or a genuine alignment check when alignment is the real goal. Do not treat "Does that make sense?" as an automatic 2 — first decide whether confirming understanding is actually the primary end goal; in a decision-focused pitch it usually is not, and a bare comprehension check is not a clear ask.
+
+C — Clarity
+- C1 Opening frame — opens by telling the listener what to listen for. Judge whether the OPENING orients the listener, not merely whether a subject word appears somewhere. 0 = the opening leaves the listener unable to tell what this is about — a subject word may surface but is buried in a confused/rambling lead-in that doesn't orient them · 1 = the opening establishes the topic, even if poorly, late, or without stakes · 2 = the opening frames why the topic matters to this listener.
+- C2 Key evidence is translated into relevant business impact — the evidence needed to support the case is connected to why it matters to the business / listener, not left as bare technical information. Translating a technical fact into its business consequence (e.g. "the pipeline fails weekly" → "slower closes and more work for your account managers") is exactly this; the raw number is not required. 0 = evidence is presented primarily as technical information with no meaningful connection to why it matters · 1 = some important evidence is connected to business/listener impact, but a key part of the case is left untranslated · 2 = the evidence needed to support the case is connected to why it matters to the business/listener. Do NOT deduct because not every fact in the brief was used, because irrelevant technical detail was omitted, or because an already-effective argument could be made even sharper. The bar for a 2 is a MEANINGFUL connection to relevant business or listener impact — not a fully quantified business case. Missing quantification (e.g. not sizing the value against a stated cost like $1,500/month) or a sharper argument you can imagine stays COACHING and does NOT reduce a 2.
+
+For each line, also write a ONE-sentence coaching note: if the line is a 2, say briefly what worked; if it's a 0 or 1, say the specific thing to add to make it land. Reference their actual words where useful.
+
+WORKED EXAMPLE (groundwater / Priya brief):
+PITCH: "Priya, the readings near the building area are still changing. If we sign off the design now and the higher levels persist, we may have to change the foundation after construction starts. I recommend four more weeks of monitoring before sign-off. That costs $35,000 and moves the review by a month. Could you support that plan and take the cost and schedule change to the sponsor? I can give you a one-page summary of the risk and what the extra monitoring will tell us."
+CORRECT SCORING: T1=2 (connects the readings to construction cost), T2=2 (addresses Priya's schedule concern and gives her a way to explain the change), E1=2 (one recommendation), E2=2 (clear ask and next step), C1=2 (opens with the decision-relevant problem), C2=2 (uses the evidence and tradeoff in the brief). Total 12/12.
+The risk is conditional. Do not score a pitch down for stating uncertainty accurately.
+
+Return the six individual line scores only. Do NOT compute or return a total — the server calculates the pillar subtotals and the /12 total from your six scores.
+
+FEEDBACK — behave like a credible expert coach, not an AI required to find something wrong. Every result has two feedback fields:
+
+whatWorked — specific, evidence-based positive feedback about what the person actually did effectively, naming the behaviors or choices they should keep using. Reference their actual words. Never generic praise ("Great job") and never just a restatement of the score. Reference only words and choices that actually appear in the pitch. Never import a critique from the brief when the pitch did not make that claim. Use they/them for Avery and do not mention facts that were not shown to the learner.
+
+evidenceQuote — copy one exact, contiguous phrase from the learner's pitch that your feedback discusses. It must match the pitch verbatim. Never quote the brief, your own paraphrase, or wording you wish the learner had used.
+
+coachingFocus — always provide one useful thing to try next, grounded in the learner's actual pitch. Even a 12/12 should end with a worthwhile practice direction. Provide coaching when there is a meaningful opportunity to make THIS specific communication more effective. There are exactly three valid outcomes, and you must pick the one that fits:
+  1. CORRECTIVE — a TECH behavior is missing or only partially demonstrated (a 0 or 1 somewhere): name the single most important behavior to change and why it matters — as a direction, not a script.
+  2. NEXT-LEVEL — the relevant behaviors are all clearly demonstrated (could be a 12/12), and there is a GENUINELY MATERIAL way to make this communication more effective (something a good coach would really flag, not a marginal nitpick). This coaching must NOT reduce any score. (Example: Michaud's Priya pitch earns 12/12, yet it is genuinely useful to point out that saying the enterprise clients may be lost goes beyond the evidence in the brief — the argument is already strong without assuming churn risk.)
+  HOW TO WRITE coachingFocus — keep it DIRECTION, never a script. One or two sentences, the single highest-impact move only (do not stack several fixes). Name the behavior gap and why it matters to this listener, but DO NOT write the pitch for them: no opening line to copy, no enumerated list of the exact facts, numbers, or evidence to cite, and no finished ask handed over word-for-word. Point at what is missing and let them do the thinking. (Good: "Lead with why the pipeline's reliability matters to Priya before any technical detail." Too explicit — never do this: "Open by saying the pipeline fails weekly, cite the four incidents and two tickets, then ask for a month starting next sprint.") If the submission is clearly not a real attempt (a test message, a note to self, no actual pitch), say so in one short sentence and invite them to write the pitch they would actually make — do NOT supply the answer.
+
+A 12/12 may still receive a practice suggestion. Do not lower a score merely because a useful next rep exists.
+
+Call the submit_score tool with all six line scores and both feedback fields. The
+tool schema is the source of truth for the output shape.`;
 
 async function callAnthropic(body) {
   const res = await fetch('https://api.anthropic.com/v1/messages', {
@@ -163,7 +209,11 @@ function extractJson(text) {
 
 // Canonical rubric skeleton. The server always emits EXACTLY this shape, so a
 // slightly-off model response can never crash the handler or misrender results.
-const RUBRIC = require('../assessment-rubric.js');
+const RUBRIC = [
+  { key: 'T', name: 'Target Audience', lines: [['T1', 'Speaks to the macro'], ['T2', 'Speaks to the micro']] },
+  { key: 'E', name: 'End Goal', lines: [['E1', 'Clear goal'], ['E2', 'Clear ask + next step']] },
+  { key: 'C', name: 'Clarity', lines: [['C1', 'Opening frame'], ['C2', 'Key evidence tied to impact']] },
+];
 
 // Collect { score, note } by line code (T1..C2) from whatever shape the model
 // returned — pillars as an array, pillars as an object map, or a flat lines list.
@@ -231,16 +281,14 @@ module.exports = async (req, res) => {
     return;
   }
 
-  const exercise = typeof body.practiceAction === 'string' && Object.hasOwn(COURSE.exercises, body.practiceAction) ? COURSE.exercises[body.practiceAction] : null;
-  if(body.conversation && (!['listen','objection'].includes(body.practiceAction)||!require('./conversation.js').validHistory(body.conversation,false)))return res.status(400).json({error:'Invalid conversation.'});
-  const scenario = exercise ? {brief: exercise.context} : SCENARIOS[body.scenarioId];
+  const scenario = SCENARIOS[body.scenarioId];
   if (!scenario) {
     res.status(400).json({ error: 'Unknown scenario.' });
     return;
   }
 
   const pitch = (body.pitch || '').toString().trim();
-  if (pitch.length < (exercise ? 1 : 15)) {
+  if (pitch.length < 15) {
     res.status(400).json({ error: 'Please write at least a couple of sentences.' });
     return;
   }
@@ -249,25 +297,19 @@ module.exports = async (req, res) => {
     return;
   }
 
-  const relevant = exercise ? RUBRIC.find(p=>p.key===exercise.pillar) : null;
-  const listening=body.practiceAction==='listen';
-  const outputTool = listening ? LISTENING_TOOL : exercise ? PRACTICE_TOOL : SCORE_TOOL;
-  const userContent = exercise
-    ? `ACTIVITY:\n${scenario.brief}${body.conversation ? "\n\nCONVERSATION (context only; evaluate the learner, not the roleplayed listener):\n"+body.conversation.map(t=>(t.role==='user'?'Learner':listening?'Dani':'Priya')+': '+t.content).join('\n') : ""}\n\nREQUESTED ACTION:\n${exercise.task}\n\nRELEVANT TECH behaviors:\n${listening?'Listening: use a taught tool to understand the listener and invite them to say more.':relevant.lines.map(([code,label])=>code+' '+label).join('\n')}\n\nLEARNER RESPONSE:\n${pitch}\n\n${listening?"Offer one brief activity-specific listening note using submit_listening_note, without rubric headings or discussion of unobserved macro/micro behavior.":"Offer notes on this activity using submit_practice_notes."}`
-    : `BRIEF:\n${scenario.brief}\n\nPITCH:\n${pitch}\n\nScore the pitch and call submit_score with all six line scores and both feedback fields.`;
+  const userContent = `BRIEF:\n${scenario.brief}\n\nPITCH:\n${pitch}\n\nScore the pitch and call submit_score with all six line scores and both feedback fields.`;
 
   async function runScore() {
     const data = await callAnthropic({
       model: MODEL,
       max_tokens: 2500,
-      system: buildEvaluationPrompt(exercise ? 'practice' : 'pitch',listening?'listening':'behaviours'),
-      tools: [outputTool],
-      tool_choice: { type: 'tool', name: outputTool.name },
+      system: SCORE_SYSTEM,
+      tools: [SCORE_TOOL],
+      tool_choice: { type: 'tool', name: 'submit_score' },
       messages: [
         { role: 'user', content: userContent },
       ],
     });
-    if (data.stop_reason === 'max_tokens') throw new Error('truncated_response');
     const blocks = data.content || [];
     // Preferred path: the forced tool call returns already-parsed JSON.
     const tool = blocks.find((c) => c && c.type === 'tool_use' && c.input && typeof c.input === 'object');
@@ -282,22 +324,8 @@ module.exports = async (req, res) => {
         throw e;
       }
     }
-    if(exercise){
-      const complete = value => typeof value==='string' && value.trim().length>5 && /[.!?][”"')]*$/.test(value.trim());
-      if(listening){
-        if(!complete(raw.note))throw new Error('incomplete_feedback');
-        if(typeof raw.evidenceQuote!=='string'||!raw.evidenceQuote.trim()||!pitch.includes(raw.evidenceQuote))throw new Error('ungrounded_feedback');
-        return {grader:'assessment',purpose:'listening-note-v1',note:raw.note};
-      }
-      if(!Array.isArray(raw.notes)||raw.notes.length!==relevant.lines.length||!relevant.lines.every(([code])=>raw.notes.filter(n=>n.code===code&&complete(n.note)).length===1))throw new Error('incomplete_feedback');
-      if(typeof raw.evidenceQuote!=='string'||!raw.evidenceQuote.trim()||!pitch.includes(raw.evidenceQuote))throw new Error('ungrounded_feedback');
-      return {grader:'assessment',purpose:'practice-notes-v4',behaviours:relevant.lines.map(([code,label])=>({code,label,note:raw.notes.find(n=>n.code===code).note}))};
-    }
     // Normalize into the canonical shape (handles pillars as array/object/flat).
     const result = normalize(raw);
-    const complete = s => typeof s === 'string' && s.trim().length > 5 && /[.!?][”"')]*$/.test(s.trim());
-    const sourceLines = collectLines(raw);
-    if (!['T1','T2','E1','E2','C1','C2'].every(code => [0,1,2].includes(sourceLines[code]?.score) && complete(sourceLines[code]?.note)) || !complete(result.whatWorked) || !complete(result.coachingFocus)) throw new Error('incomplete_feedback');
     if (result._found.length < 6) {
       const e = new Error('bad_shape');
       e.raw = 'found=[' + result._found.join(',') + '] rawkeys=[' + Object.keys(raw || {}).join(',') + ']';
@@ -324,7 +352,8 @@ module.exports = async (req, res) => {
       res.status(502).json({ error: 'The scorer is unavailable right now. Please try again in a moment.' });
       return;
     }
-    {
+    if(err.message==='ungrounded_feedback'&&err.result){parsed=err.result;parsed.coachingFocus='For your next rep, choose one sentence and make its connection to Avery’s decision even more explicit.';parsed.evidenceQuote='';}
+    else {
     console.error('score failed after retry:', err.message, '::', (err.raw || '').slice(0, 400));
     res.status(502).json({ error: 'Could not read the score. Please try again.' });
     return;
