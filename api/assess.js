@@ -81,6 +81,9 @@ Give the town hall address you would actually deliver. Make the change, its impa
   }
 };
 
+// Personalized lead briefs (/for/<slug> pages).
+Object.assign(SCENARIOS, require("./_lead-scenarios").scenarios);
+
 const SCORE_SYSTEM = `You are the scoring engine for the Technically Speaking assessment. You score a written pitch against the TECH Communication Rubric. TECH stands for Target Audience, End Goal, Clarity, How You Say It — but this is a WRITTEN exercise, so you score only T, E and C. Do NOT score H (delivery); it is out of scope here.
 
 You are given the BRIEF the person read and the PITCH they wrote. The briefs span client expansion, executive investment, cross-department work, project updates and town hall communication. Judge the pitch against the specific audience, facts, tradeoffs and decision in the selected brief, not against an assumed software scenario.
@@ -364,7 +367,7 @@ module.exports = async (req, res) => {
       res.status(502).json({ error: 'The scorer is unavailable right now. Please try again in a moment.' });
       return;
     }
-    if(err.message==='ungrounded_feedback'&&err.result){parsed=err.result;parsed.coachingFocus='For your next rep, choose one sentence and make its connection to Avery’s decision even more explicit.';parsed.evidenceQuote='';}
+    if(err.message==='ungrounded_feedback'&&err.result){parsed=err.result;parsed.coachingFocus='For your next rep, choose one sentence and make its connection to your listener’s decision even more explicit.';parsed.evidenceQuote='';}
     else {
     console.error('score failed after retry:', err.message, '::', (err.raw || '').slice(0, 400));
     res.status(502).json({ error: 'Could not read the score. Please try again.' });

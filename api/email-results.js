@@ -71,6 +71,9 @@ Give the town hall address you would actually deliver. Make the change, its impa
   }
 };
 
+// Personalized lead briefs (/for/<slug> pages).
+Object.assign(SCENARIOS, require("./_lead-scenarios").scenarios);
+
 const RUBRIC = [
   ['T', 'Target Audience'],
   ['E', 'End Goal'],
