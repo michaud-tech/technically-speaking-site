@@ -3,21 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<title>Live Communication Training for Teams | Technically Speaking</title>
-<meta name="twitter:description" content="Six people. Six weeks. Real work, live practice, personalized feedback, and six months of support.">
-<meta name="twitter:title" content="Live Team Communication Program | Technically Speaking">
+<title>Live TECH communication program for teams | Technically Speaking</title>
+<meta name="twitter:description" content="Six weeks of live practice for teams, followed by six months of coaching support.">
+<meta name="twitter:title" content="Live TECH communication program for teams | Technically Speaking">
 
-<meta name="description" content="A six-week live cohort for six participants, with a shared rubric, direct feedback, and sponsor check-ins over six months.">
+<meta name="description" content="A six-week live TECH communication program for teams, with real-work practice, direct feedback, baseline and endline scoring, and six months of support.">
 <link rel="canonical" href="https://www.technicallyspeakinghq.com/program">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Live Team Communication Program | Technically Speaking">
-<meta property="og:description" content="Six people. Six weeks. Real work, live practice, personalized feedback, and six months of support.">
+<meta property="og:title" content="Live TECH communication program for teams | Technically Speaking">
+<meta property="og:description" content="Six weeks of live practice for teams, followed by six months of coaching support.">
 <meta property="og:url" content="https://www.technicallyspeakinghq.com/program">
 <meta property="og:site_name" content="Technically Speaking">
 <meta property="og:image" content="https://www.technicallyspeakinghq.com/share-preview.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Technically Speaking — a communication system for teams">
+<meta property="og:image:alt" content="Technically Speaking — live TECH communication program for teams">
 <meta name="twitter:image" content="https://www.technicallyspeakinghq.com/share-preview.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="author" content="Michaud Garneau">
@@ -34,8 +34,8 @@
       "@id": "https://www.technicallyspeakinghq.com/#org",
       "name": "Technically Speaking",
       "url": "https://www.technicallyspeakinghq.com/",
-      "description": "Technically Speaking runs live communication cohorts that give teams a shared system for faster decisions and stronger workplace conversations.",
-      "serviceType": "Department-wide communication training",
+      "description": "Technically Speaking provides live cohort-based training that helps teams sharpen ideas, make their value clear and get them acted on.",
+      "serviceType": "Live cohort-based communication training for teams",
       "sameAs": ["https://www.linkedin.com/company/technicallyspeakinghq/"],
       "founder": { "@id": "https://www.technicallyspeakinghq.com/#michaud" }
     },
@@ -53,10 +53,10 @@
     },
     {
       "@type": "Course",
-      "name": "Technically Speaking",
-      "description": "A six-week communication program for teams. Small, practice-heavy cohorts of six bring real ideas, proposals and stakeholder conversations, practise against real pushback, and are scored on the TECH rubric at the start and the end.",
+      "name": "The live TECH program",
+      "description": "A six-week live communication program for teams. Cohorts of six practice real ideas, proposals and stakeholder conversations, receive direct feedback, and are scored on the TECH rubric at the start and the end.",
       "provider": { "@id": "https://www.technicallyspeakinghq.com/#org" },
-      "audience": { "@type": "Audience", "audienceType": "Departments whose people need clients, executives or stakeholders to understand, support and act on their ideas" },
+      "audience": { "@type": "Audience", "audienceType": "Teams whose ideas need clients, executives or colleagues to understand their value and act" },
       "hasCourseInstance": {
         "@type": "CourseInstance",
         "courseMode": "blended",
@@ -76,7 +76,7 @@
         { "@type": "Question", "name": "How much does the program cost?", "acceptedAnswer": { "@type": "Answer", "text": "$18,000 per cohort. Six participants, six weeks, which works out to $3,000 per person. It includes pre-program discovery and customization, six live 90-minute group sessions with personalized feedback, baseline and endline assessments on the TECH rubric, the TECH AI coach for practice between and after sessions, and sponsor check-ins three and six months after the program." } },
         { "@type": "Question", "name": "How is the program structured?", "acceptedAnswer": { "@type": "Answer", "text": "Six weeks, once a week, 90 minutes a session, six participants per cohort. We design the course around your business, everyone takes a baseline assessment, participants practice real pitches against real objections with live coaching, and the final session is a pitch to the program sponsor. We reassess at the end and check in three and six months later." } },
         { "@type": "Question", "name": "What is the TECH Model?", "acceptedAnswer": { "@type": "Answer", "text": "TECH stands for Target Audience, End Goal, Clarity, and How You Say It. It is a four-part model for getting work understood and acted on, before and during important conversations. Michaud Garneau built it, and it is the spine of the whole program." } },
-        { "@type": "Question", "name": "Who is it for?", "acceptedAnswer": { "@type": "Answer", "text": "Departments whose people sell ideas internally or externally. Leaders bring it in when good work needs a clearer case, a confident ask and a decision." } }
+        { "@type": "Question", "name": "Who is it for?", "acceptedAnswer": { "@type": "Answer", "text": "Teams whose work depends on clients, executives or colleagues understanding its value and acting on it. This can include engineering, product, research, finance, partnerships, sales engineering and consulting teams." } }
       ]
     }
   ]
@@ -122,12 +122,17 @@
   .foot-num{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted)}
 
   /* hero */
-  .hero{padding:52px 0 68px}
+  .hero{padding:52px 0 68px;display:grid;grid-template-columns:1.35fr 1fr;column-gap:56px}
+  .hero-intro{display:contents}
+  .hero .logo-hero,.hero .tagline{grid-column:1/-1}
   .hero .tagline{margin-top:20px;font-size:14px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#b8b2a8}
-  .hero-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:56px;margin-top:56px;align-items:start}
+  .hero-copy{grid-column:1;margin-top:56px}
   .hero h1{font-size:clamp(38px,5.4vw,60px)}
   .hero .sub{margin-top:24px;font-size:17px;line-height:1.6;color:#c9c3b8;max-width:52ch}
-  .stats{display:grid;gap:26px}
+  .hero-quote{margin-top:28px;border-left:4px solid var(--yellow);padding-left:20px;max-width:50ch}
+  .hero-quote blockquote{font-size:16px;font-weight:700;line-height:1.5;color:var(--white)}
+  .hero-quote .who{margin-top:9px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#b8b2a8}
+  .stats{grid-column:2;display:grid;gap:26px;margin-top:56px;align-self:start}
   .stat{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center;border-top:1px solid var(--darkline);padding-top:20px}
   .stat:first-child{border-top:none;padding-top:0}
   .stat .n{font-weight:900;font-size:58px;line-height:0.8;color:var(--yellow);letter-spacing:-0.04em}
@@ -150,6 +155,35 @@
   .card + .card{margin-top:22px}
   .card h3{font-weight:800;font-size:21px;letter-spacing:-0.02em}
   .card p{font-size:15.5px;color:var(--muted);margin-top:10px}
+
+
+  .katee-pull{border-left:5px solid var(--yellow);padding:8px 0 8px 28px;max-width:72ch}
+  .katee-pull blockquote{font-weight:800;font-size:clamp(22px,3vw,30px);line-height:1.3;letter-spacing:-.02em}
+  .katee-pull .who{margin-top:16px;font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+  .week-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:38px}
+  .week{background:var(--card);border-top:4px solid var(--yellow);padding:24px 22px;min-height:150px}
+  .week .wn{font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .week h3{font-size:21px;line-height:1.2;margin-top:12px}
+  .week>p:last-child{font-size:14px;line-height:1.5;color:var(--muted);margin-top:12px}
+  .value-intro{font-size:18px;line-height:1.6;color:var(--muted);margin-top:24px}
+  .value-streams{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:34px}
+  .value-stream{background:var(--card);border-top:4px solid var(--yellow);padding:30px 28px}
+  .value-stream h3{font-size:25px;line-height:1.18;margin-top:14px}
+  .value-stream ul{list-style:none;margin-top:22px;display:grid;gap:14px}
+  .value-stream li{font-size:15px;line-height:1.5;color:var(--muted);padding-left:18px;position:relative}
+  .value-stream li:before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;background:var(--yellow)}
+  .spread-note{margin-top:22px;padding:24px 28px;background:var(--dark);color:var(--white);display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:baseline}
+  .spread-note strong{color:var(--yellow);font-size:18px}
+  .spread-note p{color:#c9c3b8;font-size:15px;line-height:1.55}
+  .scale-grid{display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1.2fr;gap:12px;align-items:stretch;margin-top:36px}
+  .scale-step{background:var(--card);border-top:4px solid var(--yellow);padding:24px 20px;min-height:210px}
+  .scale-step .level{font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .scale-step h3{font-size:21px;line-height:1.12;letter-spacing:-.02em;margin-top:14px}
+  .scale-step p{font-size:15px;line-height:1.5;color:var(--muted);margin-top:12px}
+  .scale-step.result{background:var(--dark);color:var(--white)}
+  .scale-step.result .level{color:var(--yellow)}
+  .scale-step.result p{color:#c9c3b8}
+  .scale-op{align-self:center;font-size:28px;font-weight:900;color:var(--yellow)}
 
   /* method */
   .tech{display:grid;grid-template-columns:1fr 1fr;gap:34px 44px;margin-top:40px}
@@ -186,6 +220,17 @@
   .bestfit{margin-top:22px;background:var(--dark);color:var(--white);padding:28px 32px;display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center}
   .bestfit .label{color:var(--yellow);margin:0}
   .bestfit p{font-size:18px;font-weight:600;line-height:1.45}
+  .audience-types{list-style:none;display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:24px}
+  .audience-types li{position:relative;border-top:2px solid var(--dark);padding:16px 0 0 18px;font-size:16px;font-weight:700;line-height:1.35}
+  .audience-types li:before{content:"";position:absolute;left:0;top:21px;width:8px;height:8px;background:var(--yellow)}
+  .audience-copy{font-size:18px;line-height:1.6;color:var(--muted);max-width:62ch;margin-top:34px}
+
+  /* how the value scales */
+  .scale-path{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:38px}
+  .scale-stage{background:var(--card);border-top:4px solid var(--yellow);padding:28px 26px}
+  .scale-stage .when{font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .scale-stage h3{font-size:20px;line-height:1.2;margin-top:10px;letter-spacing:-.02em}
+  .scale-stage p{font-size:14.5px;line-height:1.55;color:var(--muted);margin-top:9px}
 
   /* investment */
   .invest{display:grid;grid-template-columns:1fr 1fr;gap:56px;margin-top:40px}
@@ -213,8 +258,23 @@
   footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:22px;padding-bottom:22px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase}
 
   @media (max-width:820px){
+    .week-grid,.scale-grid,.value-streams{grid-template-columns:1fr}
+    .spread-note{grid-template-columns:1fr;gap:8px}
+    .week,.scale-step{min-height:0}
+    .scale-op{text-align:center;line-height:1}
     .wrap{padding:0 24px}
-    .hero-grid,.two,.tech,.proof,.whocards,.invest,.closing-grid{grid-template-columns:1fr;gap:34px}
+    .hero{display:block;padding-top:0;padding-bottom:48px}
+    .hero-intro{display:flex;flex-direction:column;min-height:calc(100svh - 77px);padding:48px 0 42px}
+    .hero-copy{margin-top:38px}
+    .hero .tagline{margin-top:18px;font-size:12px;line-height:1.5}
+    .hero h1{font-size:clamp(38px,11vw,52px)}
+    .hero .sub{margin-top:22px;font-size:16px;line-height:1.55}
+    .stats{margin-top:0;padding-top:42px;border-top:1px solid var(--darkline);gap:28px}
+    .audience-types{grid-template-columns:1fr 1fr;gap:24px 18px;margin-top:28px}
+    .audience-types li{font-size:15px;padding-top:13px}
+    .audience-types li:before{top:18px}
+    .audience-copy{font-size:16px;line-height:1.55;margin-top:30px}
+    .two,.tech,.proof,.whocards,.invest,.closing-grid,.scale-path{grid-template-columns:1fr;gap:34px}
     .pushback,.bestfit{grid-template-columns:1fr;gap:14px}
     .closing .mark{justify-self:start}
     section.blk{padding:56px 0}
@@ -260,7 +320,7 @@
   <div class="wrap">
     <a href="/" class="brand" aria-label="Technically Speaking"><img class="brand-t" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNjAiIGhlaWdodD0iMTYwIiB2aWV3Qm94PSIwIDAgMTYwIDE2MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsbGVkYnk9InRpdGxlIGRlc2MiPgogIDx0aXRsZSBpZD0idGl0bGUiPlRlY2huaWNhbGx5IFNwZWFraW5nIFQgbW9ub2dyYW08L3RpdGxlPgogIDxkZXNjIGlkPSJkZXNjIj5BIHNtYWxsIGNpcmN1bGFyIG1vbm9ncmFtIHdpdGggYSBzdHlsaXplZCBUIGluIHllbGxvdy48L2Rlc2M+CiAgPHJlY3Qgd2lkdGg9IjE2MCIgaGVpZ2h0PSIxNjAiIGZpbGw9Im5vbmUiLz4KICA8Y2lyY2xlIGN4PSI4MCIgY3k9IjgwIiByPSI1OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRjRDNDAwIiBzdHJva2Utd2lkdGg9IjYiLz4KICA8cmVjdCB4PSI1NyIgeT0iNDciIHdpZHRoPSI0NiIgaGVpZ2h0PSI1IiByeD0iMi41IiBmaWxsPSIjRjRDNDAwIi8+CiAgPHJlY3QgeD0iNTciIHk9IjYwIiB3aWR0aD0iNDYiIGhlaWdodD0iNSIgcng9IjIuNSIgZmlsbD0iI0Y0QzQwMCIvPgogIDxyZWN0IHg9Ijc3IiB5PSI2MCIgd2lkdGg9IjUiIGhlaWdodD0iNDIiIHJ4PSIyLjUiIGZpbGw9IiNGNEM0MDAiLz4KPC9zdmc+Cg==" alt="Technically Speaking"></a>
     <nav class="nav">
-      <a href="/assessment" class="btn solid">Try the assessment</a>
+      <a href="/assessment" class="btn solid">Try a pitch</a>
       <div class="navmenu">
         <button class="menu-btn" aria-haspopup="true" aria-expanded="false" onclick="event.stopPropagation();var m=this.closest('.navmenu');var o=m.classList.toggle('open');this.setAttribute('aria-expanded',o)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg><span>Menu</span></button>
         <div class="menu-panel" role="menu">
@@ -277,21 +337,28 @@
 <!-- HERO -->
 <div class="band dark">
   <div class="wrap hero">
-    <svg class="logo logo-hero" role="img" aria-label="Technically Speaking"><use href="#tsword"/></svg>
-    <p class="tagline">A shared communication system for your team</p>
-    <div class="hero-grid">
-      <div>
-        <p class="label">The program</p>
-        <h1 style="margin-top:16px;">6 week intensive.<br>Ongoing support for 6 months.</h1>
-        <p class="sub">Small, practice-heavy cohorts built around your business. Participants bring the proposals, decisions and stakeholder conversations they need to drive forward, practice them against the pushback they're likely to face, and get direct feedback on every rep.</p>
-      </div>
-      <div class="stats">
-        <div class="stat"><div class="n">90</div><div class="t">minutes, once a week, for 6 weeks</div></div>
-        <div class="stat"><div class="n">2</div><div class="t">sponsor check-ins, three and six months after the intensive</div></div>
-        <div class="stat"><div class="n">6</div><div class="t">participants per cohort</div></div>
+    <div class="hero-intro">
+      <svg class="logo logo-hero" role="img" aria-label="Technically Speaking"><use href="#tsword"/></svg>
+      <p class="tagline">Live cohort-based communication training for teams</p>
+      <div class="hero-copy">
+        <p class="label">The live TECH program</p>
+        <h1 style="margin-top:16px;">Change starts right away.</h1>
+        <p class="sub">Six weekly 90-minute sessions built around your business, followed by six months of support. Participants bring the proposals, decisions and stakeholder conversations they need to move, practice them against real pushback, and get direct feedback on every rep.</p>
       </div>
     </div>
+    <div class="stats">
+      <div class="stat"><div class="n">90</div><div class="t">minutes of live practice each week, for 6 weeks</div></div>
+      <div class="stat"><div class="n">6</div><div class="t">participants per cohort</div></div>
+      <div class="stat"><div class="n">6</div><div class="t">months of support, including sponsor check-ins at months three and six</div></div>
+    </div>
   </div>
+</div>
+
+<!-- EARLY PROOF -->
+<div class="band paper" style="border-top:1px solid var(--line)">
+  <div class="wrap"><section class="blk">
+    <div class="katee-pull"><blockquote>"After the very first session, members of our team were immediately implementing the lessons and framework discussed."</blockquote><p class="who">Katee Carrasco, Director, Global Partnerships, MLSE</p></div>
+  </section></div>
 </div>
 
 <!-- HOW IT WORKS -->
@@ -317,37 +384,27 @@
   </div>
 </div>
 
-<!-- METHOD -->
+<!-- SIX-WEEK OUTLINE -->
 <div class="band paper" style="border-top:1px solid var(--line)">
-  <div class="wrap">
-    <section class="blk">
-      <div class="sechead">
-        <div>
-          <p class="label grey">The method</p>
-          <h2 class="big">It's built on the TECH Model.</h2>
-        </div>
-        <p style="font-size:16px;color:var(--muted);max-width:34ch;line-height:1.5;">A four-part model for getting work understood and acted on, before and during important conversations.</p>
-      </div>
-      <div class="rule"></div>
-      <div class="tech">
-        <div class="tk"><div class="h"><span class="l">T</span><span class="name">Target Audience</span></div><p class="q">Know who you’re talking to, what matters to the business, and what matters to them.</p></div>
-        <div class="tk"><div class="h"><span class="l">E</span><span class="name">End Goal</span></div><p class="q">Ask clearly for what you want, and know how you’ll handle pushback.</p></div>
-        <div class="tk"><div class="h"><span class="l">C</span><span class="name">Clarity</span></div><p class="q">Use stories and metaphors to make complex work easy to grasp and its impact on your audience obvious.</p></div>
-        <div class="tk"><div class="h"><span class="l">H</span><span class="name">How You Say It</span></div><p class="q">Use pace, volume, tone, and pauses to make the important parts land.</p></div>
-      </div>
-      <div class="pushback">
-        <h3>And then we add pushback.</h3>
-        <p>Participants practice what to do when someone disagrees, challenges the recommendation or simply says no. The goal is learning how to listen, find the real concern and adapt in the moment.</p>
-      </div>
-    </section>
-  </div>
+  <div class="wrap"><section class="blk">
+    <p class="label grey">The six weeks</p>
+    <h2 class="big">One skill at a time. Then put it all together.</h2>
+    <div class="rule"></div>
+    <div class="week-grid">
+      <article class="week"><p class="wn">Week 1</p><h3>Target Audience</h3><p>Connect the pitch to what matters to the audience and the business.</p></article>
+      <article class="week"><p class="wn">Week 2</p><h3>End Goal</h3><p>Decide what you want and practice asking for it clearly.</p></article>
+      <article class="week"><p class="wn">Week 3</p><h3>Clarity</h3><p>Make complex work easy to follow and its impact obvious.</p></article>
+      <article class="week"><p class="wn">Week 4</p><h3>How You Say It</h3><p>Use pace, volume, tone and pauses so the important parts land.</p></article>
+      <article class="week"><p class="wn">Week 5</p><h3>Draft and feedback on a real pitch</h3><p>Apply the full model to a conversation already happening at work.</p></article>
+      <article class="week"><p class="wn">Week 6</p><h3>Live pitch and pushback handling</h3><p>Deliver the pitch, respond to objections and adapt in the moment.</p></article>
+    </div>
+  </section></div>
 </div>
 
 <!-- PROOF -->
 <div class="band paper" style="border-top:1px solid var(--line)">
   <div class="wrap">
     <section class="blk">
-      <p class="label grey">Proof</p>
       <h2 class="big">What can change in six weeks.</h2>
       <div class="rule"></div>
       <div class="proof">
@@ -364,14 +421,35 @@
   </div>
 </div>
 
+<!-- HOW THE VALUE SCALES -->
+<div class="band paper" style="border-top:1px solid var(--line)">
+  <div class="wrap"><section class="blk">
+    <h2 class="big">The shared language keeps paying off.</h2>
+    <div class="rule"></div>
+    <p class="value-intro">Clearer communication creates value in two places.</p>
+    <div class="value-streams">
+      <article class="value-stream"><p class="label grey">Client work</p><h3>More opportunities move forward.</h3><ul><li>Clients understand the value of the recommendation.</li><li>Strong ideas are less likely to be lost because they were explained poorly.</li><li>Teams spend less time revisiting work clients misunderstood.</li></ul></article>
+      <article class="value-stream"><p class="label grey">Internal work</p><h3>Decisions happen faster.</h3><ul><li>Teams spend less time reworking misunderstood ideas.</li><li>Leaders spend less time translating work for everyone else.</li><li>Good ideas reach the people who can act on them in language they value.</li></ul></article>
+    </div>
+    <div class="spread-note"><strong>Better results get noticed.</strong><p>Participants share the model, managers coach it, and TECH spreads naturally through the organization.</p></div>
+  </section></div>
+</div>
+
 <!-- WHO IT'S FOR -->
 <div class="band paper" style="border-top:1px solid var(--line)">
   <div class="wrap">
     <section class="blk">
       <p class="label grey">Who it's for</p>
-      <h2 class="big">For departments full of people who need other people to understand, support and act on their ideas.</h2>
+      <h2 class="big">For teams doing good work that other people need to understand, support, or act on.</h2>
       <div class="rule"></div>
-      <p class="argp" style="font-size:19px;line-height:1.6;color:var(--muted);max-width:62ch;margin-top:24px">Partnership teams. Sales engineering teams. Technical teams. Consultants. People who already know their work and need a shared way to read the room, connect an idea to what matters and get clients, executives or stakeholders on board.</p>
+      <p class="audience-copy">The program is a strong fit when:</p>
+      <ul class="audience-types" aria-label="Situations this program is designed for">
+        <li>Strong ideas stall because their importance is not clear.</li>
+        <li>Clients or executives must make decisions about complex work.</li>
+        <li>Leaders keep becoming the default translator in important conversations.</li>
+        <li>Managers need a concrete way to coach communication.</li>
+      </ul>
+      <p class="audience-copy">That can include engineering, product, research, finance, partnerships, sales engineering, consulting, or another team facing the same problem.</p>
     </section>
   </div>
 </div>
@@ -414,7 +492,7 @@
         <p>Get the reps, rubric and model your team keeps using long after the program ends.</p>
         <div class="cta">
           <a href="/book" class="btn solid">Book a call</a>
-          <a href="/assessment" class="btn ghost on-dark">Try the assessment</a>
+          <a href="/assessment" class="btn ghost on-dark">Try a pitch</a>
         </div>
       </div>
       <img class="logo-close" src="technically-speaking-logo-transparent.png" alt="Technically Speaking">
@@ -431,3 +509,4 @@
 <script>document.addEventListener('click',function(e){document.querySelectorAll('.navmenu.open').forEach(function(m){if(!m.contains(e.target)){m.classList.remove('open');var b=m.querySelector('.menu-btn');if(b)b.setAttribute('aria-expanded','false');}});});</script>
 </body>
 </html>
+
