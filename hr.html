@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>Sell the impact of HR | Technically Speaking</title>
+<title>HR course | Technically Speaking</title>
 <link rel="icon" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,9 +42,15 @@ const params=new URLSearchParams(location.search),source=labels[params.get("even
 eventLabelElement.textContent=labels[source];
 registrationForm.addEventListener("submit",async e=>{
   e.preventDefault();const button=e.submitter;button.disabled=true;statusElement.textContent="Saving your spot…";
-  const body={email:emailField.value,event:source};
-  try{const r=await fetch("/api/hr-register",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}),d=await r.json();if(!r.ok)throw Error(d.error||"Registration failed.");localStorage.setItem("tech-hr-registration",JSON.stringify({...body,registeredAt:new Date().toISOString()}));location.href="/hr-course?event="+encodeURIComponent(body.event)}
-  catch(err){statusElement.textContent=err.message;button.disabled=false}
+  const body={email:emailField.value,event:source,purpose:"hr-course-registration"};
+  try{
+    const r=await fetch("/api/email-results",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+    const text=await r.text();let d={};
+    try{d=text?JSON.parse(text):{}}catch(parseError){throw Error("Registration is temporarily unavailable. Please try again.")}
+    if(!r.ok)throw Error(d.error||"Registration failed.");
+    localStorage.setItem("tech-hr-registration",JSON.stringify({...body,registeredAt:new Date().toISOString()}));
+    location.href="/hr-course?event="+encodeURIComponent(body.event)
+  }catch(err){statusElement.textContent=err.message;button.disabled=false}
 });
 </script>
 </body>
