@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<title>Crossley Staffing pitch test | Technically Speaking</title>
+<title>Assessment | Technically Speaking</title>
 <meta name="robots" content="noindex,nofollow">
 <meta name="twitter:description" content="Try a workplace pitch and get immediate feedback using the TECH communication model.">
 <meta name="twitter:title" content="Assessment | Technically Speaking">
@@ -141,12 +141,16 @@
   .pillar.locked .line-label{color:var(--muted)}
   .liveonly{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border:1.5px solid var(--line);padding:3px 9px;white-space:nowrap}
   .pillar.locked .pillar-h .pscore{color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-size:12px}
-  .lead-picker{max-width:none}
-  .lead-card{display:block;width:100%;text-align:left;font-family:inherit;color:var(--dark);background:#fff;border:2px solid var(--dark);padding:18px 20px;margin-top:12px;cursor:pointer;transition:.15s}
-  .lead-card:hover,.lead-card:focus-visible{border-color:var(--yellow);outline:none;box-shadow:inset 6px 0 0 var(--yellow)}
+  #step-intro h1{max-width:18ch}
+  #step-intro>.lead{max-width:68ch}
+  .lead-picker{max-width:none;display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
+  .lead-picker>label{grid-column:1/-1;margin-bottom:-4px}
+  .lead-card{display:flex;flex-direction:column;width:100%;min-height:148px;text-align:left;font-family:inherit;color:var(--dark);background:#fff;border:1px solid var(--line);border-top:5px solid var(--yellow);padding:18px 20px;cursor:pointer;transition:.15s}
+  .lead-card:hover,.lead-card:focus-visible{border-color:var(--dark);outline:none;transform:translateY(-2px)}
   .lead-tag{display:block;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
   .lead-title{display:block;font-size:18px;font-weight:800;letter-spacing:-.01em;line-height:1.3;margin-top:6px}
-  .lead-go{display:block;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-top:10px}
+  .lead-go{display:block;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-top:auto;padding-top:14px}
+  @media(max-width:620px){main{padding-top:28px}.lead-picker{grid-template-columns:1fr}.lead-card{min-height:0}}
 </style>
 <style>
   .nav{display:flex;align-items:center;gap:14px}
@@ -191,11 +195,11 @@
 
     <!-- STEP 1: INTRO -->
     <section class="step active" id="step-intro">
-      <p class="label">Prepared for Jacob Crossley, Crossley Staffing</p>
-      <h1 style="margin-top:12px">See what to change in your next conversation.</h1>
-      <p class="lead">You'll get a short workplace brief, write the pitch you'd actually make, and receive a score across Target Audience, End Goal, and Clarity.</p>
-      <p class="lead">You'll leave with one specific thing to try next.</p>
-      <div class="scenario-picker lead-picker"><label>Choose a conversation</label><button type="button" class="lead-card" onclick="loadBrief('lead-jacob-1')"><span class="lead-tag">You, pitching up</span><span class="lead-title">Re-scoping a client's director search</span><span class="lead-go">Start &rarr;</span></button><button type="button" class="lead-card" onclick="loadBrief('lead-jacob-2')"><span class="lead-tag">Your team, pitching you</span><span class="lead-title">A recruiter asking to pause a search</span><span class="lead-go">Start &rarr;</span></button></div>
+      <p class="label">Prepared for Jacob</p>
+      <h1 style="margin-top:12px">See how your pitch stacks up against the TECH model.</h1>
+      <p class="lead">Choose a workplace brief, make the pitch you'd actually give, and get immediate feedback on Target Audience, End Goal, and Clarity.</p>
+      
+      <div class="scenario-picker lead-picker"><label>Choose a conversation</label><button type="button" class="lead-card" onclick="loadBrief('lead-jacob-1')"><span class="lead-tag">Staffing firm lead pitching client VP of Engineering</span><span class="lead-title">Re-scoping a client's director search</span><span class="lead-go">Start &rarr;</span></button><button type="button" class="lead-card" onclick="loadBrief('lead-jacob-2')"><span class="lead-tag">Senior recruiter pitching firm lead</span><span class="lead-title">A recruiter asking to pause a search</span><span class="lead-go">Start &rarr;</span></button></div>
       <div class="intro-actions"><a class="btn ghost" href="/program">See the program</a></div>
       <p class="note">Takes about five minutes. Nothing is saved.</p>
       <aside class="intro-program"><h2>Trying a pitch shows you where to start.</h2><p>The live TECH program gives your team the practice, feedback, and ongoing support to make the change stick.</p></aside>
