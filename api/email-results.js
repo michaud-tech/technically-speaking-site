@@ -71,6 +71,10 @@ Give the town hall address you would actually deliver. Make the change, its impa
   }
 };
 
+// Personalized outreach pages use the same scoring briefs as /api/assess.
+// Keep those scenario IDs available when a recipient emails their results.
+Object.assign(SCENARIOS, require("./_lead-scenarios").scenarios);
+
 const RUBRIC = [
   ['T', 'Target Audience'],
   ['E', 'End Goal'],
