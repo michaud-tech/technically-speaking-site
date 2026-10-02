@@ -51,26 +51,30 @@ LEADS.forEach((lead) => {
   html = swap(html, /<meta property="og:url" content="[^"]*">/, `<meta property="og:url" content="${url}">`, 'og:url');
 
   html = swap(html, '<p class="label">Try a pitch</p>',
-    `<p class="label">Prepared for ${esc(lead.firstName)}</p>`, 'intro label');
+    `<p class="label">Prepared for ${esc(lead.firstName)} at ${esc(lead.company)}</p>`, 'intro label');
   html = swap(html, '<p class="lead">You\'ll leave with one specific thing to try next.</p>', '', 'second intro paragraph');
 
   const cards = lead.scenarios
-    .map((s) => `<button type="button" class="lead-card" onclick="loadBrief('${s.id}')"><span class="lead-tag">${esc(ROLE_TAGS[s.id] || '')}</span><span class="lead-title">${esc(s.label)}</span><span class="lead-go">Start &rarr;</span></button>`)
+    .map((s) => `<button type="button" class="lead-card" onclick="loadBrief('${s.id}')"><span class="lead-title">${esc(s.label)}</span><span class="lead-go">Start &rarr;</span></button>`)
     .join('');
   html = swap(html, /<div class="scenario-picker">[\s\S]*?<\/select><\/div>/,
     `<div class="scenario-picker lead-picker"><label>Choose a conversation</label>${cards}</div>`, 'scenario picker');
   html = swap(html, '<button class="btn" onclick="start()">Try a pitch</button>', '', 'start button');
+  html = swap(html, /<div class="intro-actions">[\s\S]*?<\/div>/, '', 'intro actions');
+  html = swap(html, /<aside class="intro-program">[\s\S]*?<\/aside>/, '', 'intro program');
   html = swap(html, '</style>\n<style>',
-    `  #step-intro h1{max-width:18ch}
+    `  main{padding-top:26px}
+  #step-intro h1{max-width:26ch;font-size:clamp(30px,4vw,42px)}
   #step-intro>.lead{max-width:68ch}
-  .lead-picker{max-width:none;display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
+  .lead-picker{max-width:none;display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
   .lead-picker>label{grid-column:1/-1;margin-bottom:-4px}
-  .lead-card{display:flex;flex-direction:column;width:100%;min-height:148px;text-align:left;font-family:inherit;color:var(--dark);background:#fff;border:1px solid var(--line);border-top:5px solid var(--yellow);padding:18px 20px;cursor:pointer;transition:.15s}
+  .lead-card{display:flex;flex-direction:column;width:100%;min-height:118px;text-align:left;font-family:inherit;color:var(--dark);background:#fff;border:1px solid var(--line);border-top:5px solid var(--yellow);padding:16px 20px;cursor:pointer;transition:.15s}
   .lead-card:hover,.lead-card:focus-visible{border-color:var(--dark);outline:none;transform:translateY(-2px)}
-  .lead-tag{display:block;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-  .lead-title{display:block;font-size:18px;font-weight:800;letter-spacing:-.01em;line-height:1.3;margin-top:6px}
+  .lead-title{display:block;font-size:18px;font-weight:800;letter-spacing:-.01em;line-height:1.3}
   .lead-go{display:block;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-top:auto;padding-top:14px}
-  @media(max-width:620px){main{padding-top:28px}.lead-picker{grid-template-columns:1fr}.lead-card{min-height:0}}
+  #step-intro>.note{margin-top:14px}
+  @media(min-width:900px){.wrap{max-width:960px}}
+  @media(max-width:620px){main{padding-top:24px}.lead-picker{grid-template-columns:1fr}.lead-card{min-height:0}}
 </style>\n<style>`, 'style block');
 
   const clientScenarios = lead.scenarios.map((s) => ({ id: s.id, label: s.label, paras: s.paras, ask: s.ask }));
