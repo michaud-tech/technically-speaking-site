@@ -1,6 +1,6 @@
 'use strict';
 const COURSE = {...TECH_COURSE, rubric:TECH_RUBRIC};
-const KEY = 'tech-course-hr-impact-v1';
+const KEY = 'tech-course-hr-impact-v2';
 const $ = id => document.getElementById(id);
 const esc = v => String(v ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let state={current:'start',complete:[],fields:{},scores:{},feedback:{}};
