@@ -83,6 +83,8 @@ Give the town hall address you would actually deliver. Make the change, its impa
 
 // Personalized lead briefs (/for/<slug> pages).
 Object.assign(SCENARIOS, require("./_lead-scenarios").scenarios);
+const HR_COURSE = require('../hr-course-data.js');
+SCENARIOS[HR_COURSE.scenarioId] = { brief: HR_COURSE.brief };
 
 const SCORE_SYSTEM = `You are the scoring engine for the Technically Speaking assessment. You score a written pitch against the TECH Communication Rubric. TECH stands for Target Audience, End Goal, Clarity, How You Say It — but this is a WRITTEN exercise, so you score only T, E and C. Do NOT score H (delivery); it is out of scope here.
 
@@ -195,6 +197,22 @@ const SCORE_TOOL = {
   },
 };
 
+const PRACTICE_TOOL = {
+  name: 'submit_practice_notes',
+  description: 'Return concise coaching notes for the two named TECH behaviours.',
+  strict: true,
+  input_schema: {
+    type: 'object',
+    additionalProperties: false,
+    properties: {
+      first: { type: 'string' },
+      second: { type: 'string' },
+      overall: { type: 'string' },
+    },
+    required: ['first', 'second', 'overall'],
+  },
+};
+
 // Pull the first COMPLETE, balanced JSON object out of the model's reply.
 // Robust to code fences, prose before/after, and (unlike a greedy regex) to a
 // second stray brace. Returns null if there's no object or it's truncated.
@@ -294,6 +312,48 @@ module.exports = async (req, res) => {
   } catch (e) {
     res.status(400).json({ error: 'Bad request.' });
     return;
+  }
+
+  if (body.practiceAction) {
+    const exercise = HR_COURSE.exercises[body.practiceAction];
+    if (!exercise) return res.status(400).json({ error: 'Unknown practice activity.' });
+    const pitch = String(body.pitch || '').trim();
+    if (pitch.length < 8) return res.status(400).json({ error: 'Add a little more before requesting feedback.' });
+    if (pitch.length > 6000) return res.status(400).json({ error: 'That response is too long. Please trim it down.' });
+    const pillar = RUBRIC.find((item) => item.key === exercise.pillar);
+    const [first, second] = pillar.lines;
+    const transcript = Array.isArray(body.conversation)
+      ? body.conversation.map((turn) => `${turn.role === 'user' ? 'LEARNER' : 'OTHER PERSON'}: ${String(turn.content || '')}`).join('\n')
+      : pitch;
+    const system = `You are a practical workplace communication coach using the TECH model. Review only the learner's response to the activity below. Give one concise, specific note for each named behaviour and one short overall note. Point out what worked and the most useful next move. Do not write a replacement response or invent facts. For an exploratory noticing exercise, reward thoughtful possibilities rather than demanding a finished pitch. For a listening exercise, judge whether the learner invited and understood the other person's perspective.`;
+    const user = `ACTIVITY CONTEXT:\n${exercise.context}\n\nTASK:\n${exercise.task}\n\nBEHAVIOUR 1 (${first[0]}): ${first[1]}\nBEHAVIOUR 2 (${second[0]}): ${second[1]}\n\nLEARNER RESPONSE:\n${transcript}`;
+    try {
+      const data = await callAnthropic({
+        model: MODEL,
+        max_tokens: 900,
+        system,
+        tools: [PRACTICE_TOOL],
+        tool_choice: { type: 'tool', name: 'submit_practice_notes' },
+        messages: [{ role: 'user', content: user }],
+      });
+      const tool = (data.content || []).find((item) => item && item.type === 'tool_use' && item.input);
+      if (!tool || !tool.input || !tool.input.first || !tool.input.second || !tool.input.overall) throw new Error('bad_practice_shape');
+      if (body.practiceAction === 'listen') {
+        return res.status(200).json({ grader: 'assessment', purpose: 'listening-note-v1', note: String(tool.input.overall) });
+      }
+      return res.status(200).json({
+        grader: 'assessment',
+        purpose: 'practice-notes-v4',
+        behaviours: [
+          { code: first[0], label: first[1], note: String(tool.input.first) },
+          { code: second[0], label: second[1], note: String(tool.input.second) },
+        ],
+      });
+    } catch (error) {
+      if (error.message === 'anthropic_error') console.error('Anthropic practice error', error.status, error.detail);
+      else console.error('Practice feedback error', error.message);
+      return res.status(502).json({ error: 'The coach is unavailable right now. Please try again in a moment.' });
+    }
   }
 
   const scenario = SCENARIOS[body.scenarioId];

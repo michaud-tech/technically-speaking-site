@@ -131,15 +131,15 @@ const LEADS = [
       },
       {
         "mode": "down",
-        "label": "An advisor asking to trade keynotes for workshops",
+        "label": "Replacing conference keynotes with customer workshops",
         "paras": [
-          "You're a developer advisor on Suzanne's team at Microsoft. You recommend replacing two of the team's planned conference keynotes next half with hands-on workshops at six large customers.",
-          "Workshops take about three times the prep per event and reach far fewer people. The team's visibility at major events would drop.",
-          "You're speaking to Suzanne, the Chief Developer Advisor. Suzanne is accountable for the team's impact on how developers actually work, and for the team's standing with leadership.",
-          "Last year's keynotes reached around 9,000 attendees, but follow-up surveys showed few teams changed their practices. In two pilot workshops, both customers changed how they review agent-made code within a month. Two is a small sample, and both customers were already keen.",
-          "Suzanne can approve the change and would need to explain the lighter event presence to her leadership. You have fifteen minutes in your one-on-one."
+          "You're a developer advisor at Microsoft. Your team has two conference keynotes planned for the next six months. You want to replace them with hands-on workshops for six large customers.",
+          "The tradeoff is reach versus behavior change. The keynotes reach thousands of people and keep the team visible at major events. Each workshop reaches far fewer people and takes about three times as much preparation.",
+          "You're pitching Suzanne, the Chief Developer Advisor. She is responsible for helping developers change how they work and for showing leadership that the team has broad influence.",
+          "Last year's keynotes reached about 9,000 attendees, but follow-up surveys found little evidence that teams changed their practices. The team also ran two pilot workshops. Within a month, both customers changed how they review code made by AI agents. That result is promising, but it comes from only two customers, and both were already eager to participate.",
+          "Suzanne can approve the switch, but she will have to explain why the team is appearing at fewer major events. You have fifteen minutes with her."
         ],
-        "ask": "Pitch Suzanne on approving the workshop plan and explaining it to her leadership. Give the pitch you would actually make, using the words you'd say in the room."
+        "ask": "Pitch Suzanne on replacing the two keynotes with six customer workshops. Give the pitch you would actually make, using the words you'd say in the room."
       }
     ]
   },
