@@ -42,11 +42,24 @@ const ROLE_TAGS = {
 };
 
 LEADS.forEach((lead) => {
+  if (!lead.name || !lead.company) throw new Error(`Missing name or organization for ${lead.slug}`);
+  const previewTitle = esc(`Made for ${lead.name} at ${lead.company}`);
+  const previewDescription = 'A 5-minute communication challenge built around your work.';
   const url = `https://www.technicallyspeakinghq.com/for/${lead.slug}`;
   let html = base;
 
   html = swap(html, '<title>Assessment | Technically Speaking</title>',
-    `<title>Assessment | Technically Speaking</title>\n<meta name="robots" content="noindex,nofollow">`, 'title');
+    `<title>${previewTitle}</title>\n<meta name="robots" content="noindex,nofollow">`, 'title');
+  for (const [attribute, field, value] of [
+    ['name', 'description', previewDescription],
+    ['property', 'og:title', previewTitle],
+    ['property', 'og:description', previewDescription],
+    ['name', 'twitter:title', previewTitle],
+    ['name', 'twitter:description', previewDescription]
+  ]) {
+    html = swap(html, new RegExp(`<meta ${attribute}="${field}" content="[^"]*">`),
+      () => `<meta ${attribute}="${field}" content="${value}">`, field);
+  }
   html = swap(html, /<link rel="canonical"[^>]*>/, '', 'canonical');
   html = swap(html, /<meta property="og:url" content="[^"]*">/, `<meta property="og:url" content="${url}">`, 'og:url');
 
