@@ -87,6 +87,8 @@ const HR_COURSE = require('../hr-course-data.js');
 SCENARIOS[HR_COURSE.scenarioId] = { brief: HR_COURSE.brief };
 const TEXTNOW_COURSE = require('../course-data.js');
 SCENARIOS[TEXTNOW_COURSE.scenarioId] = { brief: TEXTNOW_COURSE.brief };
+const TEXTNOW_PREWORK = require('../textnow-course-data.js');
+SCENARIOS[TEXTNOW_PREWORK.scenarioId] = { brief: TEXTNOW_PREWORK.brief };
 
 const SCORE_SYSTEM = `You are the scoring engine for the Technically Speaking assessment. You score a written pitch against the TECH Communication Rubric. TECH stands for Target Audience, End Goal, Clarity, How You Say It — but this is a WRITTEN exercise, so you score only T, E and C. Do NOT score H (delivery); it is out of scope here.
 
