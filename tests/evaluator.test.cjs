@@ -1,6 +1,6 @@
 // Controlled-response checks verify architecture and transport, not model judgement.
 const assert=require('node:assert/strict');
-const {TECH_STANDARD,buildEvaluationPrompt}=require('../api/evaluation-policy.js');
+const {TECH_STANDARD,buildEvaluationPrompt}=require('../api/_evaluation-policy.js');
 const assess=require('../api/assess.js'),practice=require('../api/practice.js');
 const course=require('../course-data.js'),rubric=require('../assessment-rubric.js');
 const cases=require('./practice-cases.json');
