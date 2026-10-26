@@ -1,6 +1,6 @@
 # MLSE Global Partnerships — TECH staff course
 
-A separate 13-activity, approximately 40-minute course for inbound partnership sales staff. Uses the same sequence, teaching tools and activity flow as the existing course, with MLSE-specific examples and applications.
+A 13-activity, approximately 35-minute TECH course for MLSE Global Partnerships sales staff, built on inbound client conversations.
 
 ## Review now
 Open MLSE-TECH-Preview.html (provided separately). No local web server needed. Use Activities to navigate through the original course sequence. Teaching examples and practice briefs use fictional MLSE partnership conversations. The preview saves drafts locally. Live AI scoring and client replies require the hosted course; audio depends on browser microphone permission.
@@ -17,7 +17,7 @@ The page is /mlse.html, or /mlse if your existing Vercel configuration enables c
 The hosted course needs ANTHROPIC_API_KEY in server environment variables, never in browser files. ANTHROPIC_MODEL can override the inherited model default; choose a model available to your account. No dependencies are added. Deploy on a current Node runtime with fetch support. This package has not been deployed or tested against a live AI account.
 
 ## Content and assessment
-All clients, requests, deadlines, availability and internal constraints are fictional, not actual MLSE policy or sellable inventory. Staff practise uncovering the need, giving a clear limit, weighing alternatives and owning a next step. No sale is required for an effective response. Canonical TECH scoring is unchanged: T/E/C six behaviours, 0–2 each, total /12. H is practised aloud. Baseline and final use the same brief. AI coaching is developmental, not a validated measure of sales performance.
+Teaching for T, E, C and H mirrors the TextNow pre-work lesson for lesson. Examples are inbound client conversations for MLSE Global Partnerships sales staff: uncovering the real need, balancing internal constraints, delivering a no and exploring alternatives. One activity (the ask) is an internal request to a busy delivery lead. Baseline and final: respond to Jordan at Northstar. All clients, availability and constraints are fictional, not MLSE policy. Scoring unchanged: T/E/C six behaviours, 0-2 each, /12. H is practised aloud.
 
 Writing and conversation history are sent to the configured AI service only when requested. Drafts and recordings stay in the learner's browser; work is not automatically submitted to an instructor. Use fictional information.
 
