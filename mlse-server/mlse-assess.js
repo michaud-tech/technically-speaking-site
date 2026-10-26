@@ -3,9 +3,9 @@ const COURSE=require('../mlse-course-data.js');
 const {TECH_STANDARD}=require('./mlse-policy.js');
 const codes=COURSE.rubric.flatMap(p=>p.lines.map(l=>l[0]));
 const strictObject=(properties)=>({type:'object',additionalProperties:false,properties,required:Object.keys(properties)});
-const scoreTool={name:'submit_score',description:'Score the six TECH behaviours and ground feedback in the pitch.',input_schema:strictObject({scores:strictObject(Object.fromEntries(codes.map(c=>[c,strictObject({score:{type:'integer',enum:[0,1,2]},note:{type:'string'}})]))),whatWorked:{type:'string'},coachingFocus:{type:'string'},evidenceQuote:{type:'string'}})};
-const practiceTool={name:'submit_notes',description:'Give short feedback on the requested activity without numerical scores.',input_schema:strictObject({first:{type:'string'},second:{type:'string'},evidenceQuote:{type:'string'}})};
-const listeningTool={name:'submit_listening_note',description:'Give one grounded note on the discovery conversation.',input_schema:strictObject({note:{type:'string'},evidenceQuote:{type:'string'}})};
+const scoreTool={name:'submit_score',strict:true,description:'Score the six TECH behaviours and ground feedback in the pitch.',input_schema:strictObject({scores:strictObject(Object.fromEntries(codes.map(c=>[c,strictObject({score:{type:'integer',description:'0, 1, or 2'},note:{type:'string'}})]))),whatWorked:{type:'string'},coachingFocus:{type:'string'},evidenceQuote:{type:'string'}})};
+const practiceTool={name:'submit_notes',strict:true,description:'Give short feedback on the requested activity without numerical scores.',input_schema:strictObject({first:{type:'string'},second:{type:'string'},evidenceQuote:{type:'string'}})};
+const listeningTool={name:'submit_listening_note',strict:true,description:'Give one grounded note on the discovery conversation.',input_schema:strictObject({note:{type:'string'},evidenceQuote:{type:'string'}})};
 const complete=s=>typeof s==='string'&&s.trim().length>5;
 const tidy=s=>{s=String(s).trim();return /[.!?][”"')]*$/.test(s)?s:s+'.';};
 const norm=s=>String(s).toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
@@ -39,12 +39,15 @@ ${listening?'Give one listening note in two or three short sentences, relating u
  try{
   for(let attempt=0;attempt<2;attempt++){
    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',signal:AbortSignal.timeout(25000),headers:{'content-type':'application/json','x-api-key':process.env.ANTHROPIC_API_KEY,'anthropic-version':'2023-06-01'},body:JSON.stringify({model:process.env.ANTHROPIC_MODEL||'claude-sonnet-5',max_tokens:practice?1400:2500,system:shared+'\n\n'+purpose,tools:[tool],tool_choice:{type:'tool',name:tool.name},messages:[{role:'user',content:'CONTEXT:\n'+context+transcript+'\n\nLEARNER WORDS:\n'+pitch}]})});
-   if(!r.ok)throw Error('upstream');const data=await r.json();if(data.stop_reason==='max_tokens')continue;
-   const raw=data.content?.find(x=>x.type==='tool_use'&&x.name===tool.name)?.input;
+   if(!r.ok){console.error('mlse-assess: upstream',r.status,(await r.text()).slice(0,300));throw Error('upstream');}const data=await r.json();if(data.stop_reason==='max_tokens')continue;
+   let raw=data.content?.find(x=>x.type==='tool_use'&&x.name===tool.name)?.input;
+   if(raw&&typeof raw.scores==='string'){try{raw.scores=JSON.parse(raw.scores);}catch(_){}}
+   if(raw&&raw.scores&&typeof raw.scores==='object')for(const c of codes){const l=raw.scores[c];if(l&&typeof l==='object'){const n=parseInt(l.score,10);l.score=Number.isNaN(n)?l.score:Math.max(0,Math.min(2,n));}}
+   if(!raw)console.error('mlse-assess: no tool output',data.stop_reason);
    if(!raw)continue;if(!quoted(raw.evidenceQuote,pitch))raw.evidenceQuote='';
    if(listening){if(!complete(raw.note))continue;return res.status(200).json({grader:'assessment',purpose:'listening-note-v1',note:tidy(raw.note)});}
    if(practice){if(!complete(raw.first)||!complete(raw.second))continue;return res.status(200).json({grader:'assessment',purpose:'practice-notes-v4',behaviours:pillar.lines.map(([code,label],i)=>({code,label,note:tidy(i?raw.second:raw.first)}))});}
-   if(!codes.every(c=>[0,1,2].includes(raw.scores?.[c]?.score)&&complete(raw.scores[c].note))||!complete(raw.whatWorked)||!complete(raw.coachingFocus))continue;
+   if(!codes.every(c=>[0,1,2].includes(raw.scores?.[c]?.score)&&complete(raw.scores[c].note))||!complete(raw.whatWorked)||!complete(raw.coachingFocus)){console.error('mlse-assess: invalid score shape',JSON.stringify(raw).slice(0,500));continue;}
    const pillars=COURSE.rubric.map(p=>{const lines=p.lines.map(([code,label])=>({code,label,score:raw.scores[code].score,note:tidy(raw.scores[code].note)}));return {key:p.key,name:p.name,subtotal:lines.reduce((n,l)=>n+l.score,0),lines};});
    return res.status(200).json({total:pillars.reduce((n,p)=>n+p.subtotal,0),pillars,whatWorked:tidy(raw.whatWorked),coachingFocus:tidy(raw.coachingFocus),evidenceQuote:raw.evidenceQuote});
   }
