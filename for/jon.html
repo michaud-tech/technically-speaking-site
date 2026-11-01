@@ -166,6 +166,8 @@
 <meta name="twitter:title" content="Made for Jon Brockway at WalkMe">
 <meta name="twitter:description" content="A 5-minute communication challenge built around your work.">
 <meta name="twitter:image" content="https://www.technicallyspeakinghq.com/share-preview.png">
+<script src="/brief-cards.js"></script>
+<script src="/brief-card.js"></script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute"><symbol id="tsword" viewBox="0 0 1200 240"><rect width="1200" height="240" fill="none"/><g fill="currentColor" font-family="Arial Narrow, Helvetica Neue, Arial, sans-serif"><text x="40" y="102" font-size="84" font-weight="900">TECHNICALLY</text><text x="318" y="176" font-size="30" font-weight="700" letter-spacing="12" fill="#F4C400">SPEAKING</text></g><rect x="62" y="148" width="210" height="8" rx="2" fill="#F4C400"/></symbol></svg>
@@ -205,9 +207,13 @@
     <!-- STEP 2: BRIEF + PITCH -->
     <section class="step" id="step-pitch">
       <button class="back" onclick="goIntro()">&larr; Start over</button>
-      <p class="label">The brief</p>
-      <div class="brief" id="brief"></div>
-      <p class="label" style="margin-top:34px">Your pitch</p>
+      <div id="tsbGoal" style="margin-top:22px"></div>
+      <div class="tsb-grid">
+      <div class="tsb-side" id="brief"></div>
+      <div class="tsb-pitch">
+      <p class="tsb-kicker">Your pitch</p>
+      <p class="tsb-setting" id="tsbSetting"></p>
+      <p class="tsb-hint">Write it the way you'd say it out loud.</p>
       <textarea class="pitch" id="pitch" placeholder="Type the pitch you'd give, in your own words…"></textarea>
       <div class="err" id="pitchErr"></div>
       <div style="margin-top:20px"><button class="btn" id="scoreBtn" onclick="score()">Score my pitch</button></div>
@@ -218,6 +224,8 @@
           <line class="hand h-min" x1="50" y1="50" x2="50" y2="18"/>
         </svg>
         <div class="msg" id="scoringMsg">Reading your pitch&hellip;</div>
+      </div>
+      </div>
       </div>
     </section>
 
@@ -296,14 +304,13 @@ const state = {scenario:null,pitch:'',result:null};
 
 function el(id){return document.getElementById(id);}
 function showStep(id, dotIdx){
+  document.body.classList.toggle('tsb-wide', id==='step-pitch');
   document.querySelectorAll('.step').forEach(s=>s.classList.toggle('active', s.id===id));
   window.scrollTo(0,0);
 }
 function loadBrief(scenarioId){
   state.scenario = SCENARIOS.find(function(s){ return s.id===scenarioId; }) || SCENARIOS[0];
-  var b=el('brief'); b.innerHTML='';
-  state.scenario.paras.forEach(function(p){ var el2=document.createElement('p'); el2.textContent=p; b.appendChild(el2); });
-  var ask=document.createElement('div'); ask.className='ask'; ask.textContent=state.scenario.ask; b.appendChild(ask);
+  TSBrief.fill(state.scenario.id,state.scenario.paras,state.scenario.ask);
   el('pitch').value=''; el('pitchErr').classList.remove('show');
   state.pitch=''; state.result=null;
   el('emailForm').reset(); el('emailStatus').textContent=''; el('emailStatus').className='email-status';

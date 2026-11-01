@@ -28,7 +28,8 @@ function go(id,focus=true){
 document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
 document.querySelectorAll('[data-next]').forEach(b=>b.onclick=()=>{const id=b.dataset.next;if(!canCompleteAudio(id))return;if(id==='baseline'&&!state.scores.baseline){$('baselineStatus').textContent='Submit your first pitch before continuing.';$('baselinePitch').focus();return;}if(id==='final'&&!state.scores.final){$('finalStatus').textContent='Submit your final pitch to compare the two attempts.';return;}mark(id);go(LESSONS[LESSONS.findIndex(l=>l.id===id)+1].id);});
 $('menuToggle').onclick=()=>{const open=$('nav').classList.toggle('open');$('menuToggle').setAttribute('aria-expanded',open);};
-document.querySelectorAll('[data-brief]').forEach(el=>el.innerHTML=COURSE.brief.split('\n\n').map(p=>`<p>${esc(p)}</p>`).join(''));
+document.querySelectorAll('[data-brief]').forEach(el=>{if(TSBrief.stack(el,COURSE.scenarioId,COURSE.brief))el.classList.remove('brief');});
+{const c=TSBrief.card(COURSE.scenarioId),l=document.querySelector('label[for="baselinePitch"]');if(c&&l)l.textContent=c.setting;}
 document.querySelectorAll('[data-save]').forEach(el=>{el.value=typeof state.fields[el.id]==='string'?state.fields[el.id]:'';el.addEventListener('input',()=>{state.fields[el.id]=el.value;if(el.id==='finalPitch'&&state.scores.final){delete state.scores.final;state.complete=state.complete.filter(x=>!['final','comparison'].includes(x));$('finalResult').replaceChildren();}const activity=Object.entries(COURSE.exercises).find(([,x])=>x.fields.includes(el.id));if(activity){delete state.feedback[activity[0]];$(activity[0]+'Feedback').hidden=true;state.complete=state.complete.filter(x=>x!==activity[0]);}save();});});
 async function post(path,body){
   if(location.protocol==='file:')throw new Error('Open this course through the site or local preview server to use the coach. Your draft is saved.');

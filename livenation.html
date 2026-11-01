@@ -136,6 +136,8 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Technically Speaking monogram">
 <meta name="twitter:image" content="https://www.technicallyspeakinghq.com/share-preview.png">
+<script src="/brief-cards.js"></script>
+<script src="/brief-card.js"></script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute"><symbol id="tsword" viewBox="0 0 1200 240"><rect width="1200" height="240" fill="none"/><g fill="currentColor" font-family="Arial Narrow, Helvetica Neue, Arial, sans-serif"><text x="40" y="102" font-size="84" font-weight="900">TECHNICALLY</text><text x="318" y="176" font-size="30" font-weight="700" letter-spacing="12" fill="#F4C400">SPEAKING</text></g><rect x="62" y="148" width="210" height="8" rx="2" fill="#F4C400"/></symbol></svg>
@@ -162,21 +164,25 @@
 
     <!-- STEP 1: INTRO -->
     <section class="step active" id="step-intro">
-      <p class="label">Live Nation · Sales</p>
+      <p class="label">Live Nation</p>
       <h1 style="margin-top:12px">Get your colleagues on board. See how it lands.</h1>
       <p class="lead">You'll get a brief: a deal you just closed, the colleague who has to deliver it, the facts on hand, and the next step you need.</p>
       <p class="lead">Then you write the pitch you'd actually make. We score it on the TECH Model, the same rubric we use with participants, and show you where it landed.</p>
       <div id="gateBox" hidden style="margin-top:26px;max-width:520px"><div class="email-row"><input type="email" id="gateEmail" autocomplete="email" maxlength="254" placeholder="you@company.com" aria-label="Your work email"></div><p class="note" style="margin-top:10px">Needed to start. Your results are emailed to you. Technically Speaking gets an anonymized copy (scores and pitch, no email) to compare the start and end of the program.</p><div class="err" id="gateErr"></div></div>
-      <div style="margin-top:30px"><button class="btn" onclick="start()">Start the assessment</button></div>
+      <div style="margin-top:30px;display:flex;gap:12px;flex-wrap:wrap"><button class="btn" onclick="start()">Start the assessment</button><a class="btn ghost" href="/livenation/course">Take the free Live Nation course</a></div>
       <p class="note" id="introNote">Built for the Live Nation sales team. Takes about five minutes. Nothing is saved.</p>
     </section>
 
     <!-- STEP 2: BRIEF + PITCH -->
     <section class="step" id="step-pitch">
       <button class="back" onclick="goIntro()">&larr; Start over</button>
-      <p class="label">The brief</p>
-      <div class="brief" id="brief"></div>
-      <p class="label" style="margin-top:34px">Your pitch</p>
+      <div id="tsbGoal" style="margin-top:22px"></div>
+      <div class="tsb-grid">
+      <div class="tsb-side" id="brief"></div>
+      <div class="tsb-pitch">
+      <p class="tsb-kicker">Your pitch</p>
+      <p class="tsb-setting" id="tsbSetting"></p>
+      <p class="tsb-hint">Write it the way you'd say it out loud.</p>
       <textarea class="pitch" id="pitch" placeholder="Type the pitch you'd give, in your own words…"></textarea>
       <div class="err" id="pitchErr"></div>
       <div style="margin-top:20px"><button class="btn" id="scoreBtn" onclick="score()">Score my pitch</button></div>
@@ -187,6 +193,8 @@
           <line class="hand h-min" x1="50" y1="50" x2="50" y2="18"/>
         </svg>
         <div class="msg" id="scoringMsg">Reading your pitch&hellip;</div>
+      </div>
+      </div>
       </div>
     </section>
 
@@ -208,7 +216,7 @@
       <div class="topfix"><div class="label">The one thing to fix</div><p id="topfix"></p></div>
       <p class="note">Each line is scored on whether it happened, not on style: <b>Clear</b> = 2, <b>Partial</b> = 1, <b>Missing</b> = 0.</p>
       <div class="res-cta">
-        <a class="btn" href="/livenation/course">Take the free course</a>
+        <a class="btn" href="/livenation/course">Take the free Live Nation course</a>
         <a class="btn ghost" href="https://calendar.app.google/NXmbASxfoGzQyMWh6" target="_blank" rel="noopener">Book a call</a>
         <button class="btn ghost" id="shareBtn" onclick="shareTeam()">Share with your team</button>
         
@@ -223,13 +231,14 @@
 // Each brief: [role & pressures], [the other person], [technical + business facts],
 // [the decision + setting], and finally the neutral instruction. Text mirrors api/assess.js.
 const SCENARIOS = [
-  {id:'livenation-snapdog-v1', paras:["Fictional practice brief. Snap Dog, the deal, the numbers and the internal details below are invented for training. They are not statements about Live Nation partners, venues, contracts or policies.", "You're on the Live Nation sales team. You just closed the biggest deal of your year: Snap Dog, a fictional national hot dog brand, signed a three-year, $1.2 million partnership to be the official hot dog at six amphitheatres. It includes Snap Dog-branded concession stands, a Snap Dog Night with $5 hot dogs at one show per venue each summer, and a Snap Dog food truck at the gates before the biggest shows of the season.", "Now the company has to deliver it. Morgan, director of operations for the amphitheatres, found out about the deal from the announcement email. Morgan's team runs concessions staffing, gate flow and site builds, and is already stretched for next season. Last year, another sponsor's promises landed on ops late, and Morgan's team spent the summer fixing them.", "What you know: Snap Dog's own team will staff the food truck and supply the branded stand fronts, and the deal pays for the stand conversions. Snap Dog Night is new. Nobody has run a $5 food night at these venues, so you don't know the line lengths or the staffing it will need. Snap Dog wants to announce the Snap Dog Night dates by March 1.", "You need Morgan to name an ops lead for the partnership and join a 45-minute kickoff with you, marketing and Snap Dog in the next two weeks, where ops can set the rules for the stands, the truck and Snap Dog Night. What was signed can't change, but how and where it runs is still open. Morgan doesn't report to you."], ask:"Talk to Morgan now. Get Morgan on board with the deal and the next step. Write the words you would actually say."}
+  {id:'livenation-snapdog-v1', paras:["Fictional practice brief. Snap Dog, the deal, the numbers and the internal details below are invented for training. They are not statements about Live Nation partners, venues, contracts or policies.", "You're on the Live Nation sales team. You just closed the biggest deal of your year: Snap Dog, a fictional national hot dog brand, signed a three-year, $1.2 million partnership to be the official hot dog at six amphitheatres. It includes Snap Dog-branded concession stands, a Snap Dog Night with $5 hot dogs at one show per venue each summer, and a Snap Dog food truck at the gates before the biggest shows of the season.", "Now the company has to deliver it. Morgan, director of operations for the amphitheatres, found out about the deal from the announcement email. Morgan's team runs concessions staffing, gate flow and site builds, and is already stretched for next season. Morgan is measured on smooth event execution and avoiding last-minute staffing surprises. Last year, another sponsor's promises landed on ops late, and Morgan's team spent the summer fixing them.", "What you know: Snap Dog's own team will staff the food truck and supply the branded stand fronts, and the deal pays for the stand conversions. Snap Dog Night is new. Nobody has run a $5 food night at these venues, so you don't know the line lengths or the staffing it will need. Snap Dog wants to announce the Snap Dog Night dates by March 1.", "You need Morgan to name an ops lead for the partnership and join a 45-minute kickoff with you, marketing and Snap Dog in the next two weeks, where ops can set the rules for the stands, the truck and Snap Dog Night. What was signed can't change, but how and where it runs is still open. Morgan doesn't report to you."], ask:"You're speaking to Morgan for two minutes before a meeting. Get Morgan on board with the deal and the next step. Write the words you would actually say."}
 ];
 
 const state = {scenario:null,pitch:'',result:null};
 
 function el(id){return document.getElementById(id);}
 function showStep(id, dotIdx){
+  document.body.classList.toggle('tsb-wide', id==='step-pitch');
   document.querySelectorAll('.step').forEach(s=>s.classList.toggle('active', s.id===id));
   window.scrollTo(0,0);
 }
@@ -240,9 +249,7 @@ function pickRandom(){
 }
 function loadBrief(){
   state.scenario = pickRandom();
-  var b=el('brief'); b.innerHTML='';
-  state.scenario.paras.forEach(function(p){ var el2=document.createElement('p'); el2.textContent=p; b.appendChild(el2); });
-  var ask=document.createElement('div'); ask.className='ask'; ask.textContent=state.scenario.ask; b.appendChild(ask);
+  TSBrief.fill(state.scenario.id,state.scenario.paras,state.scenario.ask);
   el('pitch').value=''; el('pitchErr').classList.remove('show');
   state.pitch=''; state.result=null;
   
