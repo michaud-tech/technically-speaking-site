@@ -105,6 +105,14 @@
   @media (max-width:560px){.email-row{flex-direction:column}.email-row .btn{justify-content:center}}
 
   .note{font-size:13px;color:var(--muted);margin-top:16px}
+  /* results gate: score is free, breakdown needs an email */
+  .gate-wrap{display:grid;margin-top:30px}
+  .gate-wrap > *{grid-area:1/1}
+  .gate-blur{filter:blur(6px);opacity:.5;pointer-events:none;user-select:none;display:grid;gap:28px}
+  .gate{align-self:center;margin-inline:6px;padding:24px 26px;background:#fff;border:1px solid var(--line);border-top:4px solid var(--yellow);box-shadow:0 18px 40px rgba(29,29,27,.14)}
+  .gate h3{font-size:20px;line-height:1.25;letter-spacing:-.02em}
+  .gate p{font-size:14.5px;color:var(--muted);margin-top:8px;line-height:1.5}
+  @media (max-width:560px){.gate{padding:20px}}
   .err{background:#f6e2e0;border-left:3px solid #c0392b;color:#7d2a20;padding:12px 15px;font-size:14px;margin-top:16px;display:none}
   .err.show{display:block}
   .back{font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;background:none;border:none;padding:0;margin-bottom:18px}
@@ -222,6 +230,24 @@
       <h2 style="margin-top:10px">How your case landed</h2>
       <div class="rule"></div>
       <div class="overall"><div class="n" id="ovN">&mdash;<small>/12</small></div><div class="t" id="ovT"></div></div>
+      <div class="gate-wrap" id="gateWrap">
+        <div class="gate-blur" aria-hidden="true" id="gateBlur"></div>
+        <div class="gate" id="emailCopy">
+          <h3>See what's behind your score</h3>
+          <p>Get your line-by-line breakdown and the one thing to fix. We'll show it here and email you a copy with the brief and your pitch.</p>
+          <form id="emailForm" onsubmit="emailResults(event)">
+            <label class="website-field" aria-hidden="true">Website<input id="website" name="website" tabindex="-1" autocomplete="off"></label>
+            <div class="email-row">
+              <input type="email" id="resultEmail" name="email" autocomplete="email" placeholder="you@company.com" aria-label="Email address" required>
+              <button class="btn" id="emailBtn" type="submit">Show my breakdown</button>
+            </div>
+            <div class="email-status" id="emailStatus" role="status" aria-live="polite"></div>
+          </form>
+        </div>
+      </div>
+
+      <div id="breakdown" hidden>
+      <div class="email-status" id="breakdownStatus" role="status" aria-live="polite"></div>
       <div class="dims" id="dims"></div>
 
       <div class="pillar locked">
@@ -233,19 +259,8 @@
 
       <div class="topfix"><div class="label">The one thing to fix</div><p id="topfix"></p></div>
       <p class="note">Each line is scored on whether it happened, not on style: <b>Clear</b> = 2, <b>Partial</b> = 1, <b>Missing</b> = 0.</p>
-      <aside class="intro-program"><h2>Your feedback shows you what to change. The program gives your team the practice to change it.</h2><p>Use the result as a starting point, then build the skill through live practice, direct feedback, and ongoing support.</p></aside>
-      <div class="email-copy" id="emailCopy">
-        <h3>Email me a copy</h3>
-        <p>Get the brief, your exact pitch, and your scores in one email so you can come back to them later.</p>
-        <form id="emailForm" onsubmit="emailResults(event)">
-          <label class="website-field" aria-hidden="true">Website<input id="website" name="website" tabindex="-1" autocomplete="off"></label>
-          <div class="email-row">
-            <input type="email" id="resultEmail" name="email" autocomplete="email" placeholder="you@company.com" aria-label="Email address" required>
-            <button class="btn" id="emailBtn" type="submit">Email my results</button>
-          </div>
-          <div class="email-status" id="emailStatus" role="status" aria-live="polite"></div>
-        </form>
       </div>
+      <aside class="intro-program"><h2>Your feedback shows you what to change. The program gives your team the practice to change it.</h2><p>Use the result as a starting point, then build the skill through live practice, direct feedback, and ongoing support.</p></aside>
       <div class="res-cta">
         <a class="btn" href="/program">See the live program</a>
         <button class="btn ghost" id="shareBtn" onclick="shareTeam()">Share the pitch test</button>
@@ -341,6 +356,8 @@ function loadBrief(scenarioId){
   el('pitch').value=''; el('pitchErr').classList.remove('show');
   state.pitch=''; state.result=null;
   el('emailForm').reset(); el('emailStatus').textContent=''; el('emailStatus').className='email-status';
+  el('resultEmail').disabled=false; el('emailBtn').disabled=false; el('emailBtn').textContent='Show my breakdown';
+  el('breakdown').hidden=true; el('gateWrap').hidden=false;
   showStep('step-pitch',1);
 }
 function start(){ loadBrief(el('scenarioSelect').value); }
@@ -400,6 +417,11 @@ function renderResults(d){
     wrap.appendChild(box);
   });
   el('topfix').textContent=d.coachingFocus||d.topFix||'';
+  el('gateBlur').innerHTML=[{key:'T',name:'Target Audience',lines:[['T1','Speaks to the macro'],['T2','Speaks to the micro']]},{key:'E',name:'End Goal',lines:[['E1','Clear goal'],['E2','Clear ask + next step']]},{key:'C',name:'Clarity',lines:[['C1','Opening frame'],['C2','Key evidence tied to impact']]}].map(function(p){
+    return '<div class="pillar"><div class="pillar-h"><span>'+p.key+' — '+esc(p.name)+'</span><span class="pscore">?/4</span></div>'+
+      p.lines.map(function(l){ return '<div class="line"><div class="line-top"><span class="line-label">'+esc(l[1])+'</span>'+pips(1)+'</div><div class="line-note">Your feedback on this line is ready once you unlock it.</div></div>'; }).join('')+'</div>';
+  }).join('');
+  if(state.unlocked){ revealBreakdown(); } else { el('breakdown').hidden=true; el('gateWrap').hidden=false; }
   showStep('step-results',2);
 }
 async function emailResults(e){
@@ -409,7 +431,7 @@ async function emailResults(e){
   var btn=el('emailBtn');
   status.textContent=''; status.className='email-status';
   if(!state.scenario||!state.pitch||!state.result){ status.textContent='Your results are no longer available. Please try another pitch.'; status.classList.add('bad'); return; }
-  btn.disabled=true; btn.textContent='Sending…';
+  btn.disabled=true; btn.textContent='Unlocking…';
   try{
     var r=await fetch('/api/email-results',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({
       email:email,
@@ -419,14 +441,21 @@ async function emailResults(e){
       result:state.result
     })});
     var data=await r.json();
-    if(!r.ok) throw new Error(data.error||'Could not send the email.');
-    status.textContent='Sent — check your inbox. Gmail users: it may be in Updates.'; status.classList.add('ok');
-    el('resultEmail').disabled=true; btn.textContent='Email sent';
+    if(!r.ok){ var er=new Error(data.error||'Could not send the email.'); er.status=r.status; throw er; }
+    state.unlocked=true; revealBreakdown();
+    var sent=el('breakdownStatus'); sent.textContent='A copy is on its way to '+email+'. Gmail users: it may be in Updates.'; sent.className='email-status ok';
   }catch(err){
+    if(err.status>=500){
+      // Email delivery is down: don't punish the visitor, show the breakdown anyway.
+      state.unlocked=true; revealBreakdown();
+      var s2=el('breakdownStatus'); s2.textContent='We couldn\u2019t send the email copy right now, but here is your full breakdown.'; s2.className='email-status bad';
+      return;
+    }
     status.textContent=err.message||'Could not send the email. Please try again.'; status.classList.add('bad');
-    btn.disabled=false; btn.textContent='Email my results';
+    btn.disabled=false; btn.textContent='Show my breakdown';
   }
 }
+function revealBreakdown(){ el('gateWrap').hidden=true; el('breakdown').hidden=false; }
 function shareTeam(){
   var url=window.location.href.split('#')[0];
   var btn=el('shareBtn');
