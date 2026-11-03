@@ -67,6 +67,7 @@
   .card h3 + .cs + .field{margin-top:14px}
   .field label{font-size:15.5px;font-weight:600}
   .field small{display:block;font-size:13px;font-weight:500;color:var(--muted)}
+  .costv{justify-self:end;font-weight:900;font-size:22px;letter-spacing:-0.02em;padding:0 12px;font-variant-numeric:tabular-nums}
   .inp{display:flex;align-items:center;background:var(--paper);border:2px solid transparent;padding:0 12px}
   .inp:focus-within{border-color:var(--dark)}
   .inp span{color:var(--muted);font-size:14px;font-weight:700}
@@ -174,7 +175,7 @@
           <div class="field"><label for="wrl">Win rate gain</label><div class="inp"><input id="wrl" type="number" min="0" step="1" value="15" inputmode="decimal"><span>%</span></div></div>
           <div class="field"><label for="retl">Less churn</label><div class="inp"><input id="retl" type="number" min="0" step="1" value="15" inputmode="decimal"><span>%</span></div></div>
           <div class="field"><label for="expl">More expansion</label><div class="inp"><input id="expl" type="number" min="0" step="1" value="15" inputmode="decimal"><span>%</span></div></div>
-          <div class="field"><label for="cost">Program investment<small>12 people, USD</small></label><div class="inp"><span>$</span><input id="cost" type="number" min="0" value="36000" inputmode="numeric"></div></div>
+          <div class="field"><label>Program investment<small id="costnote">$3,000 USD per person</small></label><p class="costv" id="costv">$0</p></div>
         </div>
       </div>
 
@@ -217,7 +218,10 @@
     var perRetPt = num("csms") * num("book") * churn * 0.01;
     var wrGain = num("wrl");
     var expRev = num("csms") * num("exp") * num("expl") / 100;
-    var newRev = perWinPt * wrGain, kept = perRetPt * num("retl"), total = newRev + kept + expRev, cost = num("cost");
+    var newRev = perWinPt * wrGain, kept = perRetPt * num("retl"), total = newRev + kept + expRev;
+    var people = num("aes") + num("csms"), cost = people * 3000;
+    $("costv").textContent = usd(cost);
+    $("costnote").textContent = people ? people + (people === 1 ? " person" : " people") + " at $3,000 USD" : "$3,000 USD per person";
     $("exprev").textContent = usd(expRev);
     $("total").textContent = usd(total);
     $("why").textContent = total > 0 ? "From " + num("wrl") + "% higher win rate, " + num("retl") + "% less churn and " + num("expl") + "% more expansion." : "Add your numbers and estimates to see the total.";
@@ -231,7 +235,7 @@
       $("payback").textContent = m < 1 ? "< 1 mo" : m > 60 ? "60+ mo" : Math.ceil(m) + " mo";
     } else { $("payback").textContent = "-"; }
   }
-  ["aes","rev","csms","book","ret","exp","wrl","retl","expl","cost"].forEach(function(id){$(id).addEventListener("input", calc)});
+  ["aes","rev","csms","book","ret","exp","wrl","retl","expl"].forEach(function(id){$(id).addEventListener("input", calc)});
   calc();
 </script>
 </body>
