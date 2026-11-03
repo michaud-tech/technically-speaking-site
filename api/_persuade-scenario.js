@@ -9,15 +9,29 @@ const BRIEF = {
   paras: [
     "You're a senior engineer. You want your team to spend the next four weeks rebuilding the deployment pipeline before it takes on any new feature work.",
     'About one in five deploys fails and has to be rolled back by hand, and each failure costs a senior engineer roughly half a day. Because deploys are risky, the team batches releases once a week instead of shipping daily. Two customer-facing incidents last quarter traced back to bad deploys.',
-    'The rebuild would push the next planned feature, the reporting dashboard, back by about a month. You expect it to cut failed deploys to under one in twenty and let the team ship daily.',
+    'The rebuild would push the next planned feature, the reporting dashboard, back by about a month. You expect it to cut failed deploys to under one in twenty and let the team ship daily. That is your estimate; the new pipeline has not been tried yet.',
   ],
   ask: 'Get them to back the four-week rebuild.',
+  // Display card, same layout as the /assessment briefs (brief-card.js). Same facts as `paras`.
+  facts: {
+    summary: "You're a senior engineer. Your team is about to start its next feature.",
+    rows: [
+      ['You recommend', 'Four weeks rebuilding the deployment pipeline before any new feature work'],
+      ['Today', 'About one in five deploys fails and is rolled back by hand, costing a senior engineer roughly half a day each time. The team batches releases once a week instead of shipping daily'],
+      ['Incidents', 'Two customer-facing incidents last quarter traced back to bad deploys'],
+      ['The cost', 'The reporting dashboard, the next planned feature, moves back about a month'],
+      ['Expected', 'Failed deploys under one in twenty, and daily releases'],
+      ['Not proven', 'That is your estimate. The new pipeline has not been tried yet'],
+    ],
+  },
 };
 
 const CLIENTS = {
   priya: {
     name: 'Priya Shah',
     role: 'VP of Product',
+    rows: [['Responsible for', 'The product roadmap'], ['On the line', 'The reporting dashboard, her headline feature this quarter', 1], ['Can decide', 'Can move the dashboard date and free the team for the rebuild']],
+    setting: "You have about ten minutes before Priya's next call. What do you say?",
     known: 'Owns the roadmap. The reporting dashboard is her headline feature this quarter.',
     opening: "I've got about ten minutes before my next call. You wanted to talk about the deploy setup?",
     hidden: `Priya promised the CEO the reporting dashboard by the end of the quarter. What she actually fears is not the date itself but another botched release: the last major launch needed a manual rollback on launch day and she had to apologize to two key customers. She has not said this to engineering. She also wants to be able to ship fixes quickly in the weeks after launch.
@@ -27,6 +41,8 @@ Her default pushback: "Can't this wait until after the dashboard ships?"`,
   marcus: {
     name: 'Marcus Bell',
     role: 'VP of Sales',
+    rows: [['Responsible for', 'The revenue number'], ['Cares about', 'What customers see', 1], ['Can decide', "Doesn't own the roadmap, but his backing carries weight with leadership"]],
+    setting: 'Marcus can give you a few minutes. What do you say?',
     known: 'Carries the revenue number. Cares about what customers see.',
     opening: "Sure, I can give you a few minutes. What's this about?",
     hidden: `One of the company's ten largest accounts renews in about sixty days, and that customer's IT team flagged both incidents from last quarter in their vendor review. Marcus is quietly worried about the renewal. Enterprise prospects also keep asking about release reliability in security questionnaires, and his team has no good answer.
@@ -36,6 +52,8 @@ His default pushback: "My customers are asking for the dashboard, not plumbing."
   dana: {
     name: 'Dana Okafor',
     role: 'CFO',
+    rows: [['Responsible for', 'Company spend. Engineering is the largest cost line'], ['Wary of', 'Paying for team time that ships nothing new', 1], ['Can decide', 'Signs off on how engineering time and budget are used']],
+    setting: 'You have a few minutes with Dana. What do you say?',
     known: 'Watches spend closely. Engineering is the largest cost line.',
     opening: "I have a few minutes. I'll be honest, I don't follow the technical side much, so keep it simple.",
     hidden: `The board asked Dana to explain why engineering cost per shipped feature went up this year. She needs a story she can defend with numbers. She has not connected this to deploy failures.
@@ -45,6 +63,8 @@ Her default pushback: "So we pay the team for a month and nothing ships?"`,
   jordan: {
     name: 'Jordan Reyes',
     role: 'CEO',
+    rows: [['Responsible for', 'Where the company goes next'], ['Wants', 'Speed, and new features in front of customers', 1], ['Can decide', 'Makes the final call on what the team works on']],
+    setting: 'You have five minutes walking with Jordan. What do you say?',
     known: 'Founder. Wants speed and new features in front of customers.',
     opening: "Walk with me, I've got five minutes. What do you need?",
     hidden: `Jordan plans to raise the next funding round in about six months. Investors in diligence will probe shipping velocity and incidents, and Jordan wants a story about a team that ships every day. Jordan has not shared fundraising timing widely.
@@ -53,10 +73,21 @@ Default pushback: "Why are we talking about infrastructure? We need features."`,
   },
 };
 
+// Card for brief-card.js: goal first, the person, then the situation.
+function cardFor(c) {
+  const first = c.name.split(' ')[0];
+  return {
+    goal: `Get ${first} to back the four-week pipeline rebuild.`,
+    setting: c.setting,
+    person: { name: c.name, role: c.role, rows: c.rows },
+    facts: BRIEF.facts,
+  };
+}
+
 function publicView() {
   return {
     brief: BRIEF,
-    clients: Object.entries(CLIENTS).map(([id, c]) => ({ id, name: c.name, role: c.role, known: c.known, opening: c.opening })),
+    clients: Object.entries(CLIENTS).map(([id, c]) => ({ id, name: c.name, role: c.role, known: c.known, opening: c.opening, card: cardFor(c) })),
     maxTurns: MAX_TURNS,
   };
 }
@@ -64,7 +95,8 @@ function publicView() {
 const MAX_TURNS = 10;
 
 function briefText(client) {
-  return `${BRIEF.paras.join('\n\n')}\n\nYou're speaking to ${client.name}, ${client.role}. ${client.known}\n\nTask: ${BRIEF.ask}`;
+  const rows = (client.rows || []).map((r) => `${r[0]}: ${r[1]}`).join('. ');
+  return `${BRIEF.paras.join('\n\n')}\n\nYou're speaking to ${client.name}, ${client.role}. ${client.known} ${rows}.\n\n${client.setting}\n\nTask: Get ${client.name.split(' ')[0]} to back the four-week pipeline rebuild.`;
 }
 
 function roleplaySystem(client) {
