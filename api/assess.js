@@ -322,6 +322,9 @@ module.exports = async (req, res) => {
     return;
   }
 
+  // /conversation page (persuasion conversation). Lives in a helper so it is not a separate function.
+  if (body.persuade) return require('./_persuade.js')(req, res, body.persuade);
+
   if (body.practiceAction) {
     const exercise = HR_COURSE.exercises[body.practiceAction];
     if (!exercise) return res.status(400).json({ error: 'Unknown practice activity.' });
@@ -447,3 +450,6 @@ module.exports = async (req, res) => {
   // scores, per-pillar subtotals, and the /12 total, all computed server-side.
   res.status(200).json(parsed);
 };
+
+// Shared scoring pieces, used by api/_persuade.js so the conversation page grades on this exact standard.
+module.exports.grader = { MODEL, SCORE_SYSTEM, SCORE_TOOL, RUBRIC, extractJson, collectLines, normalize };

@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>How persuasive are you? | Technically Speaking</title>
+<meta name="author" content="Michaud Garneau">
+<meta name="theme-color" content="#201e1d">
+  <link rel="canonical" href="https://www.technicallyspeakinghq.com/conversation">
+  <meta name="description" content="Have a real conversation with a busy stakeholder, make your ask, and see how persuasive you are on the TECH model.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{--dark:#1D1D1B;--paper:#F4F2ED;--card:#E8E6E1;--yellow:#F4C400;--muted:#6B6B68;--white:#F4F2ED;--line:#DAD5CB;--darkline:#39352F}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--dark);font-family:'Archivo',system-ui,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.55;letter-spacing:-0.01em;min-height:100vh;display:flex;flex-direction:column}
+  main{flex:1 0 auto;padding-bottom:56px}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:760px;margin:0 auto;padding:0 24px}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;padding:13px 20px;border:2px solid var(--yellow);background:var(--yellow);color:var(--dark);cursor:pointer;transition:.15s}
+  .btn:hover{background:transparent;color:var(--dark)}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .btn.ghost{background:transparent;border-color:var(--dark);color:var(--dark)}
+  .btn.ghost:hover{background:var(--dark);color:var(--white)}
+
+  header{position:sticky;top:0;z-index:50;background:rgba(32,30,29,0.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--darkline);color:var(--white)}
+  header .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-top:15px;padding-bottom:15px}
+  .brand{display:flex;align-items:center;gap:10px}
+  .brand-t{height:30px;width:auto;display:block}
+  nav{display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:flex-end}
+  nav a.link{font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#b8b2a8}
+  nav a.link:hover{color:var(--white)}
+  .btn.solid{background:var(--yellow);color:var(--dark);border-color:var(--yellow)}
+  .btn.solid:hover{background:transparent;color:var(--yellow)}
+  footer{border-top:1px solid var(--darkline);background:var(--dark);color:#b8b2a8}
+  footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:22px;padding-bottom:22px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase}
+  @media (max-width:820px){ nav a.link{display:none} .brand-t{height:26px} }
+
+  .label{font-size:12px;font-weight:800;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted)}
+  h1{font-weight:800;letter-spacing:-0.03em;line-height:1.04;font-size:clamp(28px,4.4vw,42px)}
+  h2{font-weight:800;letter-spacing:-0.02em;line-height:1.1;font-size:clamp(22px,3vw,30px)}
+  .rule{height:1px;background:var(--line);margin:18px 0}
+
+  main{padding:40px 0 90px;min-height:60vh}
+  .step{display:none}
+  .step.active{display:block;animation:fade .25s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  .lead{font-size:17px;color:var(--muted);max-width:60ch;margin-top:16px;line-height:1.6}
+  .lead + .lead{margin-top:14px}
+  .scenario-picker{margin-top:28px;max-width:560px}
+  .scenario-picker label{display:block;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+  .scenario-picker select{width:100%;padding:14px 42px 14px 14px;border:2px solid var(--dark);background:#fff;color:var(--dark);font:600 16px 'Archivo',system-ui,sans-serif}
+  .scenario-picker select:focus{outline:3px solid var(--yellow);outline-offset:2px}
+  .intro-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+  .intro-program{margin-top:30px;padding:24px 26px;background:#fff;border:1px solid var(--line);border-top:4px solid var(--yellow)}
+  .intro-program h2{font-size:21px}
+  .intro-program p{font-size:14.5px;color:var(--muted);line-height:1.55;margin-top:8px}
+
+  /* brief */
+  .brief{background:var(--dark);color:var(--white);padding:30px 32px;border-top:4px solid var(--yellow);margin-top:20px}
+  .brief p{font-size:16.5px;line-height:1.62}
+  .brief p + p{margin-top:15px}
+  .brief .ask{margin-top:20px;padding-top:18px;border-top:1px solid var(--darkline);font-weight:800;color:var(--yellow);font-size:17px;line-height:1.45}
+
+  /* pitch */
+  textarea.pitch{width:100%;font-family:inherit;font-size:16px;padding:16px;border:2px solid var(--line);background:#fff;color:var(--dark);min-height:240px;margin-top:16px;resize:vertical}
+  textarea.pitch:focus{outline:none;border-color:var(--yellow)}
+
+  /* results */
+  .overall{display:flex;align-items:baseline;gap:18px;margin-top:8px}
+  .overall .n{font-weight:900;font-size:72px;line-height:.8;color:var(--yellow);letter-spacing:-.04em}
+  .overall .n small{font-size:26px;color:var(--muted)}
+  .overall .t{font-weight:700;color:var(--muted);font-size:16px;max-width:34ch}
+  .dims{display:grid;gap:28px;margin-top:34px}
+  .pillar-h{display:flex;justify-content:space-between;align-items:baseline;font-weight:800;font-size:18px;border-bottom:2px solid var(--dark);padding-bottom:8px}
+  .pillar-h .pscore{color:var(--muted);font-size:14px;font-weight:800}
+  .line{padding:14px 2px;border-bottom:1px solid var(--line)}
+  .line:last-child{border-bottom:none}
+  .line-top{display:flex;justify-content:space-between;align-items:center;gap:14px}
+  .line-label{font-weight:700;font-size:15.5px}
+  .pips{display:inline-flex;align-items:center;gap:9px;white-space:nowrap}
+  .pip-label{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .pip-label.s2{color:var(--dark)}
+  .pip{width:12px;height:12px;border:2px solid var(--line);display:inline-block}
+  .pip.on{background:var(--yellow);border-color:var(--yellow)}
+  .line-note{font-size:14px;color:var(--muted);margin-top:6px;line-height:1.5;max-width:66ch}
+  .topfix{background:var(--dark);color:var(--white);padding:24px 28px;margin-top:30px;border-top:4px solid var(--yellow)}
+  .topfix .label{color:var(--yellow)}
+  .topfix p{font-size:17px;font-weight:600;margin-top:10px;line-height:1.5}
+  .res-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:34px}
+
+  .email-copy{margin-top:32px;padding:24px 26px;background:#fff;border:1px solid var(--line);border-top:4px solid var(--yellow)}
+  .email-copy h3{font-size:19px;line-height:1.25;letter-spacing:-.02em}
+  .email-copy p{font-size:14px;color:var(--muted);margin-top:7px;line-height:1.5}
+  .email-row{display:flex;gap:10px;margin-top:16px}
+  .email-row input[type=email]{min-width:0;flex:1;font:inherit;font-size:15px;padding:12px 13px;border:2px solid var(--line);background:var(--paper);color:var(--dark)}
+  .email-row input[type=email]:focus{outline:none;border-color:var(--yellow)}
+  .email-status{min-height:20px;font-size:13px;font-weight:700;margin-top:10px}
+  .email-status.ok{color:#26734d}.email-status.bad{color:#9c3028}
+  .website-field{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+  @media (max-width:560px){.email-row{flex-direction:column}.email-row .btn{justify-content:center}}
+
+  .note{font-size:13px;color:var(--muted);margin-top:16px}
+  .err{background:#f6e2e0;border-left:3px solid #c0392b;color:#7d2a20;padding:12px 15px;font-size:14px;margin-top:16px;display:none}
+  .err.show{display:block}
+  .back{font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;background:none;border:none;padding:0;margin-bottom:18px}
+  .back:hover{color:var(--dark)}
+
+  /* scoring indicator */
+  .scoring{display:none;margin-top:22px;align-items:center;gap:16px}
+  .scoring.on{display:flex}
+  .clock{width:46px;height:46px;flex:0 0 auto}
+  .clock .ring{fill:none;stroke:var(--line);stroke-width:6}
+  .clock .hand{stroke:var(--yellow);stroke-width:5;stroke-linecap:round;transform-origin:50px 50px}
+  .clock .h-min{animation:tick 1.1s linear infinite}
+  .clock .h-hour{animation:tick 5.5s linear infinite}
+  @keyframes tick{to{transform:rotate(360deg)}}
+  .scoring .msg{font-size:15.5px;font-weight:700;color:var(--dark);line-height:1.3}
+  .scoring .msg small{display:block;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+
+  /* locked H pillar */
+  .pillar.locked{opacity:.72;margin-top:28px}
+  .pillar.locked .line-label{color:var(--muted)}
+  .liveonly{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border:1.5px solid var(--line);padding:3px 9px;white-space:nowrap}
+  .pillar.locked .pillar-h .pscore{color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-size:12px}
+
+</style>
+<style>
+  .nav{display:flex;align-items:center;gap:14px}
+  .navmenu{position:relative}
+  .menu-btn{display:inline-flex;align-items:center;gap:8px;background:none;border:0;cursor:pointer;color:#cfcabf;font-family:inherit;font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:8px 4px;line-height:1}
+  .menu-btn:hover{color:var(--white)}
+  .menu-btn svg{display:block}
+  .menu-panel{position:absolute;top:calc(100% + 12px);right:0;min-width:220px;background:#262320;border:1px solid var(--darkline);box-shadow:0 14px 34px rgba(0,0,0,.4);padding:8px;display:none;flex-direction:column;z-index:70}
+  .navmenu.open .menu-panel{display:flex}
+  .menu-panel a{display:block;padding:11px 14px;font-size:13px;font-weight:600;letter-spacing:.01em;color:#e9e5dd;text-transform:none}
+  .menu-panel a:hover{background:var(--dark);color:var(--white)}
+  @media (max-width:480px){ .nav{gap:10px} .nav .btn.solid{padding:11px 13px;font-size:11px} .menu-btn span{display:none} .menu-btn{padding:8px} }
+  .clients{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:18px}
+  .client{text-align:left;background:#fff;border:2px solid var(--line);padding:18px 18px 20px;cursor:pointer;font:inherit;color:var(--dark);transition:.15s}
+  .client:hover,.client:focus-visible{border-color:var(--yellow);outline:none}
+  .client .r{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .client .nm{font-size:19px;font-weight:800;letter-spacing:-.02em;margin-top:6px}
+  .client .k{font-size:14px;color:var(--muted);margin-top:8px;line-height:1.45}
+  .chat-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;border-bottom:2px solid var(--dark);padding-bottom:12px}
+  .turns{font-weight:900;font-size:26px;letter-spacing:-.03em;text-align:right;line-height:1}
+  .turns small{display:block;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+  .brief-toggle{background:none;border:none;padding:0;margin-top:12px;font:700 13px 'Archivo',system-ui,sans-serif;color:var(--muted);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+  .brief.mini{padding:20px 22px;margin-top:10px}.brief.mini p{font-size:14.5px}
+  .msgs{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+  .m{max-width:88%;padding:13px 16px;font-size:15.5px;line-height:1.5;white-space:pre-wrap;word-wrap:break-word}
+  .m .who{display:block;font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+  .m.them{background:#fff;border:1px solid var(--line);align-self:flex-start}
+  .m.you{background:var(--dark);color:var(--white);align-self:flex-end;border-left:4px solid var(--yellow)}
+  .m.you .who{color:#b8b2a8}
+  .typing{display:flex;gap:5px;margin-top:12px;padding:12px 4px}
+  .typing[hidden]{display:none}
+  .typing span{width:7px;height:7px;background:var(--muted);border-radius:50%;animation:blink 1.2s infinite}
+  .typing span:nth-child(2){animation-delay:.2s}.typing span:nth-child(3){animation-delay:.4s}
+  @keyframes blink{0%,80%,100%{opacity:.25}40%{opacity:1}}
+  .composer{margin-top:18px}
+  .composer textarea{width:100%;font:inherit;font-size:16px;padding:14px;border:2px solid var(--line);background:#fff;color:var(--dark);resize:vertical;min-height:84px}
+  .composer textarea:focus{outline:none;border-color:var(--yellow)}
+  .composer-row{display:flex;justify-content:space-between;gap:10px;margin-top:10px;flex-wrap:wrap}
+  .locked-wrap{position:relative;margin-top:30px}
+  .locked-dims{filter:blur(6px);opacity:.55;pointer-events:none;user-select:none;margin-top:0}
+  .gate{position:relative;margin-top:-150px;background:#fff;border:1px solid var(--line);border-top:4px solid var(--yellow);padding:24px 26px;box-shadow:0 18px 40px rgba(29,29,27,.12)}
+  .gate h3{font-size:20px;letter-spacing:-.02em;line-height:1.25}
+  .gate p{font-size:14.5px;color:var(--muted);margin-top:8px;line-height:1.5}
+  .gate form{display:grid;gap:10px;margin-top:16px}
+  .gate input[type=email],.gate select{width:100%;font:inherit;font-size:15px;padding:12px 13px;border:2px solid var(--line);background:var(--paper);color:var(--dark)}
+  .gate input:focus,.gate select:focus{outline:none;border-color:var(--yellow)}
+  .gate-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .gate .btn{justify-content:center}
+  @media (max-width:560px){.gate-row{grid-template-columns:1fr}.gate{margin-top:-110px;padding:20px}.composer-row .btn{flex:1;justify-content:center}}
+  .delta{margin-top:18px;font-weight:800;font-size:15px;background:var(--dark);color:var(--white);padding:12px 16px;border-left:4px solid var(--yellow);display:inline-block}
+  .delta[hidden]{display:none}
+  .worked{margin-top:26px;padding:20px 22px;background:#fff;border:1px solid var(--line)}
+  .worked p:last-child{margin-top:8px;font-size:15.5px;line-height:1.55}
+  .team{margin-top:34px;padding:24px 26px;background:#fff;border:1px solid var(--line);border-top:4px solid var(--yellow)}
+  .team h3{font-size:20px;letter-spacing:-.02em}
+  .team p{font-size:14.5px;color:var(--muted);margin:8px 0 16px;line-height:1.5}
+</style>
+<meta name="robots" content="noindex">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><symbol id="tsword" viewBox="0 0 1200 240"><rect width="1200" height="240" fill="none"/><g fill="currentColor" font-family="Arial Narrow, Helvetica Neue, Arial, sans-serif"><text x="40" y="102" font-size="84" font-weight="900">TECHNICALLY</text><text x="318" y="176" font-size="30" font-weight="700" letter-spacing="12" fill="#F4C400">SPEAKING</text></g><rect x="62" y="148" width="210" height="8" rx="2" fill="#F4C400"/></symbol></svg>
+
+<header>
+  <div class="wrap">
+    <a href="/" class="brand" aria-label="Technically Speaking"><img class="brand-t" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNjAiIGhlaWdodD0iMTYwIiB2aWV3Qm94PSIwIDAgMTYwIDE2MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsbGVkYnk9InRpdGxlIGRlc2MiPgogIDx0aXRsZSBpZD0idGl0bGUiPlRlY2huaWNhbGx5IFNwZWFraW5nIFQgbW9ub2dyYW08L3RpdGxlPgogIDxkZXNjIGlkPSJkZXNjIj5BIHNtYWxsIGNpcmN1bGFyIG1vbm9ncmFtIHdpdGggYSBzdHlsaXplZCBUIGluIHllbGxvdy48L2Rlc2M+CiAgPHJlY3Qgd2lkdGg9IjE2MCIgaGVpZ2h0PSIxNjAiIGZpbGw9Im5vbmUiLz4KICA8Y2lyY2xlIGN4PSI4MCIgY3k9IjgwIiByPSI1OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRjRDNDAwIiBzdHJva2Utd2lkdGg9IjYiLz4KICA8cmVjdCB4PSI1NyIgeT0iNDciIHdpZHRoPSI0NiIgaGVpZ2h0PSI1IiByeD0iMi41IiBmaWxsPSIjRjRDNDAwIi8+CiAgPHJlY3QgeD0iNTciIHk9IjYwIiB3aWR0aD0iNDYiIGhlaWdodD0iNSIgcng9IjIuNSIgZmlsbD0iI0Y0QzQwMCIvPgogIDxyZWN0IHg9Ijc3IiB5PSI2MCIgd2lkdGg9IjUiIGhlaWdodD0iNDIiIHJ4PSIyLjUiIGZpbGw9IiNGNEM0MDAiLz4KPC9zdmc+Cg==" alt="Technically Speaking"></a>
+    <nav class="nav">
+      <a href="/program" class="btn solid">See the program</a>
+      <div class="navmenu">
+        <button class="menu-btn" aria-haspopup="true" aria-expanded="false" onclick="event.stopPropagation();var m=this.closest('.navmenu');var o=m.classList.toggle('open');this.setAttribute('aria-expanded',o)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg><span>Menu</span></button>
+        <div class="menu-panel" role="menu">
+          <a href="/" role="menuitem">Home</a>
+          <a href="/program" role="menuitem">Program + pricing</a>
+          <a href="/about" role="menuitem">About</a>
+          <a href="/case-study" role="menuitem">Case study</a>
+          <a href="/podcast" role="menuitem">Podcast</a>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
+<main>
+  <div class="wrap">
+
+    <!-- INTRO (placeholder copy for Michaud to rewrite) -->
+    <section class="step active" id="step-intro">
+      <p class="label">Persuasion test</p>
+      <h1 style="margin-top:12px">How persuasive are you?</h1>
+      <p class="lead">You have a good idea and a busy stakeholder. Pick who you're talking to, have the conversation, then make your ask.</p>
+      <p class="lead">About five minutes. You get your score right away.</p>
+      <div class="intro-actions"><button class="btn" onclick="goPick()">Start</button></div>
+    </section>
+
+    <!-- BRIEF + PICK A CLIENT -->
+    <section class="step" id="step-pick">
+      <button class="back" onclick="showStep('step-intro')">&larr; Back</button>
+      <p class="label">The brief</p>
+      <div class="brief" id="brief"></div>
+      <h2 style="margin-top:34px">Who are you talking to?</h2>
+      <p class="note" style="margin-top:8px">Same ask, different person. Choose one.</p>
+      <div class="clients" id="clients"></div>
+    </section>
+
+    <!-- CONVERSATION -->
+    <section class="step" id="step-chat">
+      <div class="chat-head">
+        <div><p class="label" id="chatRole"></p><h2 id="chatName" style="margin-top:6px"></h2></div>
+        <div class="turns"><span id="turnCount">0</span>/<span id="turnMax">10</span><small>messages</small></div>
+      </div>
+      <button class="brief-toggle" onclick="toggleBrief()">Show the brief</button>
+      <div class="brief mini" id="briefMini" hidden></div>
+      <div class="msgs" id="msgs" aria-live="polite"></div>
+      <div class="typing" id="typing" hidden><span></span><span></span><span></span></div>
+      <div class="err" id="chatErr"></div>
+      <div class="composer" id="composer">
+        <textarea id="msgInput" rows="3" placeholder="Say what you'd actually say..." maxlength="1500"></textarea>
+        <div class="composer-row">
+          <button class="btn ghost" id="doneBtn" onclick="finish()" disabled>I've made my ask, score me</button>
+          <button class="btn" id="sendBtn" onclick="send()">Send</button>
+        </div>
+      </div>
+      <div class="scoring" id="scoring">
+        <svg class="clock" viewBox="0 0 100 100" aria-hidden="true"><circle class="ring" cx="50" cy="50" r="42"/><line class="hand h-hour" x1="50" y1="50" x2="50" y2="28"/><line class="hand h-min" x1="50" y1="50" x2="50" y2="18"/></svg>
+        <div class="msg" id="scoringMsg">Scoring your conversation</div>
+      </div>
+    </section>
+
+    <!-- SCORE (free) + GATE -->
+    <section class="step" id="step-score">
+      <p class="label" id="scoreLabel">Your score</p>
+      <div class="overall" style="margin-top:10px"><div class="n" id="ovN"></div><div class="t" id="ovT"></div></div>
+      <div class="locked-wrap">
+        <div class="dims locked-dims" aria-hidden="true" id="lockedDims"></div>
+        <div class="gate">
+          <h3>See what's behind your score</h3>
+          <p>Your breakdown across Target Audience, End Goal and Clarity, the one thing to change, and a second try with the same person.</p>
+          <form id="gateForm" onsubmit="unlock(event)">
+            <input type="email" id="gEmail" required placeholder="Work email" autocomplete="email">
+            <div class="gate-row">
+              <select id="gRole" required><option value="">Your role</option></select>
+              <select id="gSeniority" required><option value="">Your level</option></select>
+            </div>
+            <input type="text" id="gWebsite" class="website-field" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <button class="btn" id="gBtn" type="submit">Show my breakdown</button>
+            <div class="email-status" id="gStatus"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- BREAKDOWN -->
+    <section class="step" id="step-results">
+      <p class="label" id="resLabel">Your breakdown</p>
+      <div class="overall" style="margin-top:10px"><div class="n" id="resN"></div><div class="t" id="resT"></div></div>
+      <div class="delta" id="delta" hidden></div>
+      <div class="worked" id="workedBox"><p class="label">What worked</p><p id="worked"></p></div>
+      <div class="dims" id="dims"></div>
+      <div class="topfix"><p class="label">The one thing to try</p><p id="topfix"></p></div>
+      <div class="res-cta" id="retryRow">
+        <button class="btn" id="retryBtn" onclick="retry()">Try again</button>
+        <button class="btn ghost" onclick="goPick()">Pick someone else</button>
+      </div>
+      <div class="team">
+        <h3>See how your team scores</h3>
+        <p>Run this with your team and see where the gaps are across the group.</p>
+        <a class="btn" href="/book">Book a call</a>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<script>
+var API = '/api/assess';
+var state = { data: null, client: null, history: [], attempt: 1, busy: false, token: null, total: null, firstTotal: null, who: null };
+function el(id){ return document.getElementById(id); }
+function esc(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// Transport. Requests go to /api/assess as { persuade: ... }; a demo build can supply window.PERSUADE_TRANSPORT instead.
+async function call(body){
+  if (window.PERSUADE_TRANSPORT) return window.PERSUADE_TRANSPORT(body);
+  var r = await fetch(API, { method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify({ persuade: body || { action:'config' } }) });
+  var d = await r.json().catch(function(){ return {}; });
+  if (!r.ok) throw new Error(d.error || 'Something went wrong. Please try again.');
+  return d;
+}
+
+function showStep(id){
+  document.querySelectorAll('.step').forEach(function(s){ s.classList.toggle('active', s.id === id); });
+  window.scrollTo(0, 0);
+}
+
+async function load(){
+  try { state.data = await call(null); }
+  catch (e) { return; }
+  var d = state.data;
+  var bh = d.brief.paras.map(function(p){ return '<p>' + esc(p) + '</p>'; }).join('') + '<div class="ask">' + esc(d.brief.ask) + '</div>';
+  el('brief').innerHTML = bh; el('briefMini').innerHTML = bh;
+  el('clients').innerHTML = d.clients.map(function(c){
+    return '<button class="client" onclick="pick(\'' + c.id + '\')"><div class="r">' + esc(c.role) + '</div><div class="nm">' + esc(c.name) + '</div><div class="k">' + esc(c.known) + '</div></button>';
+  }).join('');
+  el('turnMax').textContent = d.maxTurns;
+  (d.roles || []).forEach(function(r){ el('gRole').insertAdjacentHTML('beforeend', '<option>' + esc(r) + '</option>'); });
+  (d.seniority || []).forEach(function(r){ el('gSeniority').insertAdjacentHTML('beforeend', '<option>' + esc(r) + '</option>'); });
+}
+
+function goPick(){ showStep('step-pick'); }
+function toggleBrief(){ var b = el('briefMini'); b.hidden = !b.hidden; document.querySelector('.brief-toggle').textContent = b.hidden ? 'Show the brief' : 'Hide the brief'; }
+
+function pick(id){
+  state.client = state.data.clients.find(function(c){ return c.id === id; });
+  state.attempt = 1; state.firstTotal = null;
+  startChat();
+}
+function startChat(){
+  var c = state.client;
+  state.history = []; state.token = null; state.total = null;
+  el('chatRole').textContent = c.role; el('chatName').textContent = c.name;
+  el('msgs').innerHTML = ''; addMsg('them', c.opening);
+  el('chatErr').classList.remove('show');
+  el('composer').hidden = false; el('scoring').classList.remove('on');
+  el('msgInput').value = ''; el('msgInput').disabled = false;
+  updateTurns();
+  showStep('step-chat');
+  setTimeout(function(){ el('msgInput').focus(); }, 50);
+}
+function addMsg(who, text){
+  var d = document.createElement('div');
+  d.className = 'm ' + who;
+  d.innerHTML = '<span class="who">' + (who === 'you' ? 'You' : esc(state.client.name.split(' ')[0])) + '</span>' + esc(text);
+  el('msgs').appendChild(d);
+  d.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+}
+function userTurns(){ return state.history.filter(function(t){ return t.role === 'user'; }).length; }
+function updateTurns(){
+  var n = userTurns(), max = state.data.maxTurns;
+  el('turnCount').textContent = n;
+  el('doneBtn').disabled = n === 0 || state.busy;
+  var full = n >= max;
+  el('sendBtn').disabled = full || state.busy;
+  el('msgInput').disabled = full;
+  if (full) el('msgInput').placeholder = 'That was your last message. Get your score.';
+}
+function chatErr(msg){ var e = el('chatErr'); e.textContent = msg; e.classList.add('show'); }
+
+async function send(){
+  if (state.busy) return;
+  var text = el('msgInput').value.trim();
+  if (!text) return;
+  if (userTurns() >= state.data.maxTurns) return;
+  el('chatErr').classList.remove('show');
+  state.history.push({ role:'user', content:text });
+  addMsg('you', text); el('msgInput').value = '';
+  state.busy = true; updateTurns(); el('typing').hidden = false;
+  try {
+    var d = await call({ action:'reply', clientId:state.client.id, history:state.history });
+    state.history.push({ role:'assistant', content:d.reply });
+    addMsg('them', d.reply);
+  } catch (e) {
+    state.history.pop(); el('msgs').lastChild.remove(); el('msgInput').value = text;
+    chatErr(e.message);
+  }
+  state.busy = false; el('typing').hidden = true; updateTurns();
+  if (userTurns() >= state.data.maxTurns) chatErr('That was your last message. Hit "score me" when you are ready.');
+}
+el('msgInput').addEventListener('keydown', function(e){ if (e.key === 'Enter' && !e.shiftKey && window.matchMedia('(pointer:fine)').matches) { e.preventDefault(); send(); } });
+
+function tier(t){
+  if (t >= 10) return 'Strong. This would land.';
+  if (t >= 7) return 'Solid, with clear room to sharpen.';
+  if (t >= 4) return 'A start, with real gaps to close.';
+  return "The case isn't landing yet.";
+}
+
+async function finish(){
+  if (state.busy || !userTurns()) return;
+  // Drop a trailing unanswered learner line? No: the history may end on the learner's ask.
+  state.busy = true; updateTurns();
+  el('composer').hidden = true; el('scoring').classList.add('on');
+  var msgs = ['Scoring your conversation', 'Who were you really talking to?', 'Was there one clear ask?', 'Did your facts land their "so what"?'], i = 0;
+  var timer = setInterval(function(){ el('scoringMsg').textContent = msgs[++i % msgs.length]; }, 1400);
+  try {
+    var d = await call({ action:'score', clientId:state.client.id, history:state.history, attempt:state.attempt });
+    state.token = d.token; state.total = d.total;
+    if (state.who) await unlockWith(state.who);   // second attempt: already unlocked
+    else showScore();
+  } catch (e) {
+    el('composer').hidden = false; chatErr(e.message);
+  }
+  clearInterval(timer); el('scoring').classList.remove('on'); state.busy = false; updateTurns();
+}
+
+function showScore(){
+  el('ovN').innerHTML = state.total + '<small>/12</small>';
+  el('ovT').textContent = tier(state.total);
+  el('scoreLabel').textContent = 'Your score with ' + state.client.name.split(' ')[0];
+  // Decorative placeholder only: the real breakdown is not on the page until unlocked.
+  el('lockedDims').innerHTML = [['T','Target Audience'],['E','End Goal'],['C','Clarity']].map(function(p){
+    return '<div class="pillar"><div class="pillar-h"><span>' + p[0] + ', ' + p[1] + '</span><span class="pscore">?/4</span></div>'
+      + '<div class="line"><div class="line-top"><span class="line-label">Locked line</span><span class="pips"><span class="pip on"></span><span class="pip"></span></span></div><div class="line-note">Your note on this line is ready once you unlock it.</div></div></div>';
+  }).join('');
+  el('gStatus').textContent = ''; el('gBtn').disabled = false; el('gBtn').textContent = 'Show my breakdown';
+  showStep('step-score');
+}
+
+async function unlock(e){
+  e.preventDefault();
+  var who = { email: el('gEmail').value.trim(), role: el('gRole').value, seniority: el('gSeniority').value, website: el('gWebsite').value };
+  el('gBtn').disabled = true; el('gBtn').textContent = 'Unlocking...'; el('gStatus').textContent = '';
+  try { await unlockWith(who); state.who = who; }
+  catch (err) { el('gStatus').textContent = err.message; el('gStatus').className = 'email-status bad'; el('gBtn').disabled = false; el('gBtn').textContent = 'Show my breakdown'; }
+}
+async function unlockWith(who){
+  var d = await call({ action:'unlock', token:state.token, email:who.email, role:who.role, seniority:who.seniority, website:who.website || '' });
+  renderResults(d);
+}
+
+function pips(score){
+  var s = Math.max(0, Math.min(2, parseInt(score, 10) || 0));
+  var label = s === 2 ? 'Clear' : s === 1 ? 'Partial' : 'Missing';
+  return '<span class="pips"><span class="pip-label s' + s + '">' + label + '</span><span class="pip' + (s > 0 ? ' on' : '') + '"></span><span class="pip' + (s > 1 ? ' on' : '') + '"></span></span>';
+}
+function renderResults(d){
+  el('resLabel').textContent = (state.attempt === 2 ? 'Second try with ' : 'Your breakdown with ') + state.client.name.split(' ')[0];
+  el('resN').innerHTML = d.total + '<small>/12</small>';
+  el('resT').textContent = tier(d.total);
+  var dl = el('delta');
+  if (state.attempt === 2 && state.firstTotal != null) {
+    var diff = d.total - state.firstTotal;
+    dl.textContent = 'First try ' + state.firstTotal + '/12, now ' + d.total + '/12' + (diff > 0 ? ' (+' + diff + ')' : '');
+    dl.hidden = false;
+  } else dl.hidden = true;
+  el('worked').textContent = d.whatWorked || '';
+  el('workedBox').hidden = !d.whatWorked;
+  el('dims').innerHTML = (d.pillars || []).map(function(p){
+    return '<div class="pillar"><div class="pillar-h"><span>' + p.key + ', ' + esc(p.name) + '</span><span class="pscore">' + p.subtotal + '/4</span></div>'
+      + p.lines.map(function(l){ return '<div class="line"><div class="line-top"><span class="line-label">' + esc(l.label) + '</span>' + pips(l.score) + '</div><div class="line-note">' + esc(l.note) + '</div></div>'; }).join('') + '</div>';
+  }).join('');
+  el('topfix').textContent = d.coachingFocus || '';
+  el('retryBtn').textContent = 'Try again with ' + state.client.name.split(' ')[0];
+  el('retryBtn').hidden = state.attempt === 2;
+  if (state.attempt === 1) state.firstTotal = d.total;
+  showStep('step-results');
+}
+function retry(){ state.attempt = 2; startChat(); }
+
+load();
+</script>
+<footer>
+  <div class="wrap">
+    <span>© Technically Speaking</span><span>Questions? <a href="mailto:hello@technicallyspeakinghq.com" style="text-transform:none;border-bottom:2px solid #F4C400;padding-bottom:2px">hello@technicallyspeakinghq.com</a></span>
+  </div>
+</footer>
+<script>document.addEventListener('click',function(e){document.querySelectorAll('.navmenu.open').forEach(function(m){if(!m.contains(e.target)){m.classList.remove('open');var b=m.querySelector('.menu-btn');if(b)b.setAttribute('aria-expanded','false');}});});</script>
+</body>
+</html>
